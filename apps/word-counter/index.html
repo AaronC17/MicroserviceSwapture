@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Word Counter &amp; Character Counter - SwapTure</title>
+    <meta name="description" content="Free online word counter and character counter tool. Instantly count words, characters, sentences, paragraphs, and reading time as you type or paste text." />
+    <link rel="canonical" href="https://wordcount.swapture.com" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Word Counter & Character Counter",
+      "url": "https://wordcount.swapture.com",
+      "description": "Free online word counter and character counter tool. Count words, characters, sentences, paragraphs, and reading time instantly.",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "provider": {
+        "@type": "Organization",
+        "name": "SwapTure",
+        "url": "https://swapture.com"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How does the word counter work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Our word counter splits your text by whitespace and counts each non-empty token as a word. It updates in real time as you type or paste text into the editor, so you always have an accurate count instantly."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between characters with and without spaces?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Characters with spaces counts every single character in your text, including spaces, tabs, and newlines. Characters without spaces counts only non-whitespace characters, which is useful for platforms that restrict visible character counts."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is reading time calculated?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Reading time is estimated based on an average reading speed of 200 words per minute. The total word count is divided by 200 and rounded up to the nearest minute. Texts under one minute display as '< 1 min read'."
+          }
+        }
+      ]
+    }
+    </script>
+  </head>
+  <body class="bg-slate-50 min-h-screen flex flex-col font-sans text-slate-800">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-slate-200 shadow-sm">
+      <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+        <a href="https://swapture.com" class="text-xl font-bold text-indigo-600 tracking-tight hover:text-indigo-700 transition-colors">
+          SwapTure
+        </a>
+        <nav class="hidden sm:flex gap-6 text-sm text-slate-600">
+          <a href="https://swapture.com" class="hover:text-indigo-600 transition-colors">Home</a>
+          <a href="https://swapture.com/tools" class="hover:text-indigo-600 transition-colors">Tools</a>
+          <a href="https://swapture.com/about" class="hover:text-indigo-600 transition-colors">About</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="flex-1 max-w-5xl mx-auto w-full px-4 py-8">
+
+      <!-- Hero -->
+      <div class="text-center mb-8">
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-2">Word Counter &amp; Character Counter</h1>
+        <p class="text-slate-500 text-base sm:text-lg max-w-2xl mx-auto">
+          Type or paste your text below for an instant breakdown of words, characters, sentences, paragraphs, and reading time.
+        </p>
+      </div>
+
+      <!-- Ad slot (top) -->
+      <div class="w-full bg-slate-100 border border-dashed border-slate-300 rounded-xl flex items-center justify-center h-20 mb-6 text-slate-400 text-sm select-none">
+        Advertisement
+      </div>
+
+      <!-- Textarea card -->
+      <div class="bg-white rounded-2xl shadow-md border border-slate-200 p-4 mb-6">
+        <textarea
+          id="text-input"
+          rows="12"
+          placeholder="Type or paste your text here..."
+          class="w-full resize-y rounded-lg border border-slate-200 bg-slate-50 p-4 text-slate-800 text-base leading-relaxed focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition placeholder-slate-400"
+        ></textarea>
+
+        <!-- Action buttons -->
+        <div class="flex gap-3 mt-3 justify-end">
+          <button
+            id="clear-btn"
+            class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 text-sm font-medium transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+            </svg>
+            Clear
+          </button>
+          <button
+            id="copy-btn"
+            class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
+              <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
+            </svg>
+            <span id="copy-label">Copy Text</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats grid (2 rows × 3 cols) -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
+        <!-- Words -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col items-center text-center">
+          <span id="stat-words" class="text-4xl font-extrabold text-indigo-600 tabular-nums transition-all duration-200">0</span>
+          <span class="mt-1 text-xs font-semibold uppercase tracking-widest text-slate-400">Words</span>
+        </div>
+
+        <!-- Characters with spaces -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col items-center text-center">
+          <span id="stat-chars-spaces" class="text-4xl font-extrabold text-sky-600 tabular-nums transition-all duration-200">0</span>
+          <span class="mt-1 text-xs font-semibold uppercase tracking-widest text-slate-400">Chars (w/ spaces)</span>
+        </div>
+
+        <!-- Characters without spaces -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col items-center text-center">
+          <span id="stat-chars-no-spaces" class="text-4xl font-extrabold text-teal-600 tabular-nums transition-all duration-200">0</span>
+          <span class="mt-1 text-xs font-semibold uppercase tracking-widest text-slate-400">Chars (no spaces)</span>
+        </div>
+
+        <!-- Sentences -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col items-center text-center">
+          <span id="stat-sentences" class="text-4xl font-extrabold text-violet-600 tabular-nums transition-all duration-200">0</span>
+          <span class="mt-1 text-xs font-semibold uppercase tracking-widest text-slate-400">Sentences</span>
+        </div>
+
+        <!-- Paragraphs -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col items-center text-center">
+          <span id="stat-paragraphs" class="text-4xl font-extrabold text-pink-600 tabular-nums transition-all duration-200">0</span>
+          <span class="mt-1 text-xs font-semibold uppercase tracking-widest text-slate-400">Paragraphs</span>
+        </div>
+
+        <!-- Reading time -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col items-center text-center">
+          <span id="stat-reading-time" class="text-4xl font-extrabold text-amber-500 tabular-nums transition-all duration-200">—</span>
+          <span class="mt-1 text-xs font-semibold uppercase tracking-widest text-slate-400">Reading Time</span>
+        </div>
+      </div>
+
+      <!-- Ad slot (mid) -->
+      <div class="w-full bg-slate-100 border border-dashed border-slate-300 rounded-xl flex items-center justify-center h-20 mb-10 text-slate-400 text-sm select-none">
+        Advertisement
+      </div>
+
+      <!-- SEO content section -->
+      <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8 prose prose-slate max-w-none">
+        <h2 class="text-xl font-bold text-slate-900 mb-3">About This Word Counter Tool</h2>
+        <p class="text-slate-600 text-sm leading-relaxed mb-4">
+          Whether you're a student checking an essay's length, a blogger optimizing a post, or a professional meeting tight copy requirements, our <strong>free word counter</strong> gives you instant, accurate statistics. Simply type or paste your content into the text area above and watch all six metrics update in real time — no button press needed.
+        </p>
+        <h3 class="text-base font-semibold text-slate-800 mb-2">What does each statistic mean?</h3>
+        <ul class="text-slate-600 text-sm leading-relaxed space-y-1 list-disc list-inside mb-4">
+          <li><strong>Words</strong> — Total number of whitespace-separated tokens in your text.</li>
+          <li><strong>Characters (with spaces)</strong> — Every character including spaces, tabs, and line breaks.</li>
+          <li><strong>Characters (without spaces)</strong> — Only non-whitespace characters; useful for SMS or tweet limits.</li>
+          <li><strong>Sentences</strong> — Approximate sentence count based on terminal punctuation (. ! ?).</li>
+          <li><strong>Paragraphs</strong> — Non-empty blocks of text separated by blank lines.</li>
+          <li><strong>Reading time</strong> — Estimated at 200 words per minute, rounded up to the nearest minute.</li>
+        </ul>
+        <p class="text-slate-600 text-sm leading-relaxed">
+          SwapTure's word counter works entirely in your browser — your text is never sent to any server, ensuring full privacy.
+        </p>
+      </section>
+
+      <!-- FAQ section -->
+      <section class="mb-10">
+        <h2 class="text-xl font-bold text-slate-900 mb-4">Frequently Asked Questions</h2>
+        <div class="space-y-4">
+
+          <details class="bg-white rounded-xl border border-slate-200 shadow-sm group">
+            <summary class="flex justify-between items-center cursor-pointer px-5 py-4 font-semibold text-slate-800 text-sm list-none">
+              How does the word counter work?
+              <svg class="h-4 w-4 text-slate-400 group-open:rotate-180 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+              </svg>
+            </summary>
+            <p class="px-5 pb-4 text-slate-600 text-sm leading-relaxed">
+              Our word counter splits your text by whitespace and counts each non-empty token as a word. It updates in real time as you type or paste text into the editor, so you always have an accurate count instantly.
+            </p>
+          </details>
+
+          <details class="bg-white rounded-xl border border-slate-200 shadow-sm group">
+            <summary class="flex justify-between items-center cursor-pointer px-5 py-4 font-semibold text-slate-800 text-sm list-none">
+              What is the difference between characters with and without spaces?
+              <svg class="h-4 w-4 text-slate-400 group-open:rotate-180 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+              </svg>
+            </summary>
+            <p class="px-5 pb-4 text-slate-600 text-sm leading-relaxed">
+              Characters with spaces counts every single character in your text, including spaces, tabs, and newlines. Characters without spaces counts only non-whitespace characters, which is useful for platforms that restrict visible character counts.
+            </p>
+          </details>
+
+          <details class="bg-white rounded-xl border border-slate-200 shadow-sm group">
+            <summary class="flex justify-between items-center cursor-pointer px-5 py-4 font-semibold text-slate-800 text-sm list-none">
+              How is reading time calculated?
+              <svg class="h-4 w-4 text-slate-400 group-open:rotate-180 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+              </svg>
+            </summary>
+            <p class="px-5 pb-4 text-slate-600 text-sm leading-relaxed">
+              Reading time is estimated based on an average reading speed of 200 words per minute. The total word count is divided by 200 and rounded up to the nearest minute. Texts under one minute display as "&lt; 1 min read".
+            </p>
+          </details>
+
+        </div>
+      </section>
+
+      <!-- Ad slot (bottom) -->
+      <div class="w-full bg-slate-100 border border-dashed border-slate-300 rounded-xl flex items-center justify-center h-20 mb-4 text-slate-400 text-sm select-none">
+        Advertisement
+      </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-auto">
+      <div class="max-w-5xl mx-auto px-4 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-slate-500">
+        <p>&copy; <span id="footer-year"></span> SwapTure. All rights reserved.</p>
+        <nav class="flex gap-5">
+          <a href="https://swapture.com/privacy" class="hover:text-indigo-600 transition-colors">Privacy</a>
+          <a href="https://swapture.com/terms" class="hover:text-indigo-600 transition-colors">Terms</a>
+          <a href="https://swapture.com/contact" class="hover:text-indigo-600 transition-colors">Contact</a>
+        </nav>
+      </div>
+    </footer>
+
+    <script type="module" src="src/main.ts"></script>
+    <script>
+      document.getElementById('footer-year').textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>
