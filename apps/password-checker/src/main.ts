@@ -157,8 +157,6 @@ const copyBtn       = getElement<HTMLButtonElement>('copy-button');
 const iconCopy      = getSVGElement('icon-copy');
 const iconCheck     = getSVGElement('icon-check');
 
-const requirementIds: Array<[string, keyof PasswordAnalysis['requirements'][number]]> = [];
-
 const REQ_IDS = [
   'req-length8',
   'req-length12',
