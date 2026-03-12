@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Percentage Calculator - SwapTure</title>
+  <meta name="description" content="Free online percentage calculator. Instantly find what percent of a number is, calculate percentage change, and more — no signup required." />
+  <meta name="keywords" content="percentage calculator, percent of a number, percentage change, what percent is, online calculator" />
+  <link rel="canonical" href="https://percentage.swapture.com" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Percentage Calculator - SwapTure" />
+  <meta property="og:description" content="Free online percentage calculator. Find X% of Y, calculate percentage change, and more." />
+  <meta property="og:url" content="https://percentage.swapture.com" />
+  <meta property="og:type" content="website" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- JSON-LD: WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Percentage Calculator",
+    "url": "https://percentage.swapture.com",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "description": "Free online tool to calculate percentages, find what percent one number is of another, and compute percentage change.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
+  <!-- JSON-LD: FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How do I calculate what percent of a number something is?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "To find X% of Y, multiply Y by X and divide by 100. For example, 20% of 150 = (20 ÷ 100) × 150 = 30."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I find what percentage one number is of another?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Divide the part by the whole and multiply by 100. For example, 30 is what percent of 150? (30 ÷ 150) × 100 = 20%."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I calculate percentage change between two numbers?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Subtract the original value from the new value, divide by the absolute value of the original, then multiply by 100. For example, from 80 to 100: ((100 − 80) ÷ 80) × 100 = 25% increase."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+  <!-- Ad Banner Top -->
+  <div class="w-full bg-slate-200 text-center py-2 text-xs text-slate-500 tracking-wide">
+    Advertisement
+  </div>
+
+  <!-- Header -->
+  <header class="bg-white border-b border-slate-200 shadow-sm">
+    <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="https://swapture.com" class="text-2xl font-bold text-indigo-600 tracking-tight">SwapTure</a>
+      <nav class="hidden sm:flex gap-6 text-sm text-slate-600">
+        <a href="https://swapture.com" class="hover:text-indigo-600 transition-colors">Home</a>
+        <a href="https://swapture.com/tools" class="hover:text-indigo-600 transition-colors">Tools</a>
+        <a href="https://swapture.com/about" class="hover:text-indigo-600 transition-colors">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="max-w-5xl mx-auto px-4 pt-10 pb-4 text-center">
+    <h1 class="text-4xl font-extrabold text-slate-900 mb-3">Percentage Calculator</h1>
+    <p class="text-slate-500 text-lg max-w-2xl mx-auto">
+      Instantly solve any percentage problem — find X% of a number, determine what percent one value is of another, or calculate percentage change.
+    </p>
+  </section>
+
+  <!-- Calculator Cards -->
+  <main class="max-w-5xl mx-auto px-4 py-8 grid gap-6 sm:grid-cols-1 md:grid-cols-3 flex-1">
+
+    <!-- Card 1: What is X% of Y? -->
+    <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col gap-4">
+      <div>
+        <h2 class="text-lg font-bold text-slate-800">What is X% of Y?</h2>
+        <p class="text-sm text-slate-500 mt-1">Find a percentage of any number.</p>
+      </div>
+      <div class="flex flex-col gap-3">
+        <div>
+          <label for="c1-percent" class="block text-xs font-semibold text-slate-600 mb-1">Percentage (X)</label>
+          <input id="c1-percent" type="number" placeholder="e.g. 20" min="0"
+            class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 transition" />
+        </div>
+        <div>
+          <label for="c1-total" class="block text-xs font-semibold text-slate-600 mb-1">Number (Y)</label>
+          <input id="c1-total" type="number" placeholder="e.g. 150" min="0"
+            class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 transition" />
+        </div>
+        <button id="c1-btn"
+          class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-lg text-sm transition-colors">
+          Calculate
+        </button>
+      </div>
+      <div id="c1-result" class="hidden bg-indigo-50 border border-indigo-200 rounded-xl px-4 py-3 text-center">
+        <p class="text-xs text-slate-500 mb-1">Result</p>
+        <p id="c1-result-text" class="text-xl font-bold text-indigo-700"></p>
+      </div>
+    </div>
+
+    <!-- Card 2: X is what % of Y? -->
+    <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col gap-4">
+      <div>
+        <h2 class="text-lg font-bold text-slate-800">X is what % of Y?</h2>
+        <p class="text-sm text-slate-500 mt-1">Find what percentage one number is of another.</p>
+      </div>
+      <div class="flex flex-col gap-3">
+        <div>
+          <label for="c2-part" class="block text-xs font-semibold text-slate-600 mb-1">Part (X)</label>
+          <input id="c2-part" type="number" placeholder="e.g. 30" min="0"
+            class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 transition" />
+        </div>
+        <div>
+          <label for="c2-total" class="block text-xs font-semibold text-slate-600 mb-1">Whole (Y)</label>
+          <input id="c2-total" type="number" placeholder="e.g. 150" min="0"
+            class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 transition" />
+        </div>
+        <button id="c2-btn"
+          class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-lg text-sm transition-colors">
+          Calculate
+        </button>
+      </div>
+      <div id="c2-result" class="hidden bg-indigo-50 border border-indigo-200 rounded-xl px-4 py-3 text-center">
+        <p class="text-xs text-slate-500 mb-1">Result</p>
+        <p id="c2-result-text" class="text-xl font-bold text-indigo-700"></p>
+      </div>
+    </div>
+
+    <!-- Card 3: Percentage Change -->
+    <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col gap-4">
+      <div>
+        <h2 class="text-lg font-bold text-slate-800">Percentage Change</h2>
+        <p class="text-sm text-slate-500 mt-1">Calculate increase or decrease between two values.</p>
+      </div>
+      <div class="flex flex-col gap-3">
+        <div>
+          <label for="c3-original" class="block text-xs font-semibold text-slate-600 mb-1">Original Value (X)</label>
+          <input id="c3-original" type="number" placeholder="e.g. 80"
+            class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 transition" />
+        </div>
+        <div>
+          <label for="c3-new" class="block text-xs font-semibold text-slate-600 mb-1">New Value (Y)</label>
+          <input id="c3-new" type="number" placeholder="e.g. 100"
+            class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 transition" />
+        </div>
+        <button id="c3-btn"
+          class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-lg text-sm transition-colors">
+          Calculate
+        </button>
+      </div>
+      <div id="c3-result" class="hidden rounded-xl px-4 py-3 text-center">
+        <p class="text-xs text-slate-500 mb-1">Result</p>
+        <p id="c3-result-text" class="text-xl font-bold"></p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Ad Banner Mid -->
+  <div class="max-w-5xl mx-auto px-4 pb-4 w-full">
+    <div class="bg-slate-200 text-center py-6 rounded-xl text-xs text-slate-500 tracking-wide">Advertisement</div>
+  </div>
+
+  <!-- SEO Content -->
+  <section class="max-w-5xl mx-auto px-4 py-8">
+    <h2 class="text-2xl font-bold text-slate-800 mb-4">How to Use the Percentage Calculator</h2>
+    <div class="grid gap-6 md:grid-cols-3 text-sm text-slate-600">
+      <div class="bg-white rounded-xl shadow-sm p-5">
+        <h3 class="font-semibold text-slate-800 mb-2">What is X% of Y?</h3>
+        <p>Enter a percentage and a number. The calculator multiplies the number by the percentage and divides by 100 to give you the result. Useful for finding discounts, tips, and tax amounts.</p>
+      </div>
+      <div class="bg-white rounded-xl shadow-sm p-5">
+        <h3 class="font-semibold text-slate-800 mb-2">X is what % of Y?</h3>
+        <p>Enter the part and the whole. The calculator divides the part by the whole and multiplies by 100. Great for calculating scores, ratios, or proportions.</p>
+      </div>
+      <div class="bg-white rounded-xl shadow-sm p-5">
+        <h3 class="font-semibold text-slate-800 mb-2">Percentage Change</h3>
+        <p>Enter your original and new value. The calculator shows the percentage increase or decrease, clearly marked in green for a rise and red for a drop.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="max-w-5xl mx-auto px-4 py-8">
+    <h2 class="text-2xl font-bold text-slate-800 mb-6">Frequently Asked Questions</h2>
+    <div class="flex flex-col gap-4">
+      <details class="bg-white rounded-xl shadow-sm p-5 group">
+        <summary class="font-semibold text-slate-800 cursor-pointer list-none flex justify-between items-center">
+          How do I calculate what percent of a number something is?
+          <span class="text-indigo-500 group-open:rotate-180 transition-transform">▾</span>
+        </summary>
+        <p class="mt-3 text-sm text-slate-600">To find X% of Y, multiply Y by X and divide by 100. For example, 20% of 150 = (20 ÷ 100) × 150 = 30. Use Card 1 above to do this instantly.</p>
+      </details>
+      <details class="bg-white rounded-xl shadow-sm p-5 group">
+        <summary class="font-semibold text-slate-800 cursor-pointer list-none flex justify-between items-center">
+          How do I find what percentage one number is of another?
+          <span class="text-indigo-500 group-open:rotate-180 transition-transform">▾</span>
+        </summary>
+        <p class="mt-3 text-sm text-slate-600">Divide the part by the whole and multiply by 100. For example, 30 is what percent of 150? (30 ÷ 150) × 100 = 20%. Card 2 handles this for you automatically.</p>
+      </details>
+      <details class="bg-white rounded-xl shadow-sm p-5 group">
+        <summary class="font-semibold text-slate-800 cursor-pointer list-none flex justify-between items-center">
+          How do I calculate percentage change between two numbers?
+          <span class="text-indigo-500 group-open:rotate-180 transition-transform">▾</span>
+        </summary>
+        <p class="mt-3 text-sm text-slate-600">Subtract the original value from the new value, divide by the absolute value of the original, then multiply by 100. From 80 to 100: ((100 − 80) ÷ 80) × 100 = 25% increase. Card 3 shows this with a color indicator.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- Ad Banner Bottom -->
+  <div class="max-w-5xl mx-auto px-4 pb-6 w-full">
+    <div class="bg-slate-200 text-center py-6 rounded-xl text-xs text-slate-500 tracking-wide">Advertisement</div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 mt-auto">
+    <div class="max-w-5xl mx-auto px-4 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
+      <p>© <span id="footer-year"></span> <a href="https://swapture.com" class="text-indigo-600 hover:underline font-medium">SwapTure</a>. All rights reserved.</p>
+      <nav class="flex gap-4">
+        <a href="https://swapture.com/privacy" class="hover:text-indigo-600 transition-colors">Privacy Policy</a>
+        <a href="https://swapture.com/terms" class="hover:text-indigo-600 transition-colors">Terms of Use</a>
+        <a href="https://swapture.com/contact" class="hover:text-indigo-600 transition-colors">Contact</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script type="module" src="./src/main.ts"></script>
+  <script>
+    document.getElementById('footer-year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
