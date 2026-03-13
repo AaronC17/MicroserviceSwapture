@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Costa Rica Salary Calculator - Calculadora de Salario CR - SwapTure</title>
+  <meta name="description" content="Calculadora de salario neto en Costa Rica 2024. Calcula deducciones de CCSS obrero (10.67%), Impuesto sobre la Renta y salario neto mensual, semanal, diario y por hora." />
+  <meta name="keywords" content="calculadora salario costa rica, salario neto CR, CCSS obrero, impuesto renta costa rica, salary calculator, deducciones planilla" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Calculadora de Salario Neto – Costa Rica 2024" />
+  <meta property="og:description" content="Calcula tu salario neto en Costa Rica: CCSS obrero 10.67% e Impuesto sobre la Renta con tramos progresivos 2024." />
+  <meta property="og:url" content="https://salary.swapture.com" />
+  <meta property="og:type" content="website" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: { purple: { 950: '#2e1065', 900: '#4c1d95', 800: '#5b21b6', 700: '#6d28d9', 600: '#7c3aed' } } } }
+    }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "Calculadora de Salario Neto Costa Rica",
+        "url": "https://salary.swapture.com",
+        "description": "Herramienta para calcular el salario neto mensual en Costa Rica aplicando deducciones de CCSS obrero (10.67%) e Impuesto sobre la Renta 2024.",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "Any",
+        "inLanguage": "es",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "CRC"
+        },
+        "author": {
+          "@type": "Organization",
+          "name": "SwapTure",
+          "url": "https://swapture.com"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "¿Cuánto se deduce de CCSS en Costa Rica?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "La cuota obrera de la CCSS corresponde al 10.67% del salario bruto. Esto cubre seguro de salud (5.50%), seguro de invalidez, vejez y muerte (IVM 3.84%) y el Banco Popular (1.33%)."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Cómo se calcula el Impuesto sobre la Renta para empleados en Costa Rica 2024?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "El Impuesto sobre la Renta para empleados se calcula sobre el salario bruto menos la deducción de CCSS (salario imponible). Los tramos mensuales 2024 son: hasta ₡929,000 exento; de ₡929,001 a ₡1,360,000 se paga 10%; de ₡1,360,001 a ₡2,383,000 se paga 15%; de ₡2,383,001 a ₡4,766,000 se paga 20%; y más de ₡4,766,000 se paga 25%. Es un sistema progresivo, por lo que cada tramo aplica solo a la parte del ingreso que cae dentro de él."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Qué pasa con el Impuesto sobre la Renta si tengo dos empleos en Costa Rica?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Si un empleado trabaja para dos o más empleadores al mismo tiempo, los empleadores secundarios deben retener el Impuesto sobre la Renta a una tarifa única del 25% sobre el total del salario imponible, según el Reglamento de la Ley del Impuesto sobre la Renta de Costa Rica."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body class="bg-white text-zinc-800 font-sans min-h-screen flex flex-col">
+
+  <!-- Header -->
+    <header class="bg-white border-b border-zinc-200 sticky top-0 z-50">
+    <nav class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="/" class="font-bold text-xl text-zinc-900 tracking-tight hover:text-purple-800 transition-colors">
+        Swap<span class="text-purple-800">Ture</span>
+      </a>
+      <a href="/" class="text-sm text-zinc-600 hover:text-purple-800 transition-colors font-medium">All Tools →</a>
+    </nav>
+  </header>
+
+  <main class="flex-1 max-w-4xl mx-auto w-full px-4 py-8">
+
+    <!-- Hero -->
+    <div class="text-center mb-8">
+      <h1 class="text-3xl md:text-4xl font-bold text-zinc-900 mb-3">
+        Calculadora de Salario Neto 🇨🇷
+      </h1>
+      <p class="text-zinc-500 text-lg max-w-2xl mx-auto">
+        Calcula tu salario neto mensual en Costa Rica. Incluye deducciones de <strong class="text-zinc-700">CCSS obrero</strong> e <strong class="text-zinc-700">Impuesto sobre la Renta 2024</strong>.
+      </p>
+    </div>
+
+    <!-- Ad placeholder top -->
+    <div class="bg-zinc-200 rounded-xl flex items-center justify-center h-16 mb-8 text-zinc-400 text-sm">
+      Publicidad
+    </div>
+
+    <!-- Calculator card -->
+    <div class="bg-white rounded-2xl shadow-md border border-zinc-100 p-6 md:p-8 mb-8">
+      <h2 class="text-xl font-semibold text-zinc-800 mb-6">Ingresa tu salario</h2>
+
+      <!-- Input -->
+      <div class="mb-5">
+        <label for="gross-salary" class="block text-sm font-medium text-zinc-700 mb-1">
+          Salario Bruto Mensual (₡)
+        </label>
+        <div class="relative">
+          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 text-lg font-semibold select-none">₡</span>
+          <input
+            id="gross-salary"
+            type="number"
+            min="0"
+            step="1000"
+            placeholder="800000"
+            class="w-full pl-8 pr-4 py-3 border border-zinc-300 rounded-xl text-zinc-800 text-lg focus:outline-none focus:ring-2 focus:ring-purple-700 focus:border-transparent transition"
+          />
+        </div>
+        <p id="input-error" class="hidden mt-1 text-red-500 text-sm">Por favor ingresa un salario válido.</p>
+        <p class="mt-1 text-zinc-400 text-xs">Salario mínimo 2024: ₡383,326 (trabajador no calificado genérico)</p>
+      </div>
+
+      <!-- Toggle: otros empleos -->
+      <div class="flex items-center justify-between bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 mb-6">
+        <div>
+          <p class="text-sm font-medium text-amber-800">Tiene otros empleos</p>
+          <p class="text-xs text-amber-600">El patrono retiene el 25% sobre el salario imponible</p>
+        </div>
+        <label class="relative inline-flex items-center cursor-pointer ml-4 flex-shrink-0">
+          <input type="checkbox" id="other-jobs" class="sr-only peer" />
+          <div class="w-11 h-6 bg-zinc-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-amber-400 rounded-full peer
+                      peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px]
+                      after:left-[2px] after:bg-white after:border-zinc-300 after:border after:rounded-full after:h-5 after:w-5
+                      after:transition-all peer-checked:bg-amber-500"></div>
+        </label>
+      </div>
+
+      <!-- Calculate button -->
+      <button
+        id="calculate-btn"
+        class="w-full bg-purple-800 hover:bg-purple-900 hover:bg-purple-900 text-white font-semibold py-3 px-6 rounded-xl text-lg transition-colors focus:outline-none focus:ring-2 focus:ring-purple-700 focus:ring-offset-2"
+      >
+        Calcular Salario Neto
+      </button>
+    </div>
+
+    <!-- Results section -->
+    <div id="results" class="hidden mb-8">
+      <h2 class="text-xl font-semibold text-zinc-800 mb-4">Resultados</h2>
+
+      <!-- Two-column breakdown -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+
+        <!-- Left: Deductions -->
+        <div class="bg-white rounded-2xl shadow-sm border border-zinc-100 p-5">
+          <h3 class="text-sm font-semibold text-zinc-500 uppercase tracking-wide mb-4">Deducciones</h3>
+
+          <div class="space-y-3">
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="text-sm font-medium text-zinc-700">CCSS Obrero</p>
+                <p class="text-xs text-zinc-400"><span id="result-ccss-pct">10.67%</span> del salario bruto</p>
+              </div>
+              <span class="text-sm font-semibold text-red-600" id="result-ccss">₡0</span>
+            </div>
+
+            <div class="border-t border-zinc-100 pt-3 flex justify-between items-center">
+              <p class="text-sm font-bold text-zinc-700">Total Deducciones</p>
+              <span class="text-sm font-bold text-red-700" id="result-total-deductions-left">₡0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Tax breakdown -->
+        <div class="bg-white rounded-2xl shadow-sm border border-zinc-100 p-5">
+          <h3 class="text-sm font-semibold text-zinc-500 uppercase tracking-wide mb-4">Impuesto sobre la Renta</h3>
+
+          <div class="space-y-3">
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="text-sm font-medium text-zinc-700">Monto retenido</p>
+                <p class="text-xs text-zinc-400">Tramo: <span id="result-bracket" class="font-medium text-zinc-600">—</span></p>
+              </div>
+              <span class="text-sm font-semibold text-orange-600" id="result-income-tax">₡0</span>
+            </div>
+
+            <div class="border-t border-zinc-100 pt-3 flex justify-between items-center">
+              <p class="text-xs text-zinc-500">Tasa efectiva sobre bruto</p>
+              <span class="text-xs font-semibold text-zinc-600" id="result-effective-rate">0.00%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary card -->
+      <div class="bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl shadow-md p-6 text-white">
+        <h3 class="text-sm font-semibold text-blue-100 uppercase tracking-wide mb-5">Resumen mensual</h3>
+
+        <div class="space-y-3 mb-5">
+          <div class="flex justify-between items-center">
+            <span class="text-blue-100 text-sm">Salario Bruto</span>
+            <span class="font-semibold" id="result-gross">₡0</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-blue-100 text-sm">Total Deducciones</span>
+            <span class="font-semibold text-red-300" id="result-total-deductions">₡0</span>
+          </div>
+          <div class="border-t border-purple-700 pt-3 flex justify-between items-center">
+            <span class="text-lg font-bold">Salario Neto</span>
+            <span class="text-2xl font-extrabold" id="result-net">₡0</span>
+          </div>
+        </div>
+
+        <!-- Per period -->
+        <div class="grid grid-cols-3 gap-2 bg-blue-800 bg-opacity-40 rounded-xl p-3">
+          <div class="text-center">
+            <p class="text-blue-200 text-xs mb-1">Por semana</p>
+            <p class="text-white font-semibold text-sm" id="result-weekly">₡0</p>
+          </div>
+          <div class="text-center border-x border-blue-600">
+            <p class="text-blue-200 text-xs mb-1">Por día</p>
+            <p class="text-white font-semibold text-sm" id="result-daily">₡0</p>
+          </div>
+          <div class="text-center">
+            <p class="text-blue-200 text-xs mb-1">Por hora</p>
+            <p class="text-white font-semibold text-sm" id="result-hourly">₡0</p>
+          </div>
+        </div>
+        <p class="text-blue-300 text-xs mt-2 text-center">Semana = neto ÷ 4.33 &nbsp;|&nbsp; Día = neto ÷ 30 &nbsp;|&nbsp; Hora = neto ÷ 240</p>
+      </div>
+    </div>
+
+    <!-- Ad placeholder mid -->
+    <div class="bg-zinc-200 rounded-xl flex items-center justify-center h-16 mb-8 text-zinc-400 text-sm">
+      Publicidad
+    </div>
+
+    <!-- SEO content -->
+    <section class="bg-white rounded-2xl shadow-sm border border-zinc-100 p-6 md:p-8 mb-8 prose prose-slate max-w-none">
+      <h2 class="text-xl font-semibold text-zinc-800 mb-4">¿Cómo se calcula el salario neto en Costa Rica?</h2>
+      <p class="text-zinc-600 mb-4">
+        En Costa Rica, los empleados en planilla tienen dos deducciones principales sobre su salario bruto: la <strong>cuota obrera de la CCSS</strong> y el <strong>Impuesto sobre la Renta</strong>.
+      </p>
+
+      <h3 class="text-lg font-semibold text-zinc-700 mt-6 mb-2">1. Cuota Obrera CCSS (10.67%)</h3>
+      <p class="text-zinc-600 mb-2">Se descuenta directamente del salario bruto y se distribuye así:</p>
+      <ul class="list-disc list-inside text-zinc-600 space-y-1 mb-4">
+        <li>Seguro de Salud (SEM): <strong>5.50%</strong></li>
+        <li>Invalidez, Vejez y Muerte (IVM): <strong>3.84%</strong></li>
+        <li>Banco Popular y de Desarrollo Comunal: <strong>1.33%</strong></li>
+      </ul>
+
+      <h3 class="text-lg font-semibold text-zinc-700 mt-6 mb-2">2. Impuesto sobre la Renta – Tramos 2024</h3>
+      <p class="text-zinc-600 mb-3">
+        El impuesto se calcula sobre el <em>salario imponible</em> (salario bruto menos deducción de CCSS), usando tramos progresivos mensuales:
+      </p>
+      <div class="overflow-x-auto mb-4">
+        <table class="w-full text-sm text-left border-collapse">
+          <thead>
+            <tr class="bg-white">
+              <th class="border border-zinc-200 px-3 py-2 font-semibold text-zinc-700">Tramo mensual</th>
+              <th class="border border-zinc-200 px-3 py-2 font-semibold text-zinc-700">Tarifa</th>
+            </tr>
+          </thead>
+          <tbody class="text-zinc-600">
+            <tr><td class="border border-zinc-200 px-3 py-2">Hasta ₡929,000</td><td class="border border-zinc-200 px-3 py-2">0% (exento)</td></tr>
+            <tr class="bg-white"><td class="border border-zinc-200 px-3 py-2">₡929,001 – ₡1,360,000</td><td class="border border-zinc-200 px-3 py-2">10%</td></tr>
+            <tr><td class="border border-zinc-200 px-3 py-2">₡1,360,001 – ₡2,383,000</td><td class="border border-zinc-200 px-3 py-2">15%</td></tr>
+            <tr class="bg-white"><td class="border border-zinc-200 px-3 py-2">₡2,383,001 – ₡4,766,000</td><td class="border border-zinc-200 px-3 py-2">20%</td></tr>
+            <tr><td class="border border-zinc-200 px-3 py-2">Más de ₡4,766,000</td><td class="border border-zinc-200 px-3 py-2">25%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-zinc-500 text-sm">
+        <em>Fuente: Ministerio de Hacienda de Costa Rica, Dirección General de Tributación.</em>
+      </p>
+    </section>
+
+    <!-- FAQ -->
+    <section class="mb-8">
+      <h2 class="text-xl font-semibold text-zinc-800 mb-4">Preguntas frecuentes</h2>
+      <div class="space-y-3">
+
+        <details class="bg-white rounded-xl border border-zinc-100 shadow-sm p-4 group">
+          <summary class="cursor-pointer font-medium text-zinc-700 list-none flex justify-between items-center">
+            ¿Cuánto se deduce de CCSS en Costa Rica?
+            <span class="text-zinc-400 group-open:rotate-180 transition-transform">▾</span>
+          </summary>
+          <p class="mt-3 text-zinc-600 text-sm">
+            La cuota obrera de la CCSS corresponde al <strong>10.67%</strong> del salario bruto. Se divide en: seguro de salud (5.50%), seguro IVM (3.84%) y Banco Popular (1.33%). Además, el patrono paga su propia cuota patronal, que no afecta el salario del trabajador.
+          </p>
+        </details>
+
+        <details class="bg-white rounded-xl border border-zinc-100 shadow-sm p-4 group">
+          <summary class="cursor-pointer font-medium text-zinc-700 list-none flex justify-between items-center">
+            ¿Cómo funciona el Impuesto sobre la Renta para empleados en CR?
+            <span class="text-zinc-400 group-open:rotate-180 transition-transform">▾</span>
+          </summary>
+          <p class="mt-3 text-zinc-600 text-sm">
+            Es un sistema <strong>progresivo</strong>: cada tramo se aplica únicamente sobre la porción del ingreso imponible que cae dentro de ese rango. El ingreso imponible es el salario bruto menos la deducción de CCSS. Solo si superas el primer umbral (₡929,000 mensual) empiezas a pagar impuesto.
+          </p>
+        </details>
+
+        <details class="bg-white rounded-xl border border-zinc-100 shadow-sm p-4 group">
+          <summary class="cursor-pointer font-medium text-zinc-700 list-none flex justify-between items-center">
+            ¿Qué pasa si tengo dos empleos en Costa Rica?
+            <span class="text-zinc-400 group-open:rotate-180 transition-transform">▾</span>
+          </summary>
+          <p class="mt-3 text-zinc-600 text-sm">
+            Si trabajas para dos o más patronos, los empleadores secundarios deben retener el impuesto a una tarifa única del <strong>25%</strong> sobre el salario imponible, según el Reglamento de la Ley del Impuesto sobre la Renta. Activa el interruptor "Tiene otros empleos" en esta calculadora para verlo reflejado.
+          </p>
+        </details>
+
+      </div>
+    </section>
+
+    <!-- Ad placeholder bottom -->
+    <div class="bg-zinc-200 rounded-xl flex items-center justify-center h-16 mb-4 text-zinc-400 text-sm">
+      Publicidad
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+    <footer class="bg-white border-t border-zinc-200 mt-8">
+    <div class="max-w-5xl mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-zinc-500">
+      <span><span class="font-semibold text-zinc-700">Swap<span class="text-purple-800">Ture</span></span> · Free web tools</span>
+      <div class="flex items-center gap-4">
+        <a href="/privacy" class="hover:text-purple-800 transition-colors">Privacy</a>
+        <a href="/" class="hover:text-purple-800 transition-colors">All Tools</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Inline compiled logic from src/main.ts
+    const CCSS_RATE = 0.1067;
+
+    const TAX_BRACKETS = [
+      { limit: 929000, rate: 0 },
+      { limit: 1360000, rate: 0.10 },
+      { limit: 2383000, rate: 0.15 },
+      { limit: 4766000, rate: 0.20 },
+      { limit: Infinity, rate: 0.25 },
+    ];
+
+    function calculateCCSS(grossSalary) {
+      return grossSalary * CCSS_RATE;
+    }
+
+    function calculateIncomeTax(taxableIncome, hasOtherJobs) {
+      if (taxableIncome <= 0) return 0;
+      if (hasOtherJobs) return taxableIncome * 0.25;
+
+      let tax = 0;
+      let previousLimit = 0;
+
+      for (const bracket of TAX_BRACKETS) {
+        if (taxableIncome <= previousLimit) break;
+        const taxableInBracket = Math.min(taxableIncome, bracket.limit) - previousLimit;
+        tax += taxableInBracket * bracket.rate;
+        previousLimit = bracket.limit;
+      }
+
+      return tax;
+    }
+
+    function getBracketLabel(taxableIncome, hasOtherJobs) {
+      if (hasOtherJobs) return "25% (otros empleos)";
+      if (taxableIncome <= 929000) return "0% (exento)";
+      if (taxableIncome <= 1360000) return "Hasta 10%";
+      if (taxableIncome <= 2383000) return "Hasta 15%";
+      if (taxableIncome <= 4766000) return "Hasta 20%";
+      return "Hasta 25%";
+    }
+
+    function calculateSalary(grossSalary, hasOtherJobs) {
+      const ccssDeduction = calculateCCSS(grossSalary);
+      const taxableIncome = grossSalary - ccssDeduction;
+      const incomeTax = calculateIncomeTax(taxableIncome, hasOtherJobs);
+      const totalDeductions = ccssDeduction + incomeTax;
+      const netSalary = grossSalary - totalDeductions;
+
+      return {
+        grossSalary,
+        ccssDeduction,
+        incomeTax,
+        totalDeductions,
+        netSalary,
+        weekly: netSalary / 4.33,
+        daily: netSalary / 30,
+        hourly: netSalary / (30 * 8),
+        effectiveTaxRate: grossSalary > 0 ? (incomeTax / grossSalary) * 100 : 0,
+        bracket: getBracketLabel(taxableIncome, hasOtherJobs),
+      };
+    }
+
+    function formatColones(amount) {
+      return "₡" + Math.round(amount).toLocaleString("es-CR");
+    }
+
+    function setTextContent(id, value) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = value;
+    }
+
+    function updateResults(result) {
+      setTextContent("result-ccss", formatColones(result.ccssDeduction));
+      setTextContent("result-ccss-pct", (CCSS_RATE * 100).toFixed(2) + "%");
+      setTextContent("result-total-deductions-left", formatColones(result.totalDeductions));
+      setTextContent("result-income-tax", formatColones(result.incomeTax));
+      setTextContent("result-bracket", result.bracket);
+      setTextContent("result-effective-rate", result.effectiveTaxRate.toFixed(2) + "%");
+      setTextContent("result-gross", formatColones(result.grossSalary));
+      setTextContent("result-total-deductions", formatColones(result.totalDeductions));
+      setTextContent("result-net", formatColones(result.netSalary));
+      setTextContent("result-weekly", formatColones(result.weekly));
+      setTextContent("result-daily", formatColones(result.daily));
+      setTextContent("result-hourly", formatColones(result.hourly));
+    }
+
+    function runCalculation() {
+      const input = document.getElementById("gross-salary");
+      const toggle = document.getElementById("other-jobs");
+      const resultsSection = document.getElementById("results");
+      const errorEl = document.getElementById("input-error");
+
+      const raw = input.value.replace(/[^0-9.]/g, "");
+      const grossSalary = parseFloat(raw);
+
+      if (isNaN(grossSalary) || grossSalary < 0) {
+        errorEl.classList.remove("hidden");
+        resultsSection.classList.add("hidden");
+        return;
+      }
+
+      errorEl.classList.add("hidden");
+      const result = calculateSalary(grossSalary, toggle.checked);
+      updateResults(result);
+      resultsSection.classList.remove("hidden");
+      resultsSection.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("calculate-btn").addEventListener("click", runCalculation);
+
+      document.getElementById("gross-salary").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") runCalculation();
+      });
+
+      document.getElementById("other-jobs").addEventListener("change", () => {
+        const results = document.getElementById("results");
+        if (results && !results.classList.contains("hidden")) runCalculation();
+      });
+    });
+  </script>
+</body>
+</html>

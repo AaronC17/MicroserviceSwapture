@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Password Strength Checker - SwapTure</title>
+  <meta name="description" content="Free online password strength checker. Analyze your password security, check entropy, and get an estimated crack time instantly." />
+  <meta name="keywords" content="password strength checker, password security, password analyzer, strong password, password entropy" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://password.swapture.com" />
+  <meta property="og:title" content="Password Strength Checker - SwapTure" />
+  <meta property="og:description" content="Free online password strength checker. Analyze your password security, check entropy, and get an estimated crack time instantly." />
+  <meta property="og:site_name" content="SwapTure" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Password Strength Checker - SwapTure" />
+  <meta name="twitter:description" content="Free online password strength checker. Analyze your password security and get an estimated crack time instantly." />
+
+  <!-- JSON-LD: WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Password Strength Checker",
+    "url": "https://password.swapture.com",
+    "description": "Free online password strength checker that analyzes password security, calculates entropy, and estimates crack time.",
+    "applicationCategory": "SecurityApplication",
+    "operatingSystem": "Any",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "provider": {
+      "@type": "Organization",
+      "name": "SwapTure",
+      "url": "https://swapture.com"
+    }
+  }
+  </script>
+
+  <!-- JSON-LD: FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What makes a password strong?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A strong password is at least 12 characters long and includes a mix of uppercase letters, lowercase letters, numbers, and special characters. It should avoid common words, predictable patterns like '123456', and personal information."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How is password crack time estimated?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Crack time is estimated using password entropy — calculated as the character set size raised to the power of the password length. Dividing the total combinations by an assumed brute-force rate of 10 billion guesses per second gives an estimated time to crack."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is my password stored or sent anywhere?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. This tool runs entirely in your browser. Your password is never sent to any server and is not stored anywhere. All analysis happens locally on your device."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- Google Analytics placeholder -->
+  <!-- GA_PLACEHOLDER: Replace with your Google Analytics tag -->
+
+  <!-- Microsoft Clarity placeholder -->
+  <!-- CLARITY_PLACEHOLDER: Replace with your Microsoft Clarity tag -->
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: { purple: { 950: '#2e1065', 900: '#4c1d95', 800: '#5b21b6', 700: '#6d28d9', 600: '#7c3aed' } } } }
+    }
+  </script>
+</head>
+<body class="bg-white min-h-screen font-sans">
+
+  <!-- Header -->
+    <header class="bg-white border-b border-zinc-200 sticky top-0 z-50">
+    <nav class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="/" class="font-bold text-xl text-zinc-900 tracking-tight hover:text-purple-800 transition-colors">
+        Swap<span class="text-purple-800">Ture</span>
+      </a>
+      <a href="/" class="text-sm text-zinc-600 hover:text-purple-800 transition-colors font-medium">All Tools →</a>
+    </nav>
+  </header>
+
+  <!-- Top Ad Banner -->
+  <div class="bg-gray-100 border-b border-gray-200 h-16 my-4 flex items-center justify-center text-gray-400 text-sm tracking-widest uppercase">
+    Advertisement
+  </div>
+
+  <main class="max-w-2xl mx-auto px-4 py-8">
+
+    <h1 class="text-3xl font-bold text-zinc-800 mb-2">Password Strength Checker</h1>
+    <p class="text-zinc-500 mb-8">Instantly analyze your password's security. All checks run in your browser — your password is never sent anywhere.</p>
+
+    <!-- Password Input Card -->
+    <div class="bg-white rounded-2xl shadow-sm border border-zinc-200 p-6 mb-6">
+
+      <!-- Input row -->
+      <div class="relative mb-4">
+        <label for="password-input" class="block text-sm font-medium text-zinc-700 mb-1.5">Enter your password</label>
+        <div class="flex items-center border border-zinc-300 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-purple-500 focus-within:border-purple-700 transition">
+          <input
+            id="password-input"
+            type="password"
+            autocomplete="new-password"
+            spellcheck="false"
+            placeholder="Type or paste a password…"
+            class="flex-1 px-4 py-3 text-zinc-800 bg-white outline-none text-base"
+          />
+          <button
+            id="toggle-visibility"
+            type="button"
+            title="Toggle visibility"
+            class="px-3 py-3 text-zinc-400 hover:text-zinc-700 transition-colors bg-white"
+          >
+            <!-- Eye icon (show) -->
+            <svg id="icon-eye" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+            </svg>
+            <!-- Eye-off icon (hide) -->
+            <svg id="icon-eye-off" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+            </svg>
+          </button>
+          <button
+            id="copy-button"
+            type="button"
+            title="Copy password"
+            class="px-3 py-3 text-zinc-400 hover:text-zinc-700 transition-colors bg-white border-l border-zinc-200"
+          >
+            <svg id="icon-copy" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+            </svg>
+            <svg id="icon-check" class="w-5 h-5 hidden text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Strength meter bar -->
+      <div class="mb-3">
+        <div class="h-2 bg-zinc-100 rounded-full overflow-hidden">
+          <div id="strength-bar" class="h-full rounded-full transition-all duration-300 bg-zinc-200" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- Score + Label row -->
+      <div class="flex items-center justify-between mb-6">
+        <span id="strength-label" class="text-sm font-semibold text-zinc-400">—</span>
+        <span id="strength-score" class="text-sm text-zinc-400 font-mono">0 / 5</span>
+      </div>
+
+      <!-- Requirements checklist -->
+      <ul id="requirements-list" class="space-y-2 mb-6">
+        <li id="req-length8" class="flex items-center gap-2 text-sm text-zinc-500">
+          <span class="req-icon w-5 h-5 flex items-center justify-center rounded-full bg-zinc-100 text-zinc-400 text-xs font-bold flex-shrink-0">✗</span>
+          At least 8 characters
+        </li>
+        <li id="req-length12" class="flex items-center gap-2 text-sm text-zinc-500">
+          <span class="req-icon w-5 h-5 flex items-center justify-center rounded-full bg-zinc-100 text-zinc-400 text-xs font-bold flex-shrink-0">✗</span>
+          At least 12 characters <span class="text-xs text-zinc-400 ml-1">(bonus)</span>
+        </li>
+        <li id="req-uppercase" class="flex items-center gap-2 text-sm text-zinc-500">
+          <span class="req-icon w-5 h-5 flex items-center justify-center rounded-full bg-zinc-100 text-zinc-400 text-xs font-bold flex-shrink-0">✗</span>
+          Uppercase letters (A–Z)
+        </li>
+        <li id="req-lowercase" class="flex items-center gap-2 text-sm text-zinc-500">
+          <span class="req-icon w-5 h-5 flex items-center justify-center rounded-full bg-zinc-100 text-zinc-400 text-xs font-bold flex-shrink-0">✗</span>
+          Lowercase letters (a–z)
+        </li>
+        <li id="req-numbers" class="flex items-center gap-2 text-sm text-zinc-500">
+          <span class="req-icon w-5 h-5 flex items-center justify-center rounded-full bg-zinc-100 text-zinc-400 text-xs font-bold flex-shrink-0">✗</span>
+          Numbers (0–9)
+        </li>
+        <li id="req-special" class="flex items-center gap-2 text-sm text-zinc-500">
+          <span class="req-icon w-5 h-5 flex items-center justify-center rounded-full bg-zinc-100 text-zinc-400 text-xs font-bold flex-shrink-0">✗</span>
+          Special characters (!@#$%…)
+        </li>
+        <li id="req-no-common" class="flex items-center gap-2 text-sm text-zinc-500">
+          <span class="req-icon w-5 h-5 flex items-center justify-center rounded-full bg-zinc-100 text-zinc-400 text-xs font-bold flex-shrink-0">✗</span>
+          No common patterns
+        </li>
+      </ul>
+
+      <!-- Crack time + Entropy -->
+      <div class="flex items-center gap-3 p-3 bg-white rounded-lg border border-zinc-100">
+        <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        <div class="text-sm text-zinc-500">
+          Estimated crack time: <span id="crack-time" class="font-semibold text-zinc-700">—</span>
+        </div>
+        <div class="text-sm text-zinc-400 ml-auto">
+          Entropy: <span id="entropy-value" class="font-mono text-zinc-600">0</span> bits
+        </div>
+      </div>
+    </div>
+
+    <!-- Inline Ad Banner -->
+    <div class="bg-gray-100 border border-gray-200 rounded-lg h-16 mb-8 flex items-center justify-center text-gray-400 text-sm tracking-widest uppercase">
+      Advertisement
+    </div>
+
+    <!-- SEO Content -->
+    <section class="prose prose-slate max-w-none mb-10">
+      <h2 class="text-xl font-bold text-zinc-800 mb-3">Why password strength matters</h2>
+      <p class="text-zinc-600 text-sm leading-relaxed mb-4">
+        Weak passwords are the leading cause of account breaches. Modern hardware can test billions of password combinations per second, making short or predictable passwords trivially easy to crack. A password like <code class="bg-zinc-100 px-1 rounded text-xs">password123</code> can be cracked in milliseconds, while a 16-character random mix of character types could take centuries.
+      </p>
+      <p class="text-zinc-600 text-sm leading-relaxed">
+        This tool estimates strength using <strong>entropy</strong> — a measure of how unpredictable your password is. Higher entropy means more possible combinations, making brute-force attacks harder. Use a password manager to generate and store truly random, high-entropy passwords for every account.
+      </p>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="mb-10">
+      <h2 class="text-xl font-bold text-zinc-800 mb-4">Frequently asked questions</h2>
+      <div class="space-y-3">
+
+        <details class="bg-white border border-zinc-200 rounded-xl overflow-hidden group">
+          <summary class="px-5 py-4 cursor-pointer text-sm font-medium text-zinc-700 flex items-center justify-between list-none select-none hover:bg-white transition-colors">
+            What makes a password strong?
+            <svg class="w-4 h-4 text-zinc-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </summary>
+          <div class="px-5 pb-4 text-sm text-zinc-600 leading-relaxed border-t border-zinc-100">
+            A strong password is at least 12 characters long and combines uppercase letters, lowercase letters, numbers, and special characters. It should avoid common words, predictable patterns like "123456" or "qwerty", and personal information.
+          </div>
+        </details>
+
+        <details class="bg-white border border-zinc-200 rounded-xl overflow-hidden group">
+          <summary class="px-5 py-4 cursor-pointer text-sm font-medium text-zinc-700 flex items-center justify-between list-none select-none hover:bg-white transition-colors">
+            How is the crack time estimated?
+            <svg class="w-4 h-4 text-zinc-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </summary>
+          <div class="px-5 pb-4 text-sm text-zinc-600 leading-relaxed border-t border-zinc-100">
+            Crack time is derived from password entropy — log₂(charset_size^length). The number of possible combinations (2^entropy) is divided by an assumed brute-force rate of 10 billion guesses per second to give an estimated time.
+          </div>
+        </details>
+
+        <details class="bg-white border border-zinc-200 rounded-xl overflow-hidden group">
+          <summary class="px-5 py-4 cursor-pointer text-sm font-medium text-zinc-700 flex items-center justify-between list-none select-none hover:bg-white transition-colors">
+            Is my password stored or sent anywhere?
+            <svg class="w-4 h-4 text-zinc-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </summary>
+          <div class="px-5 pb-4 text-sm text-zinc-600 leading-relaxed border-t border-zinc-100">
+            No. All analysis runs entirely in your browser using JavaScript. Your password is never transmitted to any server and is not stored or logged anywhere.
+          </div>
+        </details>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer Ad Banner -->
+  <div class="bg-gray-100 border-t border-gray-200 h-16 flex items-center justify-center text-gray-400 text-sm tracking-widest uppercase">
+    Advertisement
+  </div>
+
+  <!-- Footer -->
+    <footer class="bg-white border-t border-zinc-200 mt-8">
+    <div class="max-w-5xl mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-zinc-500">
+      <span><span class="font-semibold text-zinc-700">Swap<span class="text-purple-800">Ture</span></span> · Free web tools</span>
+      <div class="flex items-center gap-4">
+        <a href="/privacy" class="hover:text-purple-800 transition-colors">Privacy</a>
+        <a href="/" class="hover:text-purple-800 transition-colors">All Tools</a>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="./main.ts"></script>
+</body>
+</html>

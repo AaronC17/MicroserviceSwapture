@@ -1,27 +1,9 @@
 {
   "version": 2,
   "builds": [
-    { "src": "apps/password-checker/index.html", "use": "@vercel/static-build", "config": { "distDir": "apps/password-checker/dist" } },
-    { "src": "apps/pace-calculator/index.html", "use": "@vercel/static-build", "config": { "distDir": "apps/pace-calculator/dist" } },
-    { "src": "apps/percentage-calculator/index.html", "use": "@vercel/static-build", "config": { "distDir": "apps/percentage-calculator/dist" } },
-    { "src": "apps/ip-analyzer/index.html", "use": "@vercel/static-build", "config": { "distDir": "apps/ip-analyzer/dist" } },
-    { "src": "apps/salary-cr-calculator/index.html", "use": "@vercel/static-build", "config": { "distDir": "apps/salary-cr-calculator/dist" } },
-    { "src": "apps/word-counter/index.html", "use": "@vercel/static-build", "config": { "distDir": "apps/word-counter/dist" } },
-    { "src": "apps/bmi-calculator/index.html", "use": "@vercel/static-build", "config": { "distDir": "apps/bmi-calculator/dist" } },
-    { "src": "apps/subnet-calculator/index.html", "use": "@vercel/static-build", "config": { "distDir": "apps/subnet-calculator/dist" } },
-    { "src": "apps/startup-name-generator/index.html", "use": "@vercel/static-build", "config": { "distDir": "apps/startup-name-generator/dist" } },
-    { "src": "apps/unit-converter/index.html", "use": "@vercel/static-build", "config": { "distDir": "apps/unit-converter/dist" } }
+    { "src": "apps/swapture/package.json", "use": "@vercel/static-build", "config": { "distDir": "apps/swapture/dist" } }
   ],
   "routes": [
-    { "src": "/password/(.*)", "dest": "/apps/password-checker/$1" },
-    { "src": "/pace/(.*)", "dest": "/apps/pace-calculator/$1" },
-    { "src": "/percentage/(.*)", "dest": "/apps/percentage-calculator/$1" },
-    { "src": "/ip/(.*)", "dest": "/apps/ip-analyzer/$1" },
-    { "src": "/salary/(.*)", "dest": "/apps/salary-cr-calculator/$1" },
-    { "src": "/wordcount/(.*)", "dest": "/apps/word-counter/$1" },
-    { "src": "/bmi/(.*)", "dest": "/apps/bmi-calculator/$1" },
-    { "src": "/subnet/(.*)", "dest": "/apps/subnet-calculator/$1" },
-    { "src": "/startupname/(.*)", "dest": "/apps/startup-name-generator/$1" },
-    { "src": "/convert/(.*)", "dest": "/apps/unit-converter/$1" }
+    { "src": "/(.*)", "dest": "/apps/swapture/dist/$1" }
   ]
 }

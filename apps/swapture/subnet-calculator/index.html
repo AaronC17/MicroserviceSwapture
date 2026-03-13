@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IP Subnet Calculator - CIDR Calculator - SwapTure</title>
+  <meta name="description" content="Free online IP subnet calculator. Compute network address, broadcast address, usable hosts, CIDR notation, subnet mask, and IP class instantly." />
+  <meta name="keywords" content="subnet calculator, CIDR calculator, IP calculator, network address, broadcast address, subnet mask, usable hosts" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="IP Subnet Calculator - CIDR Calculator - SwapTure" />
+  <meta property="og:description" content="Instantly calculate subnet details: network address, broadcast, hosts, CIDR, and more." />
+  <meta property="og:url" content="https://subnet.swapture.com" />
+  <meta property="og:type" content="website" />
+
+  <!-- JSON-LD: WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "IP Subnet Calculator",
+    "url": "https://subnet.swapture.com",
+    "description": "A free online tool to calculate IP subnet details including network address, broadcast address, usable hosts, CIDR notation, subnet mask, and IP class.",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "provider": {
+      "@type": "Organization",
+      "name": "SwapTure",
+      "url": "https://swapture.com"
+    }
+  }
+  </script>
+
+  <!-- JSON-LD: FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is a subnet mask?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A subnet mask is a 32-bit number that divides an IP address into a network portion and a host portion. It uses consecutive 1 bits to identify the network part and 0 bits for the host part. For example, 255.255.255.0 (or /24 in CIDR notation) means the first 24 bits are the network address and the remaining 8 bits identify hosts within that network."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is CIDR notation?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "CIDR (Classless Inter-Domain Routing) notation represents an IP address and its subnet mask as a single expression. It appends a slash and a number (0–32) to an IP address — e.g., 192.168.1.0/24 — where the number indicates how many leading bits of the address are the network prefix. This is more flexible than the older classful system."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do you calculate the number of usable hosts in a subnet?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The total number of addresses in a subnet is 2^(32 − prefix length). Subtract 2 to get usable hosts: one address is reserved for the network address and one for the broadcast address. For example, a /24 subnet has 2^8 = 256 total addresses and 254 usable host addresses. Special cases: a /31 has 2 addresses (used for point-to-point links, RFC 3021) and a /32 is a single host."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: { purple: { 950: '#2e1065', 900: '#4c1d95', 800: '#5b21b6', 700: '#6d28d9', 600: '#7c3aed' } } } }
+    }
+  </script>
+  <style>
+    .tab-active { @apply bg-purple-800 text-white; }
+    .tab-inactive { @apply bg-white text-zinc-600 hover:bg-zinc-100; }
+    .copy-btn:active { @apply scale-95; }
+    .result-row:hover .copy-icon { opacity: 1; }
+    .copy-icon { opacity: 0; transition: opacity 0.15s; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { animation: fadeIn 0.25s ease-out forwards; }
+  </style>
+</head>
+<body class="bg-white text-zinc-800 font-sans min-h-screen flex flex-col">
+
+  <!-- Header -->
+    <header class="bg-white border-b border-zinc-200 sticky top-0 z-50">
+    <nav class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="/" class="font-bold text-xl text-zinc-900 tracking-tight hover:text-purple-800 transition-colors">
+        Swap<span class="text-purple-800">Ture</span>
+      </a>
+      <a href="/" class="text-sm text-zinc-600 hover:text-purple-800 transition-colors font-medium">All Tools →</a>
+    </nav>
+  </header>
+
+  <!-- Ad Banner (top) -->
+  <div class="bg-zinc-100 border-b border-zinc-200 text-center py-2 text-xs text-zinc-400 tracking-wide">
+    <!-- Ad placeholder -->
+    <div class="max-w-5xl mx-auto px-4">
+      <div class="h-16 bg-zinc-200 rounded flex items-center justify-center text-zinc-400 text-sm">
+        Advertisement
+      </div>
+    </div>
+  </div>
+
+  <main class="flex-1 max-w-5xl mx-auto w-full px-4 py-8">
+
+    <!-- Hero -->
+    <div class="text-center mb-8">
+      <h1 class="text-3xl sm:text-4xl font-bold text-zinc-900 mb-2">IP Subnet Calculator</h1>
+      <p class="text-zinc-500 text-lg">Calculate network address, broadcast, usable hosts, CIDR, and more — instantly.</p>
+    </div>
+
+    <!-- Calculator Card -->
+    <div class="bg-white rounded-2xl shadow-md border border-zinc-200 p-6 mb-8">
+
+      <!-- IP Address Input -->
+      <div class="mb-5">
+        <label for="ip-input" class="block text-sm font-semibold text-zinc-700 mb-1">IP Address</label>
+        <input
+          id="ip-input"
+          type="text"
+          placeholder="e.g. 192.168.1.0"
+          maxlength="15"
+          autocomplete="off"
+          spellcheck="false"
+          class="w-full border border-zinc-300 rounded-lg px-4 py-2.5 text-zinc-800 font-mono focus:outline-none focus:ring-2 focus:ring-purple-700 focus:border-purple-700 transition"
+        />
+        <p id="ip-error" class="text-red-500 text-xs mt-1 hidden">Please enter a valid IPv4 address (e.g. 192.168.1.0).</p>
+      </div>
+
+      <!-- Subnet Input Tabs -->
+      <div class="mb-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-sm font-semibold text-zinc-700">Subnet / Prefix</span>
+          <!-- Toggle Tabs -->
+          <div class="ml-auto flex border border-zinc-300 rounded-lg overflow-hidden text-sm">
+            <button id="tab-cidr" class="px-3 py-1.5 font-medium transition tab-active" onclick="switchTab('cidr')">CIDR (/n)</button>
+            <button id="tab-mask" class="px-3 py-1.5 font-medium transition tab-inactive" onclick="switchTab('mask')">Subnet Mask</button>
+          </div>
+        </div>
+
+        <!-- CIDR input -->
+        <div id="cidr-panel">
+          <div class="flex items-center gap-2">
+            <span class="text-zinc-500 font-mono font-semibold">/</span>
+            <input
+              id="cidr-input"
+              type="number"
+              min="0"
+              max="32"
+              placeholder="24"
+              class="w-full border border-zinc-300 rounded-lg px-4 py-2.5 text-zinc-800 font-mono focus:outline-none focus:ring-2 focus:ring-purple-700 focus:border-purple-700 transition"
+            />
+          </div>
+          <p id="cidr-error" class="text-red-500 text-xs mt-1 hidden">CIDR must be a number between 0 and 32.</p>
+        </div>
+
+        <!-- Subnet Mask input -->
+        <div id="mask-panel" class="hidden">
+          <input
+            id="mask-input"
+            type="text"
+            placeholder="e.g. 255.255.255.0"
+            maxlength="15"
+            autocomplete="off"
+            spellcheck="false"
+            class="w-full border border-zinc-300 rounded-lg px-4 py-2.5 text-zinc-800 font-mono focus:outline-none focus:ring-2 focus:ring-purple-700 focus:border-purple-700 transition"
+          />
+          <p id="mask-error" class="text-red-500 text-xs mt-1 hidden">Please enter a valid subnet mask (e.g. 255.255.255.0).</p>
+        </div>
+      </div>
+
+      <!-- Calculate Button -->
+      <button
+        id="calculate-btn"
+        onclick="handleCalculate()"
+        class="w-full bg-purple-800 hover:bg-purple-900 active:scale-[0.99] text-white font-semibold py-3 rounded-xl transition-all shadow-sm text-base"
+      >
+        Calculate Subnet
+      </button>
+    </div>
+
+    <!-- Results -->
+    <div id="results-section" class="hidden fade-in mb-8">
+      <div class="bg-white rounded-2xl shadow-md border border-zinc-200 overflow-hidden">
+        <div class="bg-purple-800 px-6 py-4">
+          <h2 class="text-white font-bold text-lg">Subnet Results</h2>
+          <p id="result-summary" class="text-blue-200 text-sm mt-0.5"></p>
+        </div>
+        <div class="divide-y divide-zinc-100">
+          <!-- Rows injected by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Ad (mid-page) -->
+    <div class="mb-8">
+      <div class="h-24 bg-zinc-100 rounded-xl border border-zinc-200 flex items-center justify-center text-zinc-400 text-sm">
+        Advertisement
+      </div>
+    </div>
+
+    <!-- SEO Content -->
+    <section class="prose prose-slate max-w-none mb-8">
+      <h2 class="text-2xl font-bold text-zinc-900 mb-4">What Is a Subnet Calculator?</h2>
+      <p class="text-zinc-600 mb-4">
+        A <strong>subnet calculator</strong> helps network engineers, system administrators, and students quickly determine the properties of an IP subnet.
+        Enter any IPv4 address and either a <strong>CIDR prefix length</strong> (e.g., <code>/24</code>) or a <strong>dotted-decimal subnet mask</strong>
+        (e.g., <code>255.255.255.0</code>) to instantly see the network address, broadcast address, usable host range, and more.
+      </p>
+      <h3 class="text-xl font-semibold text-zinc-800 mb-2">Key Subnet Concepts</h3>
+      <ul class="list-disc pl-5 text-zinc-600 space-y-1 mb-4">
+        <li><strong>Network Address</strong> — the first address in the subnet, used to identify the network itself.</li>
+        <li><strong>Broadcast Address</strong> — the last address in the subnet; packets sent here reach all hosts.</li>
+        <li><strong>First / Last Usable Host</strong> — the actual range of assignable IP addresses.</li>
+        <li><strong>CIDR Notation</strong> — a compact representation like <code>192.168.1.0/24</code>.</li>
+        <li><strong>IP Class</strong> — the traditional Class A/B/C/D/E classification based on the first octet.</li>
+      </ul>
+      <h3 class="text-xl font-semibold text-zinc-800 mb-2">Common Subnet Reference</h3>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm border border-zinc-200 rounded-lg overflow-hidden mb-4">
+          <thead class="bg-zinc-100 text-zinc-700">
+            <tr>
+              <th class="px-4 py-2 text-left font-semibold">CIDR</th>
+              <th class="px-4 py-2 text-left font-semibold">Subnet Mask</th>
+              <th class="px-4 py-2 text-right font-semibold">Total Hosts</th>
+              <th class="px-4 py-2 text-right font-semibold">Usable Hosts</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-zinc-100 font-mono">
+            <tr class="hover:bg-white"><td class="px-4 py-2">/8</td><td class="px-4 py-2">255.0.0.0</td><td class="px-4 py-2 text-right">16,777,216</td><td class="px-4 py-2 text-right">16,777,214</td></tr>
+            <tr class="hover:bg-white"><td class="px-4 py-2">/16</td><td class="px-4 py-2">255.255.0.0</td><td class="px-4 py-2 text-right">65,536</td><td class="px-4 py-2 text-right">65,534</td></tr>
+            <tr class="hover:bg-white"><td class="px-4 py-2">/24</td><td class="px-4 py-2">255.255.255.0</td><td class="px-4 py-2 text-right">256</td><td class="px-4 py-2 text-right">254</td></tr>
+            <tr class="hover:bg-white"><td class="px-4 py-2">/25</td><td class="px-4 py-2">255.255.255.128</td><td class="px-4 py-2 text-right">128</td><td class="px-4 py-2 text-right">126</td></tr>
+            <tr class="hover:bg-white"><td class="px-4 py-2">/26</td><td class="px-4 py-2">255.255.255.192</td><td class="px-4 py-2 text-right">64</td><td class="px-4 py-2 text-right">62</td></tr>
+            <tr class="hover:bg-white"><td class="px-4 py-2">/27</td><td class="px-4 py-2">255.255.255.224</td><td class="px-4 py-2 text-right">32</td><td class="px-4 py-2 text-right">30</td></tr>
+            <tr class="hover:bg-white"><td class="px-4 py-2">/28</td><td class="px-4 py-2">255.255.255.240</td><td class="px-4 py-2 text-right">16</td><td class="px-4 py-2 text-right">14</td></tr>
+            <tr class="hover:bg-white"><td class="px-4 py-2">/30</td><td class="px-4 py-2">255.255.255.252</td><td class="px-4 py-2 text-right">4</td><td class="px-4 py-2 text-right">2</td></tr>
+            <tr class="hover:bg-white"><td class="px-4 py-2">/32</td><td class="px-4 py-2">255.255.255.255</td><td class="px-4 py-2 text-right">1</td><td class="px-4 py-2 text-right">0</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="mb-8">
+      <h2 class="text-2xl font-bold text-zinc-900 mb-6">Frequently Asked Questions</h2>
+      <div class="space-y-4">
+
+        <details class="bg-white border border-zinc-200 rounded-xl overflow-hidden group">
+          <summary class="px-6 py-4 cursor-pointer font-semibold text-zinc-800 flex items-center justify-between select-none hover:bg-white transition">
+            What is a subnet mask?
+            <svg class="w-5 h-5 text-zinc-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="px-6 pb-4 text-zinc-600 text-sm leading-relaxed">
+            A subnet mask is a 32-bit number that divides an IP address into a <strong>network portion</strong> and a <strong>host portion</strong>.
+            It uses consecutive 1 bits to identify the network part and 0 bits for the host part. For example, <code>255.255.255.0</code>
+            (or <code>/24</code> in CIDR notation) means the first 24 bits are the network address and the remaining 8 bits identify hosts within that network.
+          </div>
+        </details>
+
+        <details class="bg-white border border-zinc-200 rounded-xl overflow-hidden group">
+          <summary class="px-6 py-4 cursor-pointer font-semibold text-zinc-800 flex items-center justify-between select-none hover:bg-white transition">
+            What is CIDR notation?
+            <svg class="w-5 h-5 text-zinc-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="px-6 pb-4 text-zinc-600 text-sm leading-relaxed">
+            CIDR (Classless Inter-Domain Routing) notation represents an IP address and its subnet mask as a single expression by appending a slash
+            and a number (0–32) to the IP — e.g., <code>192.168.1.0/24</code>. The number indicates how many leading bits are the network prefix.
+            This is more flexible than the older classful system and enables efficient IP address allocation.
+          </div>
+        </details>
+
+        <details class="bg-white border border-zinc-200 rounded-xl overflow-hidden group">
+          <summary class="px-6 py-4 cursor-pointer font-semibold text-zinc-800 flex items-center justify-between select-none hover:bg-white transition">
+            How do you calculate the number of usable hosts in a subnet?
+            <svg class="w-5 h-5 text-zinc-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="px-6 pb-4 text-zinc-600 text-sm leading-relaxed">
+            The total number of addresses in a subnet is <strong>2<sup>(32 − prefix length)</sup></strong>. Subtract 2 for usable hosts:
+            one address is reserved as the <em>network address</em> and one as the <em>broadcast address</em>.
+            For example, a <code>/24</code> subnet has 2<sup>8</sup> = 256 total addresses and <strong>254 usable host addresses</strong>.
+            Special cases: a <code>/31</code> subnet has 2 addresses (used for point-to-point links per RFC 3021) and a <code>/32</code> identifies a single host.
+          </div>
+        </details>
+
+      </div>
+    </section>
+
+    <!-- Bottom Ad -->
+    <div class="mb-4">
+      <div class="h-20 bg-zinc-100 rounded-xl border border-zinc-200 flex items-center justify-center text-zinc-400 text-sm">
+        Advertisement
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+    <footer class="bg-white border-t border-zinc-200 mt-8">
+    <div class="max-w-5xl mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-zinc-500">
+      <span><span class="font-semibold text-zinc-700">Swap<span class="text-purple-800">Ture</span></span> · Free web tools</span>
+      <div class="flex items-center gap-4">
+        <a href="/privacy" class="hover:text-purple-800 transition-colors">Privacy</a>
+        <a href="/" class="hover:text-purple-800 transition-colors">All Tools</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Inline runtime (compiled output of src/main.ts) -->
+  <script>
+    // ─── State ───────────────────────────────────────────────────────────────
+    let currentTab = 'cidr';
+
+    // ─── Tab switching ────────────────────────────────────────────────────────
+    function switchTab(tab) {
+      currentTab = tab;
+      const cidrPanel = document.getElementById('cidr-panel');
+      const maskPanel = document.getElementById('mask-panel');
+      const tabCidr   = document.getElementById('tab-cidr');
+      const tabMask   = document.getElementById('tab-mask');
+      if (tab === 'cidr') {
+        cidrPanel.classList.remove('hidden');
+        maskPanel.classList.add('hidden');
+        tabCidr.className = 'px-3 py-1.5 font-medium transition tab-active';
+        tabMask.className = 'px-3 py-1.5 font-medium transition tab-inactive';
+      } else {
+        cidrPanel.classList.add('hidden');
+        maskPanel.classList.remove('hidden');
+        tabCidr.className = 'px-3 py-1.5 font-medium transition tab-inactive';
+        tabMask.className = 'px-3 py-1.5 font-medium transition tab-active';
+      }
+      clearErrors();
+    }
+
+    function clearErrors() {
+      ['ip-error','cidr-error','mask-error'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+      });
+    }
+
+    // ─── IP / mask utilities ──────────────────────────────────────────────────
+    function ipToNumber(ip) {
+      return ip.split('.').reduce((acc, octet) => ((acc << 8) | parseInt(octet, 10)) >>> 0, 0) >>> 0;
+    }
+
+    function numberToIP(num) {
+      return [
+        (num >>> 24) & 255,
+        (num >>> 16) & 255,
+        (num >>>  8) & 255,
+         num         & 255
+      ].join('.');
+    }
+
+    function cidrToMask(cidr) {
+      return cidr === 0 ? 0 : ((0xFFFFFFFF << (32 - cidr)) >>> 0);
+    }
+
+    function maskToCIDR(mask) {
+      const num = ipToNumber(mask);
+      let bits = num;
+      let count = 0;
+      while (bits & 0x80000000) {
+        count++;
+        bits = (bits << 1) >>> 0;
+      }
+      // Verify it's a valid contiguous mask
+      const rebuilt = cidrToMask(count);
+      if (rebuilt !== num) return -1;
+      return count;
+    }
+
+    function isValidIP(ip) {
+      const parts = ip.trim().split('.');
+      if (parts.length !== 4) return false;
+      return parts.every(p => {
+        if (p === '' || p.length > 3) return false;
+        const n = Number(p);
+        return Number.isInteger(n) && n >= 0 && n <= 255;
+      });
+    }
+
+    function isValidMask(mask) {
+      if (!isValidIP(mask)) return false;
+      return maskToCIDR(mask) !== -1;
+    }
+
+    function getIPClass(firstOctet) {
+      if (firstOctet >= 1   && firstOctet <= 126) return 'A';
+      if (firstOctet === 127)                      return 'A (Loopback)';
+      if (firstOctet >= 128 && firstOctet <= 191) return 'B';
+      if (firstOctet >= 192 && firstOctet <= 223) return 'C';
+      if (firstOctet >= 224 && firstOctet <= 239) return 'D (Multicast)';
+      if (firstOctet >= 240 && firstOctet <= 255) return 'E (Reserved)';
+      return 'Unknown';
+    }
+
+    function toBinaryOctets(num) {
+      return [
+        (num >>> 24) & 255,
+        (num >>> 16) & 255,
+        (num >>>  8) & 255,
+         num         & 255
+      ].map(o => o.toString(2).padStart(8, '0')).join('.');
+    }
+
+    // ─── Core calculation ─────────────────────────────────────────────────────
+    function calculateSubnet(ip, cidr) {
+      const ipNum       = ipToNumber(ip);
+      const maskNum     = cidrToMask(cidr);
+      const networkNum  = (ipNum & maskNum) >>> 0;
+      const broadcastNum = (networkNum | (~maskNum >>> 0)) >>> 0;
+      const totalHosts  = Math.pow(2, 32 - cidr);
+      const usableHosts = cidr >= 31 ? (cidr === 32 ? 0 : 2) : totalHosts - 2;
+      const firstOctet  = (ipNum >>> 24) & 255;
+
+      return {
+        ip,
+        subnetMask:      numberToIP(maskNum),
+        cidr,
+        networkAddress:  numberToIP(networkNum),
+        broadcastAddress: numberToIP(broadcastNum),
+        firstHost:       cidr === 32 ? numberToIP(networkNum) : numberToIP(networkNum + 1),
+        lastHost:        cidr === 32 ? numberToIP(broadcastNum) : numberToIP(broadcastNum - 1),
+        totalHosts,
+        usableHosts,
+        ipClass:         getIPClass(firstOctet),
+        binaryNetwork:   toBinaryOctets(networkNum),
+        binaryMask:      toBinaryOctets(maskNum),
+      };
+    }
+
+    // ─── Render results ───────────────────────────────────────────────────────
+    const RESULT_ROWS = [
+      { label: 'IP Address',               key: 'ip',               mono: true  },
+      { label: 'Subnet Mask',              key: 'subnetMask',       mono: true  },
+      { label: 'CIDR Notation',            key: 'cidr',             mono: true, prefix: '/' },
+      { label: 'Network Address',          key: 'networkAddress',   mono: true  },
+      { label: 'Broadcast Address',        key: 'broadcastAddress', mono: true  },
+      { label: 'First Usable Host',        key: 'firstHost',        mono: true  },
+      { label: 'Last Usable Host',         key: 'lastHost',         mono: true  },
+      { label: 'Total Hosts',              key: 'totalHosts',       mono: false },
+      { label: 'Usable Hosts',             key: 'usableHosts',      mono: false },
+      { label: 'IP Class',                 key: 'ipClass',          mono: false },
+      { label: 'Binary Network Address',   key: 'binaryNetwork',    mono: true  },
+      { label: 'Binary Subnet Mask',       key: 'binaryMask',       mono: true  },
+    ];
+
+    function renderResults(result) {
+      const section = document.getElementById('results-section');
+      const tbody   = section.querySelector('.divide-y');
+      const summary = document.getElementById('result-summary');
+
+      summary.textContent = `${result.ip}/${result.cidr} — ${result.networkAddress} network`;
+
+      tbody.innerHTML = RESULT_ROWS.map(row => {
+        const raw   = result[row.key];
+        const value = row.prefix ? row.prefix + raw : raw;
+        const displayVal = typeof raw === 'number' ? raw.toLocaleString() : value;
+        const copyVal    = String(value);
+        return `
+          <div class="result-row flex items-center justify-between px-5 py-3 hover:bg-white transition-colors group">
+            <span class="text-sm text-zinc-500 w-44 shrink-0">${row.label}</span>
+            <span class="text-sm ${row.mono ? 'font-mono' : 'font-medium'} text-zinc-800 flex-1 text-right pr-3 break-all">${displayVal}</span>
+            <button
+              title="Copy"
+              data-copy-value="${copyVal.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}"
+              class="copy-icon shrink-0 p-1.5 rounded-lg hover:bg-purple-50 text-zinc-400 hover:text-purple-800 transition-all"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+              </svg>
+            </button>
+          </div>
+        `;
+      }).join('');
+
+      section.classList.remove('hidden');
+      section.classList.remove('fade-in');
+      void section.offsetWidth; // reflow to restart animation
+      section.classList.add('fade-in');
+      section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // ─── Copy to clipboard ────────────────────────────────────────────────────
+    function copyValue(btn) {
+      const value = btn.dataset.copyValue;
+      if (!value) return;
+      navigator.clipboard.writeText(value).then(() => {
+        const origHTML = btn.innerHTML;
+        btn.innerHTML = `<svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+        </svg>`;
+        setTimeout(() => { btn.innerHTML = origHTML; }, 1500);
+      });
+    }
+
+    document.addEventListener('click', function(e) {
+      const btn = e.target.closest('[data-copy-value]');
+      if (btn) copyValue(btn);
+    });
+
+    // ─── Handle Calculate ─────────────────────────────────────────────────────
+    function handleCalculate() {
+      clearErrors();
+      const ip = document.getElementById('ip-input').value.trim();
+
+      if (!isValidIP(ip)) {
+        document.getElementById('ip-error').classList.remove('hidden');
+        document.getElementById('ip-input').focus();
+        return;
+      }
+
+      let cidr;
+      if (currentTab === 'cidr') {
+        const raw = document.getElementById('cidr-input').value.trim();
+        cidr = parseInt(raw, 10);
+        if (raw === '' || isNaN(cidr) || cidr < 0 || cidr > 32) {
+          document.getElementById('cidr-error').classList.remove('hidden');
+          document.getElementById('cidr-input').focus();
+          return;
+        }
+      } else {
+        const mask = document.getElementById('mask-input').value.trim();
+        if (!isValidMask(mask)) {
+          document.getElementById('mask-error').classList.remove('hidden');
+          document.getElementById('mask-input').focus();
+          return;
+        }
+        cidr = maskToCIDR(mask);
+      }
+
+      const result = calculateSubnet(ip, cidr);
+      renderResults(result);
+    }
+
+    // ─── Enter key support ────────────────────────────────────────────────────
+    ['ip-input','cidr-input','mask-input'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('keydown', e => { if (e.key === 'Enter') handleCalculate(); });
+    });
+
+    // ─── Footer year ──────────────────────────────────────────────────────────
+    document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+    // ─── Pre-fill example on load ─────────────────────────────────────────────
+    window.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const ip   = params.get('ip');
+      const cidr = params.get('cidr');
+      const mask = params.get('mask');
+      if (ip)   document.getElementById('ip-input').value = ip;
+      if (cidr) { document.getElementById('cidr-input').value = cidr; }
+      if (mask && !cidr) {
+        switchTab('mask');
+        document.getElementById('mask-input').value = mask;
+      }
+      if (ip && (cidr || mask)) handleCalculate();
+    });
+  </script>
+</body>
+</html>

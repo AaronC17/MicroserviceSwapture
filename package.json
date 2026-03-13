@@ -4,8 +4,8 @@
   "private": true,
   "workspaces": ["apps/*", "packages/*"],
   "scripts": {
-    "build": "npm run build --workspaces --if-present",
-    "dev": "npm run dev --workspaces --if-present",
+    "dev": "npm run dev --workspace=apps/swapture",
+    "build": "npm run build --workspace=apps/swapture",
     "generate-tool": "ts-node scripts/generate-tool.ts"
   },
   "devDependencies": {

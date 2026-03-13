@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IP Address Analyzer - SwapTure</title>
+  <meta name="description" content="Instantly analyze any IP address. Find location, ISP, timezone, VPN/proxy detection, and more with SwapTure's free IP analyzer tool." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: { purple: { 950: '#2e1065', 900: '#4c1d95', 800: '#5b21b6', 700: '#6d28d9', 600: '#7c3aed' } } } }
+    }
+  </script>
+
+  <!-- JSON-LD: WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "IP Address Analyzer",
+    "url": "https://ip.swapture.com",
+    "description": "Free IP address analyzer tool. Instantly detect your IP address or look up any IP to get geolocation, ISP, timezone, and VPN/proxy status.",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "provider": {
+      "@type": "Organization",
+      "name": "SwapTure",
+      "url": "https://swapture.com"
+    }
+  }
+  </script>
+
+  <!-- JSON-LD: FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is an IP address?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "An IP (Internet Protocol) address is a unique numerical label assigned to every device connected to a computer network. It serves two main purposes: identifying the host or network interface, and providing the location of the host in the network. IPv4 addresses look like 192.168.1.1, while IPv6 addresses use a longer hexadecimal format."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How can I find my public IP address?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Your public IP address is automatically detected when you visit this page. It is assigned by your Internet Service Provider (ISP) and represents how your device appears to websites on the internet. You can also look it up any time using this free IP analyzer tool without needing to install anything."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What does an IP address reveal about me?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "An IP address can reveal your approximate geographic location (country, region, city), your Internet Service Provider (ISP), your timezone, and whether you are using a VPN or proxy service. It does not reveal your exact home address, name, or personal details. Geolocation based on IP is an estimate and may not always be precise."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body class="bg-white text-zinc-800 font-sans min-h-screen flex flex-col">
+
+  <!-- Header -->
+    <header class="bg-white border-b border-zinc-200 sticky top-0 z-50">
+    <nav class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="/" class="font-bold text-xl text-zinc-900 tracking-tight hover:text-purple-800 transition-colors">
+        Swap<span class="text-purple-800">Ture</span>
+      </a>
+      <a href="/" class="text-sm text-zinc-600 hover:text-purple-800 transition-colors font-medium">All Tools →</a>
+    </nav>
+  </header>
+
+  <!-- Main -->
+  <main class="flex-1 max-w-5xl mx-auto w-full px-4 py-10">
+
+    <!-- Hero -->
+    <div class="text-center mb-10">
+      <h1 class="text-4xl font-extrabold text-zinc-900 mb-3">IP Address Analyzer</h1>
+      <p class="text-zinc-500 text-lg max-w-xl mx-auto">
+        Instantly detect your IP address or look up any IP for geolocation, ISP, timezone, and proxy detection.
+      </p>
+    </div>
+
+    <!-- Ad slot (top) -->
+    <div class="w-full h-16 bg-zinc-200 rounded-xl flex items-center justify-center text-zinc-400 text-sm mb-8 border border-dashed border-zinc-300">
+      Advertisement
+    </div>
+
+    <div class="grid gap-8 lg:grid-cols-2">
+
+      <!-- Auto-detect section -->
+      <section class="bg-white rounded-2xl shadow-sm border border-zinc-200 p-6">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="text-2xl">🌐</span>
+          <h2 class="text-xl font-bold text-zinc-800">Your IP Address</h2>
+        </div>
+        <p class="text-sm text-zinc-500 mb-5">Automatically detected from your current connection.</p>
+
+        <!-- Auto-detect loading spinner -->
+        <div id="auto-loading" class="flex flex-col items-center py-8 gap-3">
+          <svg class="animate-spin w-10 h-10 text-purple-800" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
+          </svg>
+          <span class="text-zinc-500 text-sm">Detecting your IP…</span>
+        </div>
+
+        <!-- Auto-detect error -->
+        <div id="auto-error" class="hidden bg-red-50 border border-red-200 rounded-xl p-4 text-red-700 text-sm"></div>
+
+        <!-- Auto-detect results -->
+        <div id="auto-results" class="hidden">
+          <div class="text-center mb-4">
+            <span id="auto-ip" class="text-3xl font-mono font-bold text-purple-800 tracking-tight"></span>
+          </div>
+          <div id="auto-details" class="space-y-2"></div>
+          <button id="auto-copy-btn"
+            class="mt-5 w-full flex items-center justify-center gap-2 bg-purple-50 hover:bg-purple-100 text-purple-800 font-semibold py-2 rounded-xl transition text-sm border border-purple-200">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+              <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+            </svg>
+            Copy IP
+          </button>
+        </div>
+      </section>
+
+      <!-- Manual lookup section -->
+      <section class="bg-white rounded-2xl shadow-sm border border-zinc-200 p-6">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="text-2xl">🔍</span>
+          <h2 class="text-xl font-bold text-zinc-800">Manual IP Lookup</h2>
+        </div>
+        <p class="text-sm text-zinc-500 mb-5">Enter any IPv4 or IPv6 address to analyze it.</p>
+
+        <div class="flex gap-2 mb-5">
+          <input
+            id="ip-input"
+            type="text"
+            placeholder="e.g. 8.8.8.8"
+            class="flex-1 px-4 py-2.5 border border-zinc-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-700 focus:border-purple-700 bg-white font-mono"
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <button
+            id="analyze-btn"
+            class="bg-purple-800 hover:bg-purple-900 text-white font-semibold px-5 py-2.5 rounded-xl transition text-sm flex items-center gap-2 shrink-0 disabled:opacity-60"
+          >
+            <svg id="analyze-btn-icon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+            </svg>
+            Analyze
+          </button>
+        </div>
+
+        <!-- Manual loading spinner -->
+        <div id="manual-loading" class="hidden flex-col items-center py-8 gap-3">
+          <svg class="animate-spin w-10 h-10 text-purple-800" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
+          </svg>
+          <span class="text-zinc-500 text-sm">Analyzing IP…</span>
+        </div>
+
+        <!-- Manual error -->
+        <div id="manual-error" class="hidden bg-red-50 border border-red-200 rounded-xl p-4 text-red-700 text-sm"></div>
+
+        <!-- Manual results -->
+        <div id="manual-results" class="hidden">
+          <div class="text-center mb-4">
+            <span id="manual-ip" class="text-3xl font-mono font-bold text-purple-800 tracking-tight"></span>
+          </div>
+          <div id="manual-details" class="space-y-2"></div>
+          <button id="manual-copy-btn"
+            class="mt-5 w-full flex items-center justify-center gap-2 bg-purple-50 hover:bg-purple-100 text-purple-800 font-semibold py-2 rounded-xl transition text-sm border border-purple-200">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+              <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+            </svg>
+            Copy IP
+          </button>
+        </div>
+
+        <div id="manual-placeholder" class="flex flex-col items-center py-8 text-zinc-300 gap-2">
+          <svg class="w-12 h-12" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+          </svg>
+          <span class="text-sm">Enter an IP to get started</span>
+        </div>
+      </section>
+    </div>
+
+    <!-- Ad slot (middle) -->
+    <div class="w-full h-16 bg-zinc-200 rounded-xl flex items-center justify-center text-zinc-400 text-sm my-8 border border-dashed border-zinc-300">
+      Advertisement
+    </div>
+
+    <!-- SEO Content -->
+    <section class="bg-white rounded-2xl shadow-sm border border-zinc-200 p-8 mt-2">
+      <h2 class="text-2xl font-bold text-zinc-800 mb-4">About IP Address Analysis</h2>
+      <div class="prose prose-slate max-w-none text-zinc-600 space-y-4 text-sm leading-relaxed">
+        <p>
+          An <strong>IP address</strong> (Internet Protocol address) is a unique identifier assigned to every device on the internet or a local network.
+          It allows computers to communicate with each other by routing data to the correct destination. There are two main versions in use today:
+          <strong>IPv4</strong> (e.g., <code class="bg-zinc-100 px-1 rounded">192.168.0.1</code>) and
+          <strong>IPv6</strong> (e.g., <code class="bg-zinc-100 px-1 rounded">2001:0db8::1</code>).
+        </p>
+        <p>
+          IP geolocation works by mapping an IP address to a physical location using databases maintained by Regional Internet Registries (RIRs)
+          and commercial providers. These databases are updated regularly but may not always reflect the exact location — they typically show
+          the city or region where your ISP routes traffic, which may differ from your physical address.
+        </p>
+        <p>
+          This tool uses publicly available APIs to provide real-time data including your <strong>country</strong>, <strong>region</strong>,
+          <strong>city</strong>, <strong>ISP / organization</strong>, <strong>timezone</strong>, <strong>coordinates</strong>, and
+          VPN/proxy detection. All lookups are performed client-side directly from your browser — we do not store your IP or any results.
+        </p>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="mt-8">
+      <h2 class="text-2xl font-bold text-zinc-800 mb-6">Frequently Asked Questions</h2>
+      <div class="space-y-4">
+
+        <details class="bg-white border border-zinc-200 rounded-2xl shadow-sm group">
+          <summary class="cursor-pointer px-6 py-4 font-semibold text-zinc-800 flex justify-between items-center list-none select-none">
+            What is an IP address?
+            <svg class="w-5 h-5 text-zinc-400 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </summary>
+          <div class="px-6 pb-5 text-zinc-600 text-sm leading-relaxed">
+            An IP (Internet Protocol) address is a unique numerical label assigned to every device connected to a computer network.
+            It serves two main purposes: identifying the host or network interface, and providing the location of the host in the network.
+            IPv4 addresses look like <code class="bg-zinc-100 px-1 rounded">192.168.1.1</code>, while IPv6 addresses use a longer hexadecimal format.
+          </div>
+        </details>
+
+        <details class="bg-white border border-zinc-200 rounded-2xl shadow-sm group">
+          <summary class="cursor-pointer px-6 py-4 font-semibold text-zinc-800 flex justify-between items-center list-none select-none">
+            How can I find my public IP address?
+            <svg class="w-5 h-5 text-zinc-400 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </summary>
+          <div class="px-6 pb-5 text-zinc-600 text-sm leading-relaxed">
+            Your public IP address is automatically detected when you visit this page. It is assigned by your Internet Service Provider (ISP)
+            and represents how your device appears to websites on the internet. You can also look up any IP at any time using this free analyzer
+            — no installation required.
+          </div>
+        </details>
+
+        <details class="bg-white border border-zinc-200 rounded-2xl shadow-sm group">
+          <summary class="cursor-pointer px-6 py-4 font-semibold text-zinc-800 flex justify-between items-center list-none select-none">
+            What does an IP address reveal about me?
+            <svg class="w-5 h-5 text-zinc-400 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </summary>
+          <div class="px-6 pb-5 text-zinc-600 text-sm leading-relaxed">
+            An IP address can reveal your approximate geographic location (country, region, city), your Internet Service Provider (ISP),
+            your timezone, and whether you are using a VPN or proxy service. It does <strong>not</strong> reveal your exact home address,
+            name, or personal details. Geolocation based on IP is an estimate and may not always be precise.
+          </div>
+        </details>
+
+      </div>
+    </section>
+
+    <!-- Ad slot (bottom) -->
+    <div class="w-full h-16 bg-zinc-200 rounded-xl flex items-center justify-center text-zinc-400 text-sm mt-8 border border-dashed border-zinc-300">
+      Advertisement
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+    <footer class="bg-white border-t border-zinc-200 mt-8">
+    <div class="max-w-5xl mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-zinc-500">
+      <span><span class="font-semibold text-zinc-700">Swap<span class="text-purple-800">Ture</span></span> · Free web tools</span>
+      <div class="flex items-center gap-4">
+        <a href="/privacy" class="hover:text-purple-800 transition-colors">Privacy</a>
+        <a href="/" class="hover:text-purple-800 transition-colors">All Tools</a>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="./main.ts"></script>
+</body>
+</html>
