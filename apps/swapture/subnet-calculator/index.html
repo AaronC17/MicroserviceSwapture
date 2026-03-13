@@ -550,7 +550,7 @@
     });
 
     // ─── Footer year ──────────────────────────────────────────────────────────
-    document.getElementById('footer-year').textContent = new Date().getFullYear();
+    const _yrEl = document.getElementById('footer-year'); if (_yrEl) _yrEl.textContent = String(new Date().getFullYear());
 
     // ─── Pre-fill example on load ─────────────────────────────────────────────
     window.addEventListener('DOMContentLoaded', () => {

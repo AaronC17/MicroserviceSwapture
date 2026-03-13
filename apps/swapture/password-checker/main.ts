@@ -132,13 +132,13 @@ function updateRequirement(id: string, met: boolean): void {
   if (met) {
     icon.textContent = '✓';
     icon.className = 'req-icon w-5 h-5 flex items-center justify-center rounded-full bg-green-100 text-green-600 text-xs font-bold flex-shrink-0';
-    li.classList.remove('text-slate-500');
-    li.classList.add('text-slate-700');
+    li.classList.remove('text-zinc-500');
+    li.classList.add('text-zinc-700');
   } else {
     icon.textContent = '✗';
-    icon.className = 'req-icon w-5 h-5 flex items-center justify-center rounded-full bg-slate-100 text-slate-400 text-xs font-bold flex-shrink-0';
-    li.classList.remove('text-slate-700');
-    li.classList.add('text-slate-500');
+    icon.className = 'req-icon w-5 h-5 flex items-center justify-center rounded-full bg-zinc-100 text-zinc-400 text-xs font-bold flex-shrink-0';
+    li.classList.remove('text-zinc-700');
+    li.classList.add('text-zinc-500');
   }
 }
 

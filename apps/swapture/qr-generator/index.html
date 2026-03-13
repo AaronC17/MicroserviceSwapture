@@ -74,31 +74,20 @@
         </div>
 
         <div>
-          <div class="flex items-center justify-between mb-1">
-            <label for="qr-size" class="text-sm font-medium text-zinc-700">Size</label>
-            <span id="size-display" class="text-sm font-semibold text-purple-800">300px</span>
-          </div>
-          <input id="qr-size" type="range" min="100" max="1000" step="50" value="300" class="w-full accent-purple-800" />
-          <div class="flex justify-between text-xs text-zinc-400 mt-1">
-            <span>100px</span>
-            <span>1000px</span>
+          <label class="block text-sm font-medium text-zinc-700 mb-2">Size</label>
+          <div class="grid grid-cols-4 gap-2">
+            <button class="size-btn border border-zinc-200 rounded-lg py-2 text-sm font-medium text-zinc-600 hover:border-purple-700 hover:text-purple-700 transition-colors" data-size="200">S<span class="block text-xs font-normal text-zinc-400">200px</span></button>
+            <button class="size-btn border-2 border-purple-700 rounded-lg py-2 text-sm font-semibold text-purple-800 bg-purple-50" data-size="300">M<span class="block text-xs font-normal text-purple-600">300px</span></button>
+            <button class="size-btn border border-zinc-200 rounded-lg py-2 text-sm font-medium text-zinc-600 hover:border-purple-700 hover:text-purple-700 transition-colors" data-size="500">L<span class="block text-xs font-normal text-zinc-400">500px</span></button>
+            <button class="size-btn border border-zinc-200 rounded-lg py-2 text-sm font-medium text-zinc-600 hover:border-purple-700 hover:text-purple-700 transition-colors" data-size="800">XL<span class="block text-xs font-normal text-zinc-400">800px</span></button>
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label for="qr-color" class="block text-sm font-medium text-zinc-700 mb-1">QR Color</label>
-            <div class="flex items-center gap-2">
-              <input id="qr-color" type="color" value="#000000" class="w-10 h-10 rounded border border-zinc-200 cursor-pointer p-0.5" />
-              <span class="text-sm text-zinc-500">Foreground</span>
-            </div>
-          </div>
-          <div>
-            <label for="qr-bg" class="block text-sm font-medium text-zinc-700 mb-1">Background</label>
-            <div class="flex items-center gap-2">
-              <input id="qr-bg" type="color" value="#ffffff" class="w-10 h-10 rounded border border-zinc-200 cursor-pointer p-0.5" />
-              <span class="text-sm text-zinc-500">Background</span>
-            </div>
+        <div>
+          <label for="qr-color" class="block text-sm font-medium text-zinc-700 mb-1">QR Color</label>
+          <div class="flex items-center gap-3">
+            <input id="qr-color" type="color" value="#000000" class="w-10 h-10 rounded border border-zinc-200 cursor-pointer p-0.5" />
+            <span class="text-sm text-zinc-500">Choose foreground color (background is always white)</span>
           </div>
         </div>
 

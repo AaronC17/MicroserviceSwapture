@@ -1,558 +1,375 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Unit Converter - Length, Weight, Temperature &amp; More - SwapTure</title>
-  <meta name="description" content="Free online unit converter for length, weight, temperature, volume, and speed. Instantly convert meters, kilograms, Celsius, liters, and more with SwapTure." />
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Unit Converter - Length, Weight, Temperature &amp; More - SwapTure" />
-  <meta property="og:description" content="Convert units instantly: length, weight, temperature, volume, speed. Free and accurate." />
-  <meta property="og:url" content="https://convert.swapture.com" />
-  <meta property="og:type" content="website" />
-
+  <title>Convertidor CRC ↔ USD – Colones a Dólares | SwapTure</title>
+  <meta name="description" content="Convierte colones costarricenses a dólares americanos con tipo de cambio en tiempo real. Gratis, rápido y sin registro." />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: { extend: { colors: { purple: { 950: '#2e1065', 900: '#4c1d95', 800: '#5b21b6', 700: '#6d28d9', 600: '#7c3aed' } } } }
     }
   </script>
-
-  <!-- JSON-LD Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebApplication",
-        "name": "SwapTure Unit Converter",
-        "url": "https://convert.swapture.com",
-        "description": "Free online unit converter supporting length, weight, temperature, volume, and speed conversions with real-time results.",
-        "applicationCategory": "UtilitiesApplication",
-        "operatingSystem": "Any",
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "USD"
-        },
-        "featureList": [
-          "Length conversion (meters, feet, miles, inches and more)",
-          "Weight conversion (kilograms, pounds, ounces and more)",
-          "Temperature conversion (Celsius, Fahrenheit, Kelvin)",
-          "Volume conversion (liters, gallons, cups and more)",
-          "Speed conversion (km/h, mph, knots and more)"
-        ]
-      },
-      {
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "How do I convert Celsius to Fahrenheit?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "To convert Celsius to Fahrenheit, multiply the Celsius value by 9/5 and then add 32. For example, 100°C × 9/5 + 32 = 212°F. You can use the SwapTure Unit Converter's Temperature tab to do this instantly."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "How many feet are in a meter?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "There are approximately 3.28084 feet in one meter. Conversely, one foot equals 0.3048 meters. Use the Length tab in the SwapTure Unit Converter to convert between meters, feet, inches, miles, and more."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "How many kilograms are in a pound?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "One pound is equal to approximately 0.453592 kilograms. So to convert pounds to kilograms, multiply the number of pounds by 0.453592. Use the Weight tab in SwapTure for instant conversions between kg, lbs, grams, ounces, and more."
-            }
-          }
-        ]
-      }
-    ]
-  }
-  </script>
-
   <style>
-    .tab-btn { transition: background-color 0.2s, color 0.2s, border-color 0.2s; }
-    .result-input { caret-color: transparent; }
-    #conversion-table td, #conversion-table th { white-space: nowrap; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp 0.38s ease forwards; }
+    .currency-input {
+      background: transparent;
+      border: none;
+      outline: none;
+      width: 100%;
+      font-size: 2.1rem;
+      font-weight: 700;
+      line-height: 1.15;
+      color: inherit;
+      min-width: 0;
+    }
+    .currency-input::placeholder { color: rgba(0,0,0,0.15); }
+    .currency-input.usd-side::placeholder { color: rgba(255,255,255,0.2); }
+    .rate-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+    .rate-dot.live { background: #4ade80; box-shadow: 0 0 5px rgba(74,222,128,0.5); }
+    .rate-dot.fallback { background: #facc15; }
+    .quick-btn {
+      background: white;
+      border: 1px solid #e4e4e7;
+      color: #52525b;
+      border-radius: 8px;
+      padding: 5px 13px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .quick-btn:hover { border-color: #4c1d95; color: #4c1d95; }
+    .quick-btn:active { transform: scale(0.96); }
   </style>
 </head>
+<body class="bg-zinc-50 min-h-screen flex flex-col font-sans text-zinc-900">
 
-<body class="bg-white min-h-screen flex flex-col text-zinc-800 font-sans">
-
-  <!-- ===== HEADER ===== -->
-    <header class="bg-white border-b border-zinc-200 sticky top-0 z-50">
-    <nav class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
-      <a href="/" class="font-bold text-xl text-zinc-900 tracking-tight hover:text-purple-800 transition-colors">
-        Swap<span class="text-purple-800">Ture</span>
-      </a>
-      <a href="/" class="text-sm text-zinc-600 hover:text-purple-800 transition-colors font-medium">All Tools →</a>
+  <!-- Header -->
+  <header class="bg-white border-b border-zinc-200 sticky top-0 z-50">
+    <nav class="max-w-4xl mx-auto px-4 py-3.5 flex items-center justify-between">
+      <a href="/" class="font-extrabold text-xl tracking-tight text-zinc-900">Swap<span class="text-purple-900">Ture</span></a>
+      <a href="/" class="text-sm text-zinc-400 hover:text-zinc-700 transition-colors">← Todas las herramientas</a>
     </nav>
   </header>
 
-  <!-- ===== HERO / TITLE ===== -->
-  <section class="bg-purple-800 text-white py-10 px-4 text-center">
-    <h1 class="text-3xl sm:text-4xl font-extrabold mb-2">Unit Converter</h1>
-    <p class="text-purple-200 text-base sm:text-lg max-w-xl mx-auto">
-      Instantly convert length, weight, temperature, volume, and speed units — free and accurate.
-    </p>
+  <!-- Hero -->
+  <section class="bg-zinc-900 text-white">
+    <div class="max-w-4xl mx-auto px-4 py-11 sm:py-14 text-center">
+      <span class="text-zinc-400 text-xs font-semibold uppercase tracking-widest mb-3 block">Tipo de cambio en tiempo real</span>
+      <h1 class="text-3xl sm:text-4xl font-extrabold mb-2 tracking-tight">Colones a Dólares</h1>
+      <p class="text-zinc-400 text-sm max-w-sm mx-auto">Conversor CRC &harr; USD &middot; sin registro &middot; gratis</p>
+    </div>
   </section>
 
-  <!-- ===== MAIN CONTENT ===== -->
-  <main class="flex-1 max-w-5xl mx-auto w-full px-4 py-8 space-y-8">
+  <!-- Main -->
+  <main class="flex-1 max-w-4xl mx-auto w-full px-4 py-7 space-y-4">
 
-    <!-- Ad placeholder top -->
-    <div class="w-full h-16 bg-zinc-200 rounded-lg flex items-center justify-center text-zinc-400 text-xs border border-zinc-300">
-      Advertisement
+    <!-- Rate bar -->
+    <div id="rate-card" class="fade-up bg-white border border-zinc-200 rounded-xl px-5 py-3.5 flex items-center justify-between shadow-sm">
+      <div class="flex items-center gap-2.5">
+        <div id="rate-indicator" class="rate-dot fallback"></div>
+        <span id="rate-display" class="text-sm font-semibold text-zinc-700">1 USD = ₡—</span>
+      </div>
+      <span id="rate-status" class="text-xs text-zinc-400">Actualizando…</span>
     </div>
 
-    <!-- ===== CONVERTER CARD ===== -->
-    <div class="bg-white rounded-2xl shadow-md border border-zinc-200 overflow-hidden">
+    <!-- Converter card -->
+    <div class="fade-up bg-white border border-zinc-200 rounded-2xl shadow-sm overflow-hidden">
 
-      <!-- Category Tabs -->
-      <div class="flex overflow-x-auto border-b border-zinc-200 bg-white" role="tablist" aria-label="Unit categories">
-        <button class="tab-btn flex-1 min-w-[90px] py-3 px-4 text-sm font-semibold border-b-2 border-purple-800 text-purple-800 bg-white" data-category="length" role="tab" aria-selected="true">
-          📏 Length
-        </button>
-        <button class="tab-btn flex-1 min-w-[90px] py-3 px-4 text-sm font-semibold border-b-2 border-transparent text-zinc-500 hover:text-purple-800 hover:bg-purple-50" data-category="weight" role="tab" aria-selected="false">
-          ⚖️ Weight
-        </button>
-        <button class="tab-btn flex-1 min-w-[90px] py-3 px-4 text-sm font-semibold border-b-2 border-transparent text-zinc-500 hover:text-purple-800 hover:bg-purple-50" data-category="temperature" role="tab" aria-selected="false">
-          🌡️ Temp
-        </button>
-        <button class="tab-btn flex-1 min-w-[90px] py-3 px-4 text-sm font-semibold border-b-2 border-transparent text-zinc-500 hover:text-purple-800 hover:bg-purple-50" data-category="volume" role="tab" aria-selected="false">
-          🧴 Volume
-        </button>
-        <button class="tab-btn flex-1 min-w-[90px] py-3 px-4 text-sm font-semibold border-b-2 border-transparent text-zinc-500 hover:text-purple-800 hover:bg-purple-50" data-category="speed" role="tab" aria-selected="false">
-          🚀 Speed
+      <!-- CRC -->
+      <div class="px-6 py-7">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="text-lg" aria-hidden="true">🇨🇷</span>
+          <span class="text-xs font-semibold text-zinc-400 uppercase tracking-widest">Colones costarricenses</span>
+          <span class="ml-auto text-xs font-mono bg-zinc-100 text-zinc-500 rounded px-2 py-0.5">CRC</span>
+        </div>
+        <div class="flex items-baseline gap-2">
+          <span class="text-2xl font-bold text-zinc-300 select-none">₡</span>
+          <input id="crc-input" class="currency-input text-zinc-800" type="text" inputmode="decimal" placeholder="0" autocomplete="off" />
+        </div>
+        <p id="crc-label" class="mt-1.5 text-xs text-zinc-400 min-h-[1rem]"></p>
+      </div>
+
+      <!-- Divider + swap -->
+      <div class="relative flex items-center justify-center border-y border-zinc-100">
+        <div class="absolute inset-0 bg-zinc-50/70"></div>
+        <button id="swap-btn" title="Intercambiar"
+          class="relative z-10 my-2 w-9 h-9 rounded-full bg-zinc-800 text-white flex items-center justify-center shadow hover:bg-zinc-700 active:scale-95 transition-all focus:outline-none">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 16V4m0 0L3 8m4-4l4 4"/><path d="M17 8v12m0 0l4-4m-4 4l-4-4"/>
+          </svg>
         </button>
       </div>
 
-      <!-- Converter Body -->
-      <div class="p-6 sm:p-8">
-
-        <!-- Category label -->
-        <p class="text-xs font-semibold text-purple-800 uppercase tracking-widest mb-5" id="category-label">Length Conversion</p>
-
-        <!-- Main converter row -->
-        <div class="flex flex-col sm:flex-row items-stretch sm:items-end gap-4">
-
-          <!-- FROM -->
-          <div class="flex-1 space-y-2">
-            <label for="from-select" class="block text-xs font-semibold text-zinc-500 uppercase tracking-wide">From</label>
-            <select id="from-select" class="w-full rounded-xl border border-zinc-300 bg-white px-3 py-2.5 text-sm font-medium text-zinc-700 focus:outline-none focus:ring-2 focus:ring-purple-700 focus:border-purple-700 transition">
-            </select>
-            <input
-              type="number"
-              id="from-input"
-              placeholder="Enter value"
-              class="w-full rounded-xl border border-zinc-300 bg-white px-3 py-3 text-lg font-semibold text-zinc-800 focus:outline-none focus:ring-2 focus:ring-purple-700 focus:border-purple-700 transition"
-              inputmode="decimal"
-              aria-label="Value to convert"
-            />
-          </div>
-
-          <!-- SWAP BUTTON -->
-          <div class="flex justify-center sm:mb-1">
-            <button
-              id="swap-btn"
-              aria-label="Swap units"
-              class="w-12 h-12 rounded-full bg-purple-800 text-white flex items-center justify-center shadow-md hover:bg-purple-900 active:scale-95 transition-all focus:outline-none focus:ring-2 focus:ring-purple-700"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M7 16V4m0 0L3 8m4-4l4 4"/><path d="M17 8v12m0 0l4-4m-4 4l-4-4"/>
-              </svg>
-            </button>
-          </div>
-
-          <!-- TO -->
-          <div class="flex-1 space-y-2">
-            <label for="to-select" class="block text-xs font-semibold text-zinc-500 uppercase tracking-wide">To</label>
-            <select id="to-select" class="w-full rounded-xl border border-zinc-300 bg-white px-3 py-2.5 text-sm font-medium text-zinc-700 focus:outline-none focus:ring-2 focus:ring-purple-700 focus:border-purple-700 transition">
-            </select>
-            <div class="relative">
-              <input
-                type="text"
-                id="to-output"
-                readonly
-                class="result-input w-full rounded-xl border border-purple-200 bg-purple-50 px-3 py-3 text-lg font-semibold text-purple-800 focus:outline-none cursor-default"
-                aria-label="Conversion result"
-                aria-live="polite"
-              />
-              <button id="copy-btn" title="Copy result" class="absolute right-3 top-1/2 -translate-y-1/2 text-purple-400 hover:text-purple-800 transition focus:outline-none" aria-label="Copy result to clipboard">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
-                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
-                </svg>
-              </button>
-            </div>
-          </div>
+      <!-- USD -->
+      <div class="px-6 py-7 bg-zinc-900">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="text-lg" aria-hidden="true">🇺🇸</span>
+          <span class="text-xs font-semibold text-zinc-500 uppercase tracking-widest">Dólares americanos</span>
+          <span class="ml-auto text-xs font-mono bg-zinc-800 text-zinc-500 rounded px-2 py-0.5">USD</span>
         </div>
-
-        <!-- Formula hint -->
-        <p id="formula-hint" class="mt-4 text-xs text-zinc-400 italic min-h-[1.25rem]"></p>
-
-        <!-- Conversion Table Toggle -->
-        <div class="mt-6 border-t border-zinc-100 pt-4">
-          <button id="toggle-table-btn" class="text-sm text-purple-800 hover:text-purple-800 font-medium underline underline-offset-2 transition focus:outline-none">
-            Show conversion table for all units
-          </button>
+        <div class="flex items-baseline gap-2">
+          <span class="text-2xl font-bold text-zinc-600 select-none">$</span>
+          <input id="usd-input" class="currency-input usd-side text-white" type="text" inputmode="decimal" placeholder="0" autocomplete="off" />
         </div>
-
-        <!-- Conversion Table (hidden by default) -->
-        <div id="table-section" class="hidden mt-4 overflow-x-auto rounded-xl border border-zinc-200">
-          <table id="conversion-table" class="w-full text-sm border-collapse">
-            <thead class="bg-purple-50 text-purple-800">
-              <tr id="table-header-row"></tr>
-            </thead>
-            <tbody id="table-body" class="divide-y divide-zinc-100"></tbody>
-          </table>
-        </div>
-
+        <p id="usd-label" class="mt-1.5 text-xs text-zinc-600 min-h-[1rem]"></p>
       </div>
     </div>
 
-    <!-- Ad placeholder middle -->
-    <div class="w-full h-16 bg-zinc-200 rounded-lg flex items-center justify-center text-zinc-400 text-xs border border-zinc-300">
-      Advertisement
+    <!-- Quick amounts -->
+    <div class="fade-up">
+      <p class="text-xs text-zinc-400 uppercase tracking-wider mb-2.5">Montos rápidos</p>
+      <div class="flex flex-wrap gap-2">
+        <button class="quick-btn" data-crc="1000">₡1.000</button>
+        <button class="quick-btn" data-crc="5000">₡5.000</button>
+        <button class="quick-btn" data-crc="10000">₡10.000</button>
+        <button class="quick-btn" data-crc="50000">₡50.000</button>
+        <button class="quick-btn" data-crc="100000">₡100.000</button>
+        <button class="quick-btn" data-crc="500000">₡500.000</button>
+        <button class="quick-btn" data-crc="1000000">₡1.000.000</button>
+      </div>
     </div>
 
-    <!-- ===== SEO CONTENT ===== -->
-    <section class="bg-white rounded-2xl shadow-sm border border-zinc-200 p-6 sm:p-8 space-y-4">
-      <h2 class="text-xl font-bold text-zinc-800">About the SwapTure Unit Converter</h2>
-      <p class="text-zinc-600 text-sm leading-relaxed">
-        The SwapTure Unit Converter is a fast, accurate, and free tool for converting between the most common measurement units used in everyday life, science, and engineering. Whether you need to convert <strong>kilometers to miles</strong>, <strong>kilograms to pounds</strong>, <strong>Celsius to Fahrenheit</strong>, or <strong>liters to gallons</strong>, SwapTure gives you instant results as you type.
-      </p>
-      <p class="text-zinc-600 text-sm leading-relaxed">
-        Our converter supports five major categories: <strong>Length</strong> (meters, feet, inches, miles, nautical miles, and more), <strong>Weight</strong> (kilograms, pounds, ounces, stones, and more), <strong>Temperature</strong> (Celsius, Fahrenheit, Kelvin), <strong>Volume</strong> (liters, gallons, cups, fluid ounces, and more), and <strong>Speed</strong> (km/h, mph, knots, m/s, ft/s).
-      </p>
-      <p class="text-zinc-600 text-sm leading-relaxed">
-        All conversions use precise internationally accepted conversion factors. The result updates in real time — no need to press a button. You can also swap the direction of conversion with a single click, and view a full conversion table for any unit category.
-      </p>
-    </section>
+    <!-- Reference table -->
+    <div class="fade-up bg-white border border-zinc-200 rounded-2xl shadow-sm overflow-hidden">
+      <div class="px-5 py-3.5 border-b border-zinc-100">
+        <h2 class="text-sm font-semibold text-zinc-700">Tabla de referencia</h2>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="bg-zinc-50">
+            <tr>
+              <th class="px-5 py-3 text-left text-xs font-semibold text-zinc-500 uppercase tracking-wide">Colones (CRC)</th>
+              <th class="px-5 py-3 text-left text-xs font-semibold text-zinc-500 uppercase tracking-wide">Dólares (USD)</th>
+            </tr>
+          </thead>
+          <tbody id="ref-table-body" class="divide-y divide-zinc-100"></tbody>
+        </table>
+      </div>
+    </div>
 
-    <!-- ===== FAQ ===== -->
-    <section class="bg-white rounded-2xl shadow-sm border border-zinc-200 p-6 sm:p-8">
-      <h2 class="text-xl font-bold text-zinc-800 mb-6">Frequently Asked Questions</h2>
-      <div class="space-y-5">
+    <!-- About -->
+    <div class="fade-up bg-white border border-zinc-200 rounded-2xl shadow-sm p-6 space-y-2.5">
+      <h2 class="font-semibold text-zinc-800 text-sm">¿Cómo funciona?</h2>
+      <p class="text-sm text-zinc-500 leading-relaxed">
+        El tipo de cambio se obtiene en tiempo real desde <strong class="text-zinc-700">Open Exchange Rates</strong>.
+        Si no hay conexión disponible, se muestra una tasa referencial reciente.
+      </p>
+      <p class="text-sm text-zinc-500 leading-relaxed">
+        Solo de referencia. Para transacciones financieras use el tipo de cambio oficial del <strong class="text-zinc-700">Banco Central de Costa Rica (BCCR)</strong>.
+      </p>
+    </div>
+
+    <!-- FAQ -->
+    <div class="fade-up bg-white border border-zinc-200 rounded-2xl shadow-sm p-6">
+      <h2 class="font-semibold text-zinc-800 text-sm mb-4">Preguntas frecuentes</h2>
+      <div class="space-y-2.5">
 
         <details class="group border border-zinc-200 rounded-xl overflow-hidden">
-          <summary class="flex justify-between items-center px-5 py-4 cursor-pointer font-medium text-zinc-700 bg-white group-open:bg-purple-50 group-open:text-purple-800 list-none select-none transition-colors">
-            How do I convert Celsius to Fahrenheit?
-            <svg class="h-4 w-4 transition-transform group-open:rotate-180 text-zinc-400 group-open:text-purple-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          <summary class="flex justify-between items-center px-5 py-3.5 cursor-pointer font-medium text-sm text-zinc-700 group-open:bg-zinc-50 list-none select-none transition-colors">
+            ¿Con qué frecuencia se actualiza la tasa?
+            <svg class="h-4 w-4 transition-transform group-open:rotate-180 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
           </summary>
-          <div class="px-5 py-4 text-sm text-zinc-600 leading-relaxed border-t border-zinc-200">
-            To convert Celsius to Fahrenheit, multiply the Celsius value by 9/5 and add 32. The formula is: <strong>°F = (°C × 9/5) + 32</strong>. For example, 100°C equals 212°F. Use the Temperature tab above for instant conversions.
+          <div class="px-5 py-3.5 text-sm text-zinc-500 leading-relaxed border-t border-zinc-100">
+            La tasa se actualiza diariamente en días hábiles bancarios, con datos provenientes del mercado de divisas interbancario.
           </div>
         </details>
 
         <details class="group border border-zinc-200 rounded-xl overflow-hidden">
-          <summary class="flex justify-between items-center px-5 py-4 cursor-pointer font-medium text-zinc-700 bg-white group-open:bg-purple-50 group-open:text-purple-800 list-none select-none transition-colors">
-            How many feet are in a meter?
-            <svg class="h-4 w-4 transition-transform group-open:rotate-180 text-zinc-400 group-open:text-purple-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          <summary class="flex justify-between items-center px-5 py-3.5 cursor-pointer font-medium text-sm text-zinc-700 group-open:bg-zinc-50 list-none select-none transition-colors">
+            ¿Puedo usar esta tasa para transacciones reales?
+            <svg class="h-4 w-4 transition-transform group-open:rotate-180 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
           </summary>
-          <div class="px-5 py-4 text-sm text-zinc-600 leading-relaxed border-t border-zinc-200">
-            There are exactly <strong>3.28084 feet</strong> in one meter. Conversely, one foot equals 0.3048 meters exactly (by international definition). Use the Length tab above to convert between meters, feet, inches, miles, and more.
+          <div class="px-5 py-3.5 text-sm text-zinc-500 leading-relaxed border-t border-zinc-100">
+            Solo de referencia. Para cambios de divisa use la tasa oficial del BCCR o la que establezca su banco.
           </div>
         </details>
 
         <details class="group border border-zinc-200 rounded-xl overflow-hidden">
-          <summary class="flex justify-between items-center px-5 py-4 cursor-pointer font-medium text-zinc-700 bg-white group-open:bg-purple-50 group-open:text-purple-800 list-none select-none transition-colors">
-            How many kilograms are in a pound?
-            <svg class="h-4 w-4 transition-transform group-open:rotate-180 text-zinc-400 group-open:text-purple-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          <summary class="flex justify-between items-center px-5 py-3.5 cursor-pointer font-medium text-sm text-zinc-700 group-open:bg-zinc-50 list-none select-none transition-colors">
+            ¿Por qué difieran las tasas entre bancos?
+            <svg class="h-4 w-4 transition-transform group-open:rotate-180 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
           </summary>
-          <div class="px-5 py-4 text-sm text-zinc-600 leading-relaxed border-t border-zinc-200">
-            One pound (lb) equals <strong>0.453592 kilograms</strong>. Therefore, to convert pounds to kilograms, multiply by 0.453592. To convert kilograms to pounds, multiply by 2.20462. Use the Weight tab above for fast, accurate conversions.
+          <div class="px-5 py-3.5 text-sm text-zinc-500 leading-relaxed border-t border-zinc-100">
+            Cada entidad aplica un margen (spread) propio sobre la tasa de mercado. La diferencia entre compra y venta depende de cada institución.
           </div>
         </details>
 
       </div>
-    </section>
-
-    <!-- Ad placeholder bottom -->
-    <div class="w-full h-16 bg-zinc-200 rounded-lg flex items-center justify-center text-zinc-400 text-xs border border-zinc-300">
-      Advertisement
     </div>
 
   </main>
 
-  <!-- ===== FOOTER ===== -->
-    <footer class="bg-white border-t border-zinc-200 mt-8">
-    <div class="max-w-5xl mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-zinc-500">
-      <span><span class="font-semibold text-zinc-700">Swap<span class="text-purple-800">Ture</span></span> · Free web tools</span>
-      <div class="flex items-center gap-4">
-        <a href="/privacy" class="hover:text-purple-800 transition-colors">Privacy</a>
-        <a href="/" class="hover:text-purple-800 transition-colors">All Tools</a>
-      </div>
+  <!-- Footer -->
+  <footer class="bg-white border-t border-zinc-200 mt-4">
+    <div class="max-w-4xl mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-zinc-400">
+      <span class="font-semibold text-zinc-700">Swap<span class="text-purple-900">Ture</span></span>
+      <a href="/" class="hover:text-zinc-600 transition-colors">← Todas las herramientas</a>
     </div>
   </footer>
 
-  <!-- ===== APP SCRIPT ===== -->
   <script type="module" src="./main.ts"></script>
 
-  <!-- Inline fallback JS for environments that don't support TS modules directly -->
   <script>
   (function () {
-    // ---- UNIT DEFINITIONS ----
-    const CATEGORIES = {
-      length: {
-        label: 'Length Conversion',
-        units: [
-          { key: 'meters',        label: 'Meters (m)',           toBase: v => v,             fromBase: v => v },
-          { key: 'kilometers',    label: 'Kilometers (km)',       toBase: v => v * 1000,      fromBase: v => v / 1000 },
-          { key: 'centimeters',   label: 'Centimeters (cm)',      toBase: v => v / 100,       fromBase: v => v * 100 },
-          { key: 'millimeters',   label: 'Millimeters (mm)',      toBase: v => v / 1000,      fromBase: v => v * 1000 },
-          { key: 'miles',         label: 'Miles (mi)',            toBase: v => v * 1609.344,  fromBase: v => v / 1609.344 },
-          { key: 'yards',         label: 'Yards (yd)',            toBase: v => v * 0.9144,    fromBase: v => v / 0.9144 },
-          { key: 'feet',          label: 'Feet (ft)',             toBase: v => v * 0.3048,    fromBase: v => v / 0.3048 },
-          { key: 'inches',        label: 'Inches (in)',           toBase: v => v * 0.0254,    fromBase: v => v / 0.0254 },
-          { key: 'nautical_miles',label: 'Nautical Miles (nmi)', toBase: v => v * 1852,      fromBase: v => v / 1852 },
-        ]
-      },
-      weight: {
-        label: 'Weight Conversion',
-        units: [
-          { key: 'kilograms',   label: 'Kilograms (kg)',      toBase: v => v,               fromBase: v => v },
-          { key: 'grams',       label: 'Grams (g)',           toBase: v => v / 1000,        fromBase: v => v * 1000 },
-          { key: 'milligrams',  label: 'Milligrams (mg)',     toBase: v => v / 1e6,         fromBase: v => v * 1e6 },
-          { key: 'pounds',      label: 'Pounds (lb)',         toBase: v => v * 0.453592,    fromBase: v => v / 0.453592 },
-          { key: 'ounces',      label: 'Ounces (oz)',         toBase: v => v * 0.0283495,   fromBase: v => v / 0.0283495 },
-          { key: 'metric_tons', label: 'Metric Tons (t)',     toBase: v => v * 1000,        fromBase: v => v / 1000 },
-          { key: 'stones',      label: 'Stones (st)',         toBase: v => v * 6.35029,     fromBase: v => v / 6.35029 },
-        ]
-      },
-      temperature: {
-        label: 'Temperature Conversion',
-        units: [
-          { key: 'celsius',    label: 'Celsius (°C)',    toBase: v => v,             fromBase: v => v },
-          { key: 'fahrenheit', label: 'Fahrenheit (°F)', toBase: v => (v - 32) * 5 / 9, fromBase: v => v * 9 / 5 + 32 },
-          { key: 'kelvin',     label: 'Kelvin (K)',      toBase: v => v - 273.15,    fromBase: v => v + 273.15 },
-        ]
-      },
-      volume: {
-        label: 'Volume Conversion',
-        units: [
-          { key: 'liters',       label: 'Liters (L)',          toBase: v => v,              fromBase: v => v },
-          { key: 'milliliters',  label: 'Milliliters (mL)',    toBase: v => v / 1000,       fromBase: v => v * 1000 },
-          { key: 'cubic_meters', label: 'Cubic Meters (m³)',   toBase: v => v * 1000,       fromBase: v => v / 1000 },
-          { key: 'gallons_us',   label: 'Gallons US (gal)',    toBase: v => v * 3.78541,    fromBase: v => v / 3.78541 },
-          { key: 'quarts',       label: 'Quarts (qt)',         toBase: v => v * 0.946353,   fromBase: v => v / 0.946353 },
-          { key: 'pints',        label: 'Pints (pt)',          toBase: v => v * 0.473176,   fromBase: v => v / 0.473176 },
-          { key: 'cups',         label: 'Cups (c)',            toBase: v => v * 0.236588,   fromBase: v => v / 0.236588 },
-          { key: 'fluid_ounces', label: 'Fluid Ounces (fl oz)',toBase: v => v * 0.0295735,  fromBase: v => v / 0.0295735 },
-        ]
-      },
-      speed: {
-        label: 'Speed Conversion',
-        units: [
-          { key: 'ms',    label: 'Meters/sec (m/s)',  toBase: v => v,             fromBase: v => v },
-          { key: 'kmh',   label: 'Kilometers/hr (km/h)', toBase: v => v / 3.6,   fromBase: v => v * 3.6 },
-          { key: 'mph',   label: 'Miles/hr (mph)',    toBase: v => v * 0.44704,   fromBase: v => v / 0.44704 },
-          { key: 'knots', label: 'Knots (kn)',        toBase: v => v * 0.514444,  fromBase: v => v / 0.514444 },
-          { key: 'fts',   label: 'Feet/sec (ft/s)',   toBase: v => v * 0.3048,    fromBase: v => v / 0.3048 },
-        ]
-      }
-    };
+    // Open Exchange Rates — free, no key, supports CRC
+    const API_URL = 'https://open.er-api.com/v6/latest/USD';
+    const REF_AMOUNTS = [500, 1000, 5000, 10000, 25000, 50000, 100000, 500000, 1000000];
 
-    const FORMULA_HINTS = {
-      length: {
-        meters_feet: '1 m = 3.28084 ft',
-        meters_inches: '1 m = 39.3701 in',
-        kilometers_miles: '1 km = 0.621371 mi',
-        miles_kilometers: '1 mi = 1.60934 km',
-      },
-      temperature: {
-        celsius_fahrenheit: '°F = (°C × 9/5) + 32',
-        fahrenheit_celsius: '°C = (°F − 32) × 5/9',
-        celsius_kelvin: 'K = °C + 273.15',
-        kelvin_celsius: '°C = K − 273.15',
-      }
-    };
+    let usdToCrc = null; // null until loaded
+    let isLive   = false;
 
-    // ---- STATE ----
-    let currentCategory = 'length';
-    let tableVisible = false;
-
-    // ---- HELPERS ----
-    function formatResult(value) {
-      if (!isFinite(value)) return '—';
-      const abs = Math.abs(value);
-      if (abs === 0) return '0';
-      if (abs >= 1e12 || (abs < 1e-6 && abs > 0)) return value.toExponential(6);
-      if (abs >= 1000) return parseFloat(value.toPrecision(10)).toString();
-      return parseFloat(value.toFixed(8)).toString();
-    }
-
-    function getFormulaHint(fromKey, toKey, category) {
-      if (category === 'temperature') {
-        const key = `${fromKey}_${toKey}`;
-        return FORMULA_HINTS.temperature[key] || '';
-      }
-      if (category === 'length') {
-        const key = `${fromKey}_${toKey}`;
-        return FORMULA_HINTS.length[key] || '';
-      }
-      return '';
-    }
-
-    function convert(value, fromUnit, toUnit) {
-      const base = fromUnit.toBase(value);
-      return toUnit.fromBase(base);
-    }
-
-    // ---- DOM REFS ----
-    const fromSelect    = document.getElementById('from-select');
-    const toSelect      = document.getElementById('to-select');
-    const fromInput     = document.getElementById('from-input');
-    const toOutput      = document.getElementById('to-output');
+    const crcInput      = document.getElementById('crc-input');
+    const usdInput      = document.getElementById('usd-input');
+    const crcLabel      = document.getElementById('crc-label');
+    const usdLabel      = document.getElementById('usd-label');
+    const rateDisplay   = document.getElementById('rate-display');
+    const rateStatus    = document.getElementById('rate-status');
+    const rateIndicator = document.getElementById('rate-indicator');
     const swapBtn       = document.getElementById('swap-btn');
-    const copyBtn       = document.getElementById('copy-btn');
-    const categoryLabel = document.getElementById('category-label');
-    const formulaHint   = document.getElementById('formula-hint');
-    const toggleTableBtn = document.getElementById('toggle-table-btn');
-    const tableSection  = document.getElementById('table-section');
-    const tableHeaderRow = document.getElementById('table-header-row');
-    const tableBody     = document.getElementById('table-body');
-    const tabBtns       = document.querySelectorAll('.tab-btn');
-    const footerYear    = document.getElementById('footer-year');
+    const refBody       = document.getElementById('ref-table-body');
 
-    if (footerYear) footerYear.textContent = new Date().getFullYear();
-
-    // ---- POPULATE DROPDOWNS ----
-    function populateDropdowns(category) {
-      const { units } = CATEGORIES[category];
-      [fromSelect, toSelect].forEach((sel, idx) => {
-        sel.innerHTML = '';
-        units.forEach((u, i) => {
-          const opt = document.createElement('option');
-          opt.value = u.key;
-          opt.textContent = u.label;
-          sel.appendChild(opt);
-        });
-        // Default: from=0, to=1 (different units)
-        sel.selectedIndex = idx === 0 ? 0 : Math.min(1, units.length - 1);
-      });
+    function fmtCRC(n) {
+      if (!isFinite(n) || n === null) return '';
+      return n.toLocaleString('es-CR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+    function fmtUSD(n) {
+      if (!isFinite(n) || n === null) return '';
+      return n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+    function parseNum(str) {
+      if (!str) return NaN;
+      return parseFloat(String(str).replace(/[^0-9.]/g, ''));
     }
 
-    // ---- RUN CONVERSION ----
-    function runConversion() {
-      const { units } = CATEGORIES[currentCategory];
-      const fromUnit = units.find(u => u.key === fromSelect.value);
-      const toUnit   = units.find(u => u.key === toSelect.value);
-      const raw = parseFloat(fromInput.value);
-      if (!fromUnit || !toUnit) return;
-      if (isNaN(raw)) { toOutput.value = ''; formulaHint.textContent = ''; return; }
-      const result = convert(raw, fromUnit, toUnit);
-      toOutput.value = formatResult(result);
-      formulaHint.textContent = getFormulaHint(fromUnit.key, toUnit.key, currentCategory);
-      if (tableVisible) buildTable();
+    function updateRateUI(date) {
+      if (!usdToCrc) return;
+      rateDisplay.textContent = '1 USD = ₡' + fmtCRC(usdToCrc);
+      if (isLive && date) {
+        rateIndicator.className = 'rate-dot live';
+        // Format date nicely
+        const d = new Date(date);
+        const formatted = isNaN(d) ? date : d.toLocaleDateString('es-CR', { day: '2-digit', month: 'short', year: 'numeric' });
+        rateStatus.textContent = 'Actualizado ' + formatted;
+        rateStatus.style.color = '';
+      } else if (isLive) {
+        rateIndicator.className = 'rate-dot live';
+        rateStatus.textContent = 'Tasa en vivo';
+        rateStatus.style.color = '';
+      } else {
+        rateIndicator.className = 'rate-dot fallback';
+        rateStatus.textContent = 'Tasa referencial (sin conexión)';
+      }
     }
 
-    // ---- BUILD CONVERSION TABLE ----
-    function buildTable() {
-      const { units } = CATEGORIES[currentCategory];
-      const raw = parseFloat(fromInput.value);
-      const value = isNaN(raw) ? 1 : raw;
-      const fromUnit = units.find(u => u.key === fromSelect.value) || units[0];
-
-      // Header
-      tableHeaderRow.innerHTML = '';
-      const thFrom = document.createElement('th');
-      thFrom.textContent = fromUnit.label;
-      thFrom.className = 'px-4 py-2 text-left font-semibold text-xs';
-      tableHeaderRow.appendChild(thFrom);
-      const thTo = document.createElement('th');
-      thTo.textContent = 'Result';
-      thTo.className = 'px-4 py-2 text-left font-semibold text-xs';
-      tableHeaderRow.appendChild(thTo);
-
-      // Rows
-      tableBody.innerHTML = '';
-      units.forEach((u, i) => {
-        const result = convert(value, fromUnit, u);
+    function buildRefTable() {
+      if (!usdToCrc) return;
+      refBody.innerHTML = '';
+      REF_AMOUNTS.forEach(function (crc, i) {
+        const usd = crc / usdToCrc;
         const tr = document.createElement('tr');
         tr.className = i % 2 === 0 ? 'bg-white' : 'bg-zinc-50';
-        const td1 = document.createElement('td');
-        td1.textContent = `${value} ${fromUnit.label}`;
-        td1.className = 'px-4 py-2 text-zinc-600';
-        const td2 = document.createElement('td');
-        td2.textContent = `${formatResult(result)} ${u.label}`;
-        td2.className = 'px-4 py-2 font-medium text-zinc-800';
-        tr.appendChild(td1);
-        tr.appendChild(td2);
-        tableBody.appendChild(tr);
+        tr.innerHTML =
+          '<td class="px-5 py-2.5 text-zinc-600">₡' + fmtCRC(crc) + '</td>' +
+          '<td class="px-5 py-2.5 text-zinc-800 font-semibold">$' + fmtUSD(usd) + '</td>';
+        refBody.appendChild(tr);
       });
     }
 
-    // ---- SWITCH CATEGORY ----
-    function switchCategory(category) {
-      currentCategory = category;
-      categoryLabel.textContent = CATEGORIES[category].label;
-      populateDropdowns(category);
-      fromInput.value = '';
-      toOutput.value = '';
-      formulaHint.textContent = '';
-      if (tableVisible) buildTable();
-
-      // Update tabs
-      tabBtns.forEach(btn => {
-        const isActive = btn.dataset.category === category;
-        btn.classList.toggle('border-purple-800', isActive);
-        btn.classList.toggle('text-purple-800', isActive);
-        btn.classList.toggle('bg-white', isActive);
-        btn.classList.toggle('border-transparent', !isActive);
-        btn.classList.toggle('text-zinc-500', !isActive);
-        btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
-      });
-    }
-
-    // ---- EVENT LISTENERS ----
-    tabBtns.forEach(btn => {
-      btn.addEventListener('click', () => switchCategory(btn.dataset.category));
-    });
-
-    fromInput.addEventListener('input', runConversion);
-    fromSelect.addEventListener('change', runConversion);
-    toSelect.addEventListener('change', runConversion);
-
-    swapBtn.addEventListener('click', () => {
-      const tmp = fromSelect.value;
-      fromSelect.value = toSelect.value;
-      toSelect.value = tmp;
-      // Swap the input/output values too
-      const prevResult = toOutput.value;
-      fromInput.value = prevResult !== '' ? prevResult : fromInput.value;
-      runConversion();
-    });
-
-    copyBtn.addEventListener('click', () => {
-      if (!toOutput.value) return;
-      navigator.clipboard.writeText(toOutput.value).then(() => {
-        copyBtn.title = 'Copied!';
-        setTimeout(() => { copyBtn.title = 'Copy result'; }, 1500);
-      });
-    });
-
-    toggleTableBtn.addEventListener('click', () => {
-      tableVisible = !tableVisible;
-      if (tableVisible) {
-        tableSection.classList.remove('hidden');
-        toggleTableBtn.textContent = 'Hide conversion table';
-        buildTable();
+    function runConversionFromCRC() {
+      if (!usdToCrc) return;
+      const raw = parseNum(crcInput.value);
+      if (!isNaN(raw) && crcInput.value.trim() !== '') {
+        const usd = raw / usdToCrc;
+        usdInput.value = fmtUSD(usd);
+        crcLabel.textContent = '₡' + fmtCRC(raw) + ' CRC';
+        usdLabel.textContent = '$' + fmtUSD(usd) + ' USD';
       } else {
-        tableSection.classList.add('hidden');
-        toggleTableBtn.textContent = 'Show conversion table for all units';
+        usdInput.value = '';
+        crcLabel.textContent = '';
+        usdLabel.textContent = '';
+      }
+    }
+
+    function runConversionFromUSD() {
+      if (!usdToCrc) return;
+      const raw = parseNum(usdInput.value);
+      if (!isNaN(raw) && usdInput.value.trim() !== '') {
+        const crc = raw * usdToCrc;
+        crcInput.value = fmtCRC(crc);
+        usdLabel.textContent = '$' + fmtUSD(raw) + ' USD';
+        crcLabel.textContent = '₡' + fmtCRC(crc) + ' CRC';
+      } else {
+        crcInput.value = '';
+        usdLabel.textContent = '';
+        crcLabel.textContent = '';
+      }
+    }
+
+    async function fetchRate() {
+      try {
+        const res = await fetch(API_URL);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        if (!data || !data.rates || !data.rates.CRC) throw new Error('No CRC in response');
+        usdToCrc = data.rates.CRC;
+        isLive   = true;
+        // Parse update date from time_last_update_utc
+        const dateStr = data.time_last_update_utc
+          ? data.time_last_update_utc.replace(/\s\+\d{4}$/, '')
+          : '';
+        updateRateUI(dateStr);
+        buildRefTable();
+        // Re-run conversion with live rate
+        const cVal = parseNum(crcInput.value);
+        if (!isNaN(cVal) && crcInput.value.trim() !== '') runConversionFromCRC();
+      } catch (e) {
+        isLive = false;
+        // If no rate loaded at all, add generic fallback so table shows something
+        updateRateUI(null);
+      }
+    }
+
+    crcInput.addEventListener('input', runConversionFromCRC);
+    usdInput.addEventListener('input', runConversionFromUSD);
+
+    swapBtn.addEventListener('click', function () {
+      // Move USD result to CRC field and recalculate
+      const usdVal = parseNum(usdInput.value);
+      if (!isNaN(usdVal) && usdInput.value.trim() !== '') {
+        usdInput.value = '';
+        crcInput.value = '';
+        // Put it in USD and convert to CRC
+        usdInput.value = fmtUSD(usdVal);
+        runConversionFromUSD();
+      } else {
+        const crcVal = parseNum(crcInput.value);
+        if (!isNaN(crcVal)) {
+          crcInput.value = '';
+          usdInput.value = fmtUSD(crcVal / (usdToCrc || 1));
+          runConversionFromUSD();
+        }
       }
     });
 
-    // ---- INIT ----
-    switchCategory('length');
+    document.querySelectorAll('.quick-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        const crc = parseFloat(btn.dataset.crc);
+        crcInput.value = fmtCRC(crc);
+        runConversionFromCRC();
+      });
+    });
+
+    // Init: show loading state until API responds
+    rateDisplay.textContent = '1 USD = ₡—';
+    rateStatus.textContent  = 'Actualizando tasa…';
+    fetchRate();
   })();
   </script>
 

@@ -322,7 +322,7 @@
   <script type="module" src="./main.ts"></script>
   <script>
     // Fallback for environments without module bundler (plain HTML serving)
-    document.getElementById('footer-year').textContent = new Date().getFullYear();
+    const _yrEl = document.getElementById('footer-year'); if (_yrEl) _yrEl.textContent = String(new Date().getFullYear());
   </script>
 </body>
 </html>

@@ -1,9 +1,20 @@
 {
-  "version": 2,
-  "builds": [
-    { "src": "apps/swapture/package.json", "use": "@vercel/static-build", "config": { "distDir": "apps/swapture/dist" } }
-  ],
-  "routes": [
-    { "src": "/(.*)", "dest": "/apps/swapture/dist/$1" }
+  "buildCommand": "npm run build",
+  "outputDirectory": "apps/swapture/dist",
+  "framework": "vite",
+  "installCommand": "npm install",
+  "rewrites": [
+    { "source": "/password-checker", "destination": "/password-checker/index.html" },
+    { "source": "/pace-calculator", "destination": "/pace-calculator/index.html" },
+    { "source": "/ip-analyzer", "destination": "/ip-analyzer/index.html" },
+    { "source": "/salary-cr-calculator", "destination": "/salary-cr-calculator/index.html" },
+    { "source": "/bmi-calculator", "destination": "/bmi-calculator/index.html" },
+    { "source": "/subnet-calculator", "destination": "/subnet-calculator/index.html" },
+    { "source": "/unit-converter", "destination": "/unit-converter/index.html" },
+    { "source": "/qr-generator", "destination": "/qr-generator/index.html" },
+    { "source": "/temp-mail", "destination": "/temp-mail/index.html" },
+    { "source": "/typing-speed", "destination": "/typing-speed/index.html" },
+    { "source": "/file-converter", "destination": "/file-converter/index.html" },
+    { "source": "/bg-remover", "destination": "/bg-remover/index.html" }
   ]
 }

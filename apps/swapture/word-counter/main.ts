@@ -125,8 +125,8 @@ copyBtn.addEventListener("click", async () => {
   try {
     await navigator.clipboard.writeText(textarea.value);
     copyLabel.textContent = "Copied!";
-    copyBtn.classList.replace("bg-indigo-600", "bg-green-600");
-    copyBtn.classList.replace("hover:bg-indigo-700", "hover:bg-green-700");
+    copyBtn.classList.replace("bg-purple-800", "bg-green-600");
+    copyBtn.classList.replace("hover:bg-purple-900", "hover:bg-green-700");
   } catch {
     // Fallback for browsers without Clipboard API support
     textarea.select();
@@ -136,8 +136,8 @@ copyBtn.addEventListener("click", async () => {
 
   setTimeout(() => {
     copyLabel.textContent = "Copy Text";
-    copyBtn.classList.replace("bg-green-600", "bg-indigo-600");
-    copyBtn.classList.replace("hover:bg-green-700", "hover:bg-indigo-700");
+    copyBtn.classList.replace("bg-green-600", "bg-purple-800");
+    copyBtn.classList.replace("hover:bg-green-700", "hover:bg-purple-900");
   }, 2000);
 });
 

@@ -356,7 +356,7 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      document.getElementById('footer-year').textContent = new Date().getFullYear();
+      const _yrEl = document.getElementById('footer-year'); if (_yrEl) _yrEl.textContent = String(new Date().getFullYear());
       document.getElementById('btn-metric').addEventListener('click',    function () { setUnit('metric'); });
       document.getElementById('btn-imperial').addEventListener('click',   function () { setUnit('imperial'); });
       document.getElementById('calculate-btn').addEventListener('click',  handleCalculate);

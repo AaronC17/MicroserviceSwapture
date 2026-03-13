@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>File Converter – DOCX & Image to PDF | SwapTure</title>
+  <meta name="description" content="Convert Word documents (DOCX) and images (PNG, JPG, WEBP) to PDF for free. No file upload — everything runs in your browser. No sign-up required." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: { purple: { 950: '#2e1065', 900: '#4c1d95', 800: '#5b21b6', 700: '#6d28d9', 600: '#7c3aed' } } } }
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mammoth@1.9.0/mammoth.browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    .drop-zone { transition: border-color 0.2s, background-color 0.2s; }
+    .drop-zone.drag-over { border-color: #6d28d9; background-color: #f5f3ff; }
+  </style>
+</head>
+<body class="bg-zinc-50 min-h-screen font-sans text-zinc-900">
+
+  <header class="bg-white border-b border-zinc-200 sticky top-0 z-50">
+    <nav class="max-w-4xl mx-auto px-4 py-3.5 flex items-center justify-between">
+      <a href="/" class="font-extrabold text-xl tracking-tight text-zinc-900">Swap<span class="text-purple-900">Ture</span></a>
+      <div class="flex items-center gap-3">
+        <button id="lang-toggle" class="text-xs font-semibold border border-zinc-300 rounded-lg px-3 py-1.5 hover:border-purple-700 hover:text-purple-700 transition-colors">ES</button>
+        <a id="back-link" href="/" class="text-sm text-zinc-400 hover:text-zinc-700 transition-colors">← All tools</a>
+      </div>
+    </nav>
+  </header>
+
+  <section class="bg-zinc-900 text-white">
+    <div class="max-w-4xl mx-auto px-4 py-10 text-center">
+      <h1 id="page-title" class="text-3xl sm:text-4xl font-extrabold mb-2 tracking-tight">File Converter</h1>
+      <p id="page-subtitle" class="text-zinc-400 text-sm">Convert DOCX and images to PDF — right in your browser, no server upload</p>
+    </div>
+  </section>
+
+  <main class="max-w-4xl mx-auto px-4 py-7 space-y-5">
+
+    <!-- Drop zone -->
+    <div id="drop-zone" class="drop-zone bg-white border-2 border-dashed border-zinc-300 rounded-2xl p-14 text-center cursor-pointer hover:border-purple-700 hover:bg-purple-50/30 transition-colors">
+      <svg class="w-12 h-12 mx-auto mb-4 text-zinc-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+      </svg>
+      <p id="drop-main" class="text-zinc-700 font-semibold mb-1">Drop your file here, or click to browse</p>
+      <p id="drop-sub" class="text-sm text-zinc-400">Supported: DOCX, PNG, JPG, JPEG, WEBP</p>
+      <input id="file-input" type="file" accept=".docx,.png,.jpg,.jpeg,.webp" class="hidden" />
+    </div>
+
+    <!-- File selected state -->
+    <div id="status-area" class="hidden bg-white border border-zinc-200 rounded-2xl p-6 space-y-4 shadow-sm">
+      <div class="flex items-center justify-between">
+        <div>
+          <p id="file-name" class="font-semibold text-zinc-800 text-sm"></p>
+          <p id="file-type-label" class="text-xs text-zinc-400 mt-0.5"></p>
+        </div>
+        <button id="clear-btn" class="text-xs text-zinc-400 hover:text-red-500 transition-colors font-medium">Remove</button>
+      </div>
+      <div id="progress-wrap" class="hidden">
+        <div class="w-full bg-zinc-100 rounded-full h-1.5">
+          <div id="progress-bar" class="bg-purple-700 h-1.5 rounded-full transition-all duration-300" style="width:0%"></div>
+        </div>
+        <p id="progress-label" class="text-xs text-zinc-400 mt-1.5"></p>
+      </div>
+      <p id="error-msg" class="hidden text-sm text-red-500"></p>
+      <button id="convert-btn" class="w-full bg-purple-800 text-white rounded-xl py-2.5 font-semibold hover:bg-purple-900 transition-colors">
+        <span id="convert-label">Convert to PDF</span>
+      </button>
+    </div>
+
+    <!-- Feature cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div class="bg-white border border-zinc-200 rounded-2xl p-5 shadow-sm">
+        <div class="w-9 h-9 bg-purple-50 rounded-xl flex items-center justify-center text-purple-800 mb-3">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        </div>
+        <h3 id="f1-title" class="font-semibold text-zinc-800 text-sm mb-1">Private by Design</h3>
+        <p id="f1-desc" class="text-xs text-zinc-500">Files never leave your browser. All conversion happens locally.</p>
+      </div>
+      <div class="bg-white border border-zinc-200 rounded-2xl p-5 shadow-sm">
+        <div class="w-9 h-9 bg-purple-50 rounded-xl flex items-center justify-center text-purple-800 mb-3">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        </div>
+        <h3 id="f2-title" class="font-semibold text-zinc-800 text-sm mb-1">Instant Conversion</h3>
+        <p id="f2-desc" class="text-xs text-zinc-500">Most files convert in seconds with no server round-trip.</p>
+      </div>
+      <div class="bg-white border border-zinc-200 rounded-2xl p-5 shadow-sm">
+        <div class="w-9 h-9 bg-purple-50 rounded-xl flex items-center justify-center text-purple-800 mb-3">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+        </div>
+        <h3 id="f3-title" class="font-semibold text-zinc-800 text-sm mb-1">Free & No Sign-up</h3>
+        <p id="f3-desc" class="text-xs text-zinc-500">No registration or payment. Convert as many files as you need.</p>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="bg-white border-t border-zinc-200 mt-4">
+    <div class="max-w-4xl mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-zinc-400">
+      <span class="font-semibold text-zinc-700">Swap<span class="text-purple-900">Ture</span></span>
+      <a id="footer-back" href="/" class="hover:text-zinc-600 transition-colors">← All tools</a>
+    </div>
+  </footer>
+
+  <script>
+  (function () {
+    const I18N = {
+      en: {
+        title: 'File Converter',
+        subtitle: 'Convert DOCX and images to PDF — right in your browser, no server upload',
+        dropMain: 'Drop your file here, or click to browse',
+        dropSub: 'Supported: DOCX, PNG, JPG, JPEG, WEBP',
+        convertBtn: 'Convert to PDF',
+        converting: 'Converting…',
+        remove: 'Remove',
+        f1Title: 'Private by Design', f1Desc: 'Files never leave your browser. All conversion happens locally.',
+        f2Title: 'Instant Conversion', f2Desc: 'Most files convert in seconds with no server round-trip.',
+        f3Title: 'Free & No Sign-up', f3Desc: 'No registration or payment. Convert as many files as you need.',
+        stepRead: 'Reading document…', stepPdf: 'Generating PDF…', stepImg: 'Building PDF from image…',
+        done: 'Done! Downloading…',
+        errType: 'Unsupported file type.',
+        errFail: 'Conversion failed. Please try with a different file.',
+        backLink: '← All tools',
+        langBtn: 'ES',
+      },
+      es: {
+        title: 'Convertidor de Archivos',
+        subtitle: 'Convierte DOCX e imágenes a PDF — directamente en tu navegador, sin subir archivos',
+        dropMain: 'Arrastra tu archivo aquí, o haz clic para buscar',
+        dropSub: 'Soporta: DOCX, PNG, JPG, JPEG, WEBP',
+        convertBtn: 'Convertir a PDF',
+        converting: 'Convirtiendo…',
+        remove: 'Eliminar',
+        f1Title: 'Privacidad por Diseño', f1Desc: 'Los archivos nunca salen de tu navegador. La conversión es local.',
+        f2Title: 'Conversión Instantánea', f2Desc: 'La mayoría de archivos se convierten en segundos.',
+        f3Title: 'Gratis y Sin Registro', f3Desc: 'Sin registro ni pago. Convierte todos los archivos que necesites.',
+        stepRead: 'Leyendo documento…', stepPdf: 'Generando PDF…', stepImg: 'Creando PDF desde imagen…',
+        done: '¡Listo! Descargando…',
+        errType: 'Tipo de archivo no soportado.',
+        errFail: 'Conversión fallida. Por favor intenta con otro archivo.',
+        backLink: '← Todas las herramientas',
+        langBtn: 'EN',
+      },
+    };
+
+    let lang = navigator.language.startsWith('es') ? 'es' : 'en';
+    let selectedFile = null;
+
+    const $ = id => document.getElementById(id);
+    const langToggle   = $('lang-toggle');
+    const dropZone     = $('drop-zone');
+    const fileInput    = $('file-input');
+    const statusArea   = $('status-area');
+    const fileNameEl   = $('file-name');
+    const fileTypeLbl  = $('file-type-label');
+    const clearBtn     = $('clear-btn');
+    const convertBtn   = $('convert-btn');
+    const convertLabel = $('convert-label');
+    const errorMsg     = $('error-msg');
+    const progressWrap = $('progress-wrap');
+    const progressBar  = $('progress-bar');
+    const progressLbl  = $('progress-label');
+
+    function applyI18n() {
+      const t = I18N[lang];
+      $('page-title').textContent  = t.title;
+      $('page-subtitle').textContent = t.subtitle;
+      $('drop-main').textContent   = t.dropMain;
+      $('drop-sub').textContent    = t.dropSub;
+      $('f1-title').textContent    = t.f1Title; $('f1-desc').textContent = t.f1Desc;
+      $('f2-title').textContent    = t.f2Title; $('f2-desc').textContent = t.f2Desc;
+      $('f3-title').textContent    = t.f3Title; $('f3-desc').textContent = t.f3Desc;
+      $('back-link').textContent   = t.backLink;
+      $('footer-back').textContent = t.backLink;
+      langToggle.textContent       = t.langBtn;
+      clearBtn.textContent         = t.remove;
+      convertLabel.textContent     = selectedFile ? t.convertBtn : t.convertBtn;
+    }
+
+    function setProgress(pct, label) {
+      progressWrap.classList.remove('hidden');
+      progressBar.style.width = pct + '%';
+      progressLbl.textContent = label;
+    }
+
+    function setFile(file) {
+      selectedFile = file;
+      fileNameEl.textContent = file.name;
+      const ext = file.name.split('.').pop().toLowerCase();
+      const typeMap = { docx: 'Word Document → PDF', png: 'PNG Image → PDF', jpg: 'JPEG Image → PDF', jpeg: 'JPEG Image → PDF', webp: 'WebP Image → PDF' };
+      fileTypeLbl.textContent = typeMap[ext] || file.type;
+      dropZone.classList.add('hidden');
+      statusArea.classList.remove('hidden');
+      errorMsg.classList.add('hidden');
+      progressWrap.classList.add('hidden');
+      convertLabel.textContent = I18N[lang].convertBtn;
+      convertBtn.disabled = false;
+    }
+
+    function clearFile() {
+      selectedFile = null;
+      dropZone.classList.remove('hidden');
+      statusArea.classList.add('hidden');
+      fileInput.value = '';
+    }
+
+    async function convertDocx(file) {
+      const t = I18N[lang];
+      setProgress(20, t.stepRead);
+      const buf = await file.arrayBuffer();
+      setProgress(50, t.stepRead);
+      const result = await mammoth.convertToHtml({ arrayBuffer: buf });
+      setProgress(70, t.stepPdf);
+      const wrapper = document.createElement('div');
+      wrapper.style.cssText = 'font-family:Georgia,serif;font-size:12pt;line-height:1.6;padding:10px;color:#111;';
+      wrapper.innerHTML = result.value;
+      document.body.appendChild(wrapper);
+      setProgress(85, t.stepPdf);
+      await html2pdf().set({
+        margin: [12, 12, 12, 12],
+        filename: file.name.replace(/\.docx$/i, '.pdf'),
+        image: { type: 'jpeg', quality: 0.95 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      }).from(wrapper).save();
+      document.body.removeChild(wrapper);
+      setProgress(100, t.done);
+    }
+
+    async function convertImage(file) {
+      const t = I18N[lang];
+      setProgress(20, t.stepImg);
+      const dataUrl = await new Promise(res => {
+        const r = new FileReader();
+        r.onload = e => res(e.target.result);
+        r.readAsDataURL(file);
+      });
+      setProgress(55, t.stepImg);
+      const img = new Image();
+      await new Promise(res => { img.onload = res; img.src = dataUrl; });
+      const { jsPDF } = window.jspdf;
+      const mw = 210, mh = 297, margin = 10;
+      const maxW = mw - margin * 2, maxH = mh - margin * 2;
+      const ratio = Math.min(maxW / img.width, maxH / img.height, 1);
+      const w = img.width * ratio, h = img.height * ratio;
+      const orient = w > h ? 'landscape' : 'portrait';
+      const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: orient });
+      const ext = file.name.split('.').pop().toLowerCase();
+      const fmt = (ext === 'jpg' || ext === 'jpeg' || ext === 'webp') ? 'JPEG' : 'PNG';
+      doc.addImage(dataUrl, fmt, margin, margin, w, h);
+      setProgress(90, t.stepImg);
+      doc.save(file.name.replace(/\.[^.]+$/, '.pdf'));
+      setProgress(100, t.done);
+    }
+
+    convertBtn.addEventListener('click', async () => {
+      if (!selectedFile) return;
+      const t = I18N[lang];
+      errorMsg.classList.add('hidden');
+      convertBtn.disabled = true;
+      convertLabel.textContent = t.converting;
+      try {
+        const ext = selectedFile.name.split('.').pop().toLowerCase();
+        if (ext === 'docx') await convertDocx(selectedFile);
+        else if (['png', 'jpg', 'jpeg', 'webp'].includes(ext)) await convertImage(selectedFile);
+        else throw new Error('type');
+        setTimeout(clearFile, 2500);
+      } catch (e) {
+        errorMsg.textContent = e.message === 'type' ? t.errType : t.errFail;
+        errorMsg.classList.remove('hidden');
+        progressWrap.classList.add('hidden');
+        convertBtn.disabled = false;
+        convertLabel.textContent = t.convertBtn;
+      }
+    });
+
+    clearBtn.addEventListener('click', clearFile);
+
+    dropZone.addEventListener('click', () => fileInput.click());
+    dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+    dropZone.addEventListener('drop', e => {
+      e.preventDefault(); dropZone.classList.remove('drag-over');
+      if (e.dataTransfer.files[0]) setFile(e.dataTransfer.files[0]);
+    });
+    fileInput.addEventListener('change', () => { if (fileInput.files[0]) setFile(fileInput.files[0]); });
+    langToggle.addEventListener('click', () => { lang = lang === 'en' ? 'es' : 'en'; applyI18n(); });
+
+    applyI18n();
+  })();
+  </script>
+
+</body>
+</html>

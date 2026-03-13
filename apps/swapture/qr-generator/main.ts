@@ -7,7 +7,6 @@ interface QRConfig {
   data: string;
   size: number; // 100-1000
   color: string; // hex without #
-  bg: string; // hex without #
 }
 
 function buildQRData(config: QRConfig): string {
@@ -36,18 +35,14 @@ function buildQRData(config: QRConfig): string {
 function buildQRUrl(config: QRConfig): string {
   const data = encodeURIComponent(buildQRData(config));
   const color = encodeURIComponent(config.color);
-  const bg = encodeURIComponent(config.bg);
-  return `https://api.qrserver.com/v1/create-qr-code/?size=${config.size}x${config.size}&data=${data}&color=${color}&bgcolor=${bg}&format=png&margin=10`;
+  return `https://api.qrserver.com/v1/create-qr-code/?size=${config.size}x${config.size}&data=${data}&color=${color}&bgcolor=ffffff&format=png&margin=10`;
 }
 
 // ── DOM ──────────────────────────────────────────────────────────────────────
 
 const typeSelect    = document.getElementById('qr-type') as HTMLSelectElement;
 const dataInput     = document.getElementById('qr-data') as HTMLInputElement | HTMLTextAreaElement;
-const sizeInput     = document.getElementById('qr-size') as HTMLInputElement;
-const sizeDisplay   = document.getElementById('size-display') as HTMLSpanElement;
 const colorInput    = document.getElementById('qr-color') as HTMLInputElement;
-const bgInput       = document.getElementById('qr-bg') as HTMLInputElement;
 const generateBtn   = document.getElementById('generate-btn') as HTMLButtonElement;
 const qrResult      = document.getElementById('qr-result') as HTMLDivElement;
 const qrImage       = document.getElementById('qr-image') as HTMLImageElement;
@@ -60,6 +55,31 @@ const wifiSsid      = document.getElementById('wifi-ssid') as HTMLInputElement;
 const wifiPass      = document.getElementById('wifi-pass') as HTMLInputElement;
 const wifiEnc       = document.getElementById('wifi-enc') as HTMLSelectElement;
 const qrPlaceholder = document.getElementById('qr-placeholder') as HTMLDivElement;
+const sizeBtns      = document.querySelectorAll<HTMLButtonElement>('.size-btn');
+
+// ── Size selection ────────────────────────────────────────────────────────────
+
+let selectedSize = 300;
+
+sizeBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    // Deactivate all
+    sizeBtns.forEach(b => {
+      b.classList.remove('border-2', 'border-purple-700', 'bg-purple-50', 'font-semibold', 'text-purple-800');
+      b.classList.add('border', 'border-zinc-200', 'font-medium', 'text-zinc-600');
+      const sub = b.querySelector('span');
+      if (sub) { sub.classList.remove('text-purple-600'); sub.classList.add('text-zinc-400'); }
+    });
+    // Activate selected
+    btn.classList.add('border-2', 'border-purple-700', 'bg-purple-50', 'font-semibold', 'text-purple-800');
+    btn.classList.remove('border', 'border-zinc-200', 'font-medium', 'text-zinc-600');
+    const sub = btn.querySelector('span');
+    if (sub) { sub.classList.add('text-purple-600'); sub.classList.remove('text-zinc-400'); }
+    selectedSize = parseInt(btn.dataset.size ?? '300', 10);
+  });
+});
+
+// ── Type UI ───────────────────────────────────────────────────────────────────
 
 const TYPE_META: Record<QRType, { label: string; hint: string; placeholder: string }> = {
   url:   { label: 'URL',            hint: 'Enter a full URL',                   placeholder: 'https://example.com' },
@@ -84,10 +104,6 @@ function updateTypeUI(type: QRType): void {
 
 typeSelect.addEventListener('change', () => updateTypeUI(typeSelect.value as QRType));
 
-sizeInput.addEventListener('input', () => {
-  sizeDisplay.textContent = `${sizeInput.value}px`;
-});
-
 function getWifiData(): string {
   return `${wifiSsid.value}|${wifiPass.value}|${wifiEnc.value}`;
 }
@@ -95,20 +111,30 @@ function getWifiData(): string {
 generateBtn.addEventListener('click', () => {
   errorMsg.classList.add('hidden');
   const type = typeSelect.value as QRType;
-  const rawData = type === 'wifi' ? getWifiData() : (dataInput as HTMLInputElement).value.trim();
 
-  if (!rawData || rawData === '||') {
-    errorMsg.textContent = 'Please enter data to encode.';
-    errorMsg.classList.remove('hidden');
-    return;
+  // Validate input
+  if (type === 'wifi') {
+    if (!wifiSsid.value.trim()) {
+      errorMsg.textContent = 'Please enter a Wi-Fi network name (SSID).';
+      errorMsg.classList.remove('hidden');
+      return;
+    }
+  } else {
+    const val = (dataInput as HTMLInputElement).value.trim();
+    if (!val) {
+      errorMsg.textContent = 'Please enter data to encode.';
+      errorMsg.classList.remove('hidden');
+      return;
+    }
   }
+
+  const rawData = type === 'wifi' ? getWifiData() : (dataInput as HTMLInputElement).value.trim();
 
   const config: QRConfig = {
     type,
     data:  rawData,
-    size:  parseInt(sizeInput.value, 10),
+    size:  selectedSize,
     color: colorInput.value.replace('#', ''),
-    bg:    bgInput.value.replace('#', ''),
   };
 
   const url = buildQRUrl(config);
@@ -118,28 +144,34 @@ generateBtn.addEventListener('click', () => {
   generateBtn.textContent = 'Generating…';
   qrResult.classList.add('hidden');
 
-  const img = new Image();
-  img.crossOrigin = 'anonymous';
-  img.onload = () => {
-    qrImage.src = url;
-    downloadBtn.href = url;
-    downloadBtn.download = `qr-${type}-swapture.png`;
+  qrImage.onload = () => {
     qrResult.classList.remove('hidden');
     qrPlaceholder.classList.add('hidden');
     generateBtn.disabled = false;
     generateBtn.textContent = 'Generate QR Code';
+    // Fix cross-origin download: fetch as blob and use object URL
+    fetch(url)
+      .then(r => r.blob())
+      .then(blob => {
+        const blobUrl = URL.createObjectURL(blob);
+        downloadBtn.href = blobUrl;
+        downloadBtn.download = `qr-${type}-swapture.png`;
+      })
+      .catch(() => {
+        downloadBtn.href = url;
+        downloadBtn.download = `qr-${type}-swapture.png`;
+      });
   };
-  img.onerror = () => {
+  qrImage.onerror = () => {
     errorMsg.textContent = 'Failed to generate QR code. Please try again.';
     errorMsg.classList.remove('hidden');
     generateBtn.disabled = false;
     generateBtn.textContent = 'Generate QR Code';
   };
-  img.src = url;
+  qrImage.src = url;
 });
 
 // Initialize
 updateTypeUI('url');
-sizeDisplay.textContent = `${sizeInput.value}px`;
 
 export {};

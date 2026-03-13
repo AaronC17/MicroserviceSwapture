@@ -166,10 +166,10 @@ export function generateNames(keywords: string[], industry: string): GeneratedNa
   }
 
   // Fallback: fill remaining slots with prefix + random industry combos
-  while (candidates.length < 10) {
+  let fallbackAttempts = 0;
+  while (candidates.length < 10 && fallbackAttempts < 30) {
     add(camelCase(pick(prefixes), pick(indWords)), 'Prefix + Industry');
-    // Guard against infinite loop if all combos are exhausted
-    if (candidates.length >= seen.size) break;
+    fallbackAttempts++;
   }
 
   return candidates.slice(0, 10);
@@ -213,7 +213,7 @@ function createKeywordRow(): HTMLDivElement {
   input.maxLength = 30;
   input.className =
     'keyword-input flex-1 border border-slate-300 rounded-lg px-4 py-2.5 text-sm ' +
-    'focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition bg-slate-50';
+    'focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition bg-zinc-50';
 
   const removeBtn = document.createElement('button');
   removeBtn.type = 'button';
@@ -292,8 +292,8 @@ function createNameCard(item: GeneratedName, index: number): HTMLDivElement {
   const copyBtn = document.createElement('button');
   copyBtn.type = 'button';
   copyBtn.className =
-    'mt-auto flex items-center justify-center gap-1.5 w-full bg-indigo-50 hover:bg-indigo-100 ' +
-    'text-indigo-700 font-semibold text-sm py-2 rounded-lg transition-colors border border-indigo-100';
+    'mt-auto flex items-center justify-center gap-1.5 w-full bg-purple-50 hover:bg-purple-100 ' +
+    'text-purple-700 font-semibold text-sm py-2 rounded-lg transition-colors border border-purple-100';
   copyBtn.innerHTML = `
     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -309,10 +309,10 @@ function createNameCard(item: GeneratedName, index: number): HTMLDivElement {
           <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
         </svg>
         Copied!`;
-      copyBtn.classList.replace('bg-indigo-50', 'bg-green-50');
-      copyBtn.classList.replace('hover:bg-indigo-100', 'hover:bg-green-100');
-      copyBtn.classList.replace('text-indigo-700', 'text-green-700');
-      copyBtn.classList.replace('border-indigo-100', 'border-green-200');
+      copyBtn.classList.replace('bg-purple-50', 'bg-green-50');
+      copyBtn.classList.replace('hover:bg-purple-100', 'hover:bg-green-100');
+      copyBtn.classList.replace('text-purple-700', 'text-green-700');
+      copyBtn.classList.replace('border-purple-100', 'border-green-200');
       setTimeout(() => {
         copyBtn.innerHTML = `
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -320,10 +320,10 @@ function createNameCard(item: GeneratedName, index: number): HTMLDivElement {
               d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
           </svg>
           Copy`;
-        copyBtn.classList.replace('bg-green-50', 'bg-indigo-50');
-        copyBtn.classList.replace('hover:bg-green-100', 'hover:bg-indigo-100');
-        copyBtn.classList.replace('text-green-700', 'text-indigo-700');
-        copyBtn.classList.replace('border-green-200', 'border-indigo-100');
+        copyBtn.classList.replace('bg-green-50', 'bg-purple-50');
+        copyBtn.classList.replace('hover:bg-green-100', 'hover:bg-purple-100');
+        copyBtn.classList.replace('text-green-700', 'text-purple-700');
+        copyBtn.classList.replace('border-green-200', 'border-purple-100');
       }, 2000);
     } catch {
       // Fallback for browsers that don't support clipboard API

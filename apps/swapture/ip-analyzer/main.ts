@@ -20,30 +20,46 @@ interface IPData {
 // ---------------------------------------------------------------------------
 
 async function getUserIP(): Promise<string> {
-  const response = await fetch("https://api.ipify.org?format=json");
-  if (!response.ok) {
-    throw new Error(`Failed to fetch your IP (HTTP ${response.status})`);
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10000);
+  try {
+    const response = await fetch("https://api.ipify.org?format=json", { signal: controller.signal });
+    clearTimeout(timeout);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch your IP (HTTP ${response.status})`);
+    }
+    const data = (await response.json()) as { ip: string };
+    if (!data.ip) throw new Error("Could not determine your IP address.");
+    return data.ip;
+  } catch (err) {
+    clearTimeout(timeout);
+    throw err;
   }
-  const data = (await response.json()) as { ip: string };
-  if (!data.ip) throw new Error("Could not determine your IP address.");
-  return data.ip;
 }
 
 async function getIPDetails(ip: string): Promise<IPData> {
-  const response = await fetch(`https://ipapi.co/${encodeURIComponent(ip)}/json/`);
-  if (!response.ok) {
-    if (response.status === 429) {
-      throw new Error(
-        "Rate limit reached on the free API tier. Please wait a moment and try again."
-      );
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10000);
+  try {
+    const response = await fetch(`https://ipapi.co/${encodeURIComponent(ip)}/json/`, { signal: controller.signal });
+    clearTimeout(timeout);
+    if (!response.ok) {
+      if (response.status === 429) {
+        throw new Error(
+          "Rate limit reached on the free API tier. Please wait a moment and try again."
+        );
+      }
+      throw new Error(`IP lookup failed (HTTP ${response.status})`);
     }
-    throw new Error(`IP lookup failed (HTTP ${response.status})`);
+    const data = (await response.json()) as IPData;
+    if (data.error) {
+      throw new Error(data.reason ?? "Invalid IP address or lookup failed.");
+    }
+    return data;
+  } catch (err) {
+    clearTimeout(timeout);
+    throw err;
   }
-  const data = (await response.json()) as IPData;
-  if (data.error) {
-    throw new Error(data.reason ?? "Invalid IP address or lookup failed.");
-  }
-  return data;
 }
 
 // ---------------------------------------------------------------------------

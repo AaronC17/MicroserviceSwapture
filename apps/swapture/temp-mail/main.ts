@@ -22,17 +22,39 @@ let pollTimer: ReturnType<typeof setInterval> | null = null;
 let selectedMessageId: number | null = null;
 
 const API_BASE = 'https://www.1secmail.com/api/v1/';
+const FALLBACK_DOMAINS = ['1secmail.com', '1secmail.org', '1secmail.net'];
+
+function randomString(length: number): string {
+  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  return Array.from({ length }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+}
 
 async function generateAddress(): Promise<void> {
-  const response = await fetch(`${API_BASE}?action=genRandomMailbox&count=1`);
-  if (!response.ok) throw new Error(`HTTP ${response.status}`);
-  const data = (await response.json()) as string[];
-  if (!data.length) throw new Error('No address received');
-  const [email] = data;
-  if (!email || !email.includes('@')) throw new Error('Invalid address received');
-  const atIndex = email.indexOf('@');
-  currentLogin  = email.slice(0, atIndex);
-  currentDomain = email.slice(atIndex + 1);
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 8000);
+      const response = await fetch(`${API_BASE}?action=genRandomMailbox&count=1`, { signal: controller.signal });
+      clearTimeout(timeout);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const data = (await response.json()) as string[];
+      if (!data.length) throw new Error('Empty response');
+      const [email] = data;
+      if (!email?.includes('@')) throw new Error('Invalid format');
+      const atIndex = email.indexOf('@');
+      currentLogin  = email.slice(0, atIndex);
+      currentDomain = email.slice(atIndex + 1);
+      return;
+    } catch {
+      if (attempt === 2) {
+        // Fallback: any login works on 1secmail domains without pre-registration
+        currentLogin  = randomString(10);
+        currentDomain = FALLBACK_DOMAINS[Math.floor(Math.random() * FALLBACK_DOMAINS.length)];
+        return;
+      }
+      await new Promise(r => setTimeout(r, 700 * (attempt + 1)));
+    }
+  }
 }
 
 async function fetchInbox(): Promise<MailMessage[]> {

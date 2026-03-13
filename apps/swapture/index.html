@@ -4,160 +4,195 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SwapTure – Free Web Tools</title>
-  <meta name="description" content="SwapTure is a collection of fast, free web tools. Password checker, BMI calculator, QR generator, temp mail, and more." />
+  <meta name="description" content="SwapTure is a collection of fast, free web tools. Password checker, BMI calculator, QR generator, currency converter, temp mail, and more. No sign-up required." />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
-      theme: { extend: { colors: { purple: { 950: '#2e1065', 900: '#4c1d95', 800: '#5b21b6', 700: '#6d28d9', 600: '#7c3aed' } } } }
+      theme: { extend: { colors: { purple: { 950: '#2e1065', 900: '#4c1d95', 800: '#5b21b6' } } } }
     }
   </script>
+  <style>
+    .tool-card {
+      transition: box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+    .tool-card:hover {
+      box-shadow: 0 4px 18px -4px rgba(0,0,0,0.09);
+      border-color: #6d28d9;
+    }
+    .icon-box {
+      transition: background-color 0.18s ease, color 0.18s ease;
+    }
+    .tool-card:hover .icon-box {
+      background-color: #4c1d95;
+      color: #fff;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-in { animation: fadeUp 0.5s ease forwards; }
+    .hero-in-2 { animation: fadeUp 0.5s 0.1s ease both; }
+  </style>
 </head>
-<body class="bg-white min-h-screen font-sans text-zinc-900">
+<body class="bg-zinc-50 min-h-screen font-sans text-zinc-900">
 
   <!-- Header -->
   <header class="bg-white border-b border-zinc-200 sticky top-0 z-50">
-    <nav class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
-      <a href="/" class="font-bold text-xl text-zinc-900 tracking-tight">Swap<span class="text-purple-800">Ture</span></a>
-      <span class="text-sm text-zinc-500">Free web tools</span>
+    <nav class="max-w-5xl mx-auto px-4 py-3.5 flex items-center justify-between">
+      <a href="/" class="font-extrabold text-xl tracking-tight text-zinc-900">Swap<span class="text-purple-900">Ture</span></a>
+      <span class="text-sm text-zinc-400 hidden sm:block">Free tools &middot; No sign-up</span>
     </nav>
   </header>
 
-  <main class="max-w-5xl mx-auto px-4 py-12">
-    <div class="mb-10">
-      <h1 class="text-4xl font-bold text-zinc-900 mb-3">Free Web Tools</h1>
-      <p class="text-zinc-500 text-lg">Fast, simple tools for everyday tasks. No sign-up required.</p>
+  <!-- Hero -->
+  <section class="bg-zinc-900 text-white">
+    <div class="max-w-5xl mx-auto px-4 py-14 sm:py-18 text-center">
+      <div class="hero-in">
+        <p class="text-zinc-500 text-xs font-semibold uppercase tracking-widest mb-4">Free · No sign-up · No ads</p>
+        <h1 class="text-4xl sm:text-5xl font-extrabold mb-3 tracking-tight leading-tight">Your Everyday<br class="sm:hidden" /> Web Tools</h1>
+        <p class="text-zinc-400 text-base max-w-sm mx-auto">Fast, accurate tools for everyday tasks — right in your browser.</p>
+      </div>
+      <div class="hero-in-2 mt-8 flex items-center justify-center gap-6 text-xs text-zinc-500">
+        <span>12 tools</span>
+        <span class="w-px h-3 bg-zinc-700"></span>
+        <span>Instant results</span>
+        <span class="w-px h-3 bg-zinc-700"></span>
+        <span>Privacy-first</span>
+      </div>
     </div>
+  </section>
 
-    <!-- Tools grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      
-      <a href="/password-checker/" class="group bg-white border border-zinc-200 rounded-2xl p-5 hover:border-purple-800 hover:shadow-md transition-all duration-200">
-        <div class="flex items-center gap-3 mb-2">
-          <div class="w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center text-purple-800 group-hover:bg-purple-800 group-hover:text-white transition-colors">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+  <!-- Tools grid -->
+  <main class="max-w-5xl mx-auto px-4 py-10">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+
+      <a href="/password-checker/" class="tool-card group bg-white border border-zinc-200 rounded-2xl p-5 flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <div class="icon-box w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center text-purple-800 flex-shrink-0">
+            <svg class="w-4.5 h-4.5" width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
           </div>
-          <h2 class="font-semibold text-zinc-900">Password Checker</h2>
+          <h2 class="font-semibold text-zinc-800 text-sm">Password Checker</h2>
         </div>
-        <p class="text-sm text-zinc-500">Analyze password strength and estimated crack time.</p>
+        <p class="text-sm text-zinc-400 leading-relaxed">Analyze strength, entropy, and estimated crack time.</p>
       </a>
 
-      <a href="/pace-calculator/" class="group bg-white border border-zinc-200 rounded-2xl p-5 hover:border-purple-800 hover:shadow-md transition-all duration-200">
-        <div class="flex items-center gap-3 mb-2">
-          <div class="w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center text-purple-800 group-hover:bg-purple-800 group-hover:text-white transition-colors">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      <a href="/pace-calculator/" class="tool-card group bg-white border border-zinc-200 rounded-2xl p-5 flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <div class="icon-box w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center text-purple-800 flex-shrink-0">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
           </div>
-          <h2 class="font-semibold text-zinc-900">Pace Calculator</h2>
+          <h2 class="font-semibold text-zinc-800 text-sm">Pace Calculator</h2>
         </div>
-        <p class="text-sm text-zinc-500">Calculate running pace, speed, and race finish times.</p>
+        <p class="text-sm text-zinc-400 leading-relaxed">Running pace, speed, and race finish times.</p>
       </a>
 
-      <a href="/percentage-calculator/" class="group bg-white border border-zinc-200 rounded-2xl p-5 hover:border-purple-800 hover:shadow-md transition-all duration-200">
-        <div class="flex items-center gap-3 mb-2">
-          <div class="w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center text-purple-800 group-hover:bg-purple-800 group-hover:text-white transition-colors">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+      <a href="/ip-analyzer/" class="tool-card group bg-white border border-zinc-200 rounded-2xl p-5 flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <div class="icon-box w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center text-purple-800 flex-shrink-0">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
           </div>
-          <h2 class="font-semibold text-zinc-900">Percentage Calculator</h2>
+          <h2 class="font-semibold text-zinc-800 text-sm">IP Analyzer</h2>
         </div>
-        <p class="text-sm text-zinc-500">Three modes: of, what %, and % change calculations.</p>
+        <p class="text-sm text-zinc-400 leading-relaxed">Detect your IP, location, and ISP details.</p>
       </a>
 
-      <a href="/ip-analyzer/" class="group bg-white border border-zinc-200 rounded-2xl p-5 hover:border-purple-800 hover:shadow-md transition-all duration-200">
-        <div class="flex items-center gap-3 mb-2">
-          <div class="w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center text-purple-800 group-hover:bg-purple-800 group-hover:text-white transition-colors">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+      <a href="/salary-cr-calculator/" class="tool-card group bg-white border border-zinc-200 rounded-2xl p-5 flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <div class="icon-box w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center text-purple-800 flex-shrink-0">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
           </div>
-          <h2 class="font-semibold text-zinc-900">IP Analyzer</h2>
+          <h2 class="font-semibold text-zinc-800 text-sm">CR Salary Calculator</h2>
         </div>
-        <p class="text-sm text-zinc-500">Detect your IP address, location, and ISP details.</p>
+        <p class="text-sm text-zinc-400 leading-relaxed">Net salary with CCSS and Costa Rica income tax.</p>
       </a>
 
-      <a href="/salary-cr-calculator/" class="group bg-white border border-zinc-200 rounded-2xl p-5 hover:border-purple-800 hover:shadow-md transition-all duration-200">
-        <div class="flex items-center gap-3 mb-2">
-          <div class="w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center text-purple-800 group-hover:bg-purple-800 group-hover:text-white transition-colors">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <a href="/bmi-calculator/" class="tool-card group bg-white border border-zinc-200 rounded-2xl p-5 flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <div class="icon-box w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center text-purple-800 flex-shrink-0">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
           </div>
-          <h2 class="font-semibold text-zinc-900">CR Salary Calculator</h2>
+          <h2 class="font-semibold text-zinc-800 text-sm">BMI Calculator</h2>
         </div>
-        <p class="text-sm text-zinc-500">Costa Rica net salary with CCSS and income tax.</p>
+        <p class="text-sm text-zinc-400 leading-relaxed">Body Mass Index with metric and imperial support.</p>
       </a>
 
-      <a href="/word-counter/" class="group bg-white border border-zinc-200 rounded-2xl p-5 hover:border-purple-800 hover:shadow-md transition-all duration-200">
-        <div class="flex items-center gap-3 mb-2">
-          <div class="w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center text-purple-800 group-hover:bg-purple-800 group-hover:text-white transition-colors">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+      <a href="/subnet-calculator/" class="tool-card group bg-white border border-zinc-200 rounded-2xl p-5 flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <div class="icon-box w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center text-purple-800 flex-shrink-0">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/></svg>
           </div>
-          <h2 class="font-semibold text-zinc-900">Word Counter</h2>
+          <h2 class="font-semibold text-zinc-800 text-sm">Subnet Calculator</h2>
         </div>
-        <p class="text-sm text-zinc-500">Count words, characters, sentences, and reading time.</p>
+        <p class="text-sm text-zinc-400 leading-relaxed">Network address, broadcast, and host range.</p>
       </a>
 
-      <a href="/bmi-calculator/" class="group bg-white border border-zinc-200 rounded-2xl p-5 hover:border-purple-800 hover:shadow-md transition-all duration-200">
-        <div class="flex items-center gap-3 mb-2">
-          <div class="w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center text-purple-800 group-hover:bg-purple-800 group-hover:text-white transition-colors">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+      <a href="/typing-speed/" class="tool-card group bg-white border border-zinc-200 rounded-2xl p-5 flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <div class="icon-box w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center text-purple-800 flex-shrink-0">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
           </div>
-          <h2 class="font-semibold text-zinc-900">BMI Calculator</h2>
+          <h2 class="font-semibold text-zinc-800 text-sm">Typing Speed Test</h2>
         </div>
-        <p class="text-sm text-zinc-500">Body Mass Index with metric and imperial support.</p>
+        <p class="text-sm text-zinc-400 leading-relaxed">Measure your WPM, accuracy, and reaction time.</p>
       </a>
 
-      <a href="/subnet-calculator/" class="group bg-white border border-zinc-200 rounded-2xl p-5 hover:border-purple-800 hover:shadow-md transition-all duration-200">
-        <div class="flex items-center gap-3 mb-2">
-          <div class="w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center text-purple-800 group-hover:bg-purple-800 group-hover:text-white transition-colors">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/></svg>
+      <a href="/file-converter/" class="tool-card group bg-white border border-zinc-200 rounded-2xl p-5 flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <div class="icon-box w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center text-purple-800 flex-shrink-0">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
           </div>
-          <h2 class="font-semibold text-zinc-900">Subnet Calculator</h2>
+          <h2 class="font-semibold text-zinc-800 text-sm">File Converter</h2>
         </div>
-        <p class="text-sm text-zinc-500">Calculate network address, broadcast, and host range.</p>
+        <p class="text-sm text-zinc-400 leading-relaxed">Convert DOCX and images to PDF in your browser.</p>
       </a>
 
-      <a href="/startup-name-generator/" class="group bg-white border border-zinc-200 rounded-2xl p-5 hover:border-purple-800 hover:shadow-md transition-all duration-200">
-        <div class="flex items-center gap-3 mb-2">
-          <div class="w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center text-purple-800 group-hover:bg-purple-800 group-hover:text-white transition-colors">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+      <a href="/bg-remover/" class="tool-card group bg-white border border-zinc-200 rounded-2xl p-5 flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <div class="icon-box w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center text-purple-800 flex-shrink-0">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
           </div>
-          <h2 class="font-semibold text-zinc-900">Startup Name Generator</h2>
+          <h2 class="font-semibold text-zinc-800 text-sm">Background Remover</h2>
         </div>
-        <p class="text-sm text-zinc-500">Generate creative startup name ideas from keywords.</p>
+        <p class="text-sm text-zinc-400 leading-relaxed">Remove image backgrounds with AI — fully in-browser.</p>
       </a>
 
-      <a href="/unit-converter/" class="group bg-white border border-zinc-200 rounded-2xl p-5 hover:border-purple-800 hover:shadow-md transition-all duration-200">
-        <div class="flex items-center gap-3 mb-2">
-          <div class="w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center text-purple-800 group-hover:bg-purple-800 group-hover:text-white transition-colors">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+      <a href="/unit-converter/" class="tool-card group bg-white border border-zinc-200 rounded-2xl p-5 flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <div class="icon-box w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center text-purple-800 flex-shrink-0">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
           </div>
-          <h2 class="font-semibold text-zinc-900">Unit Converter</h2>
+          <h2 class="font-semibold text-zinc-800 text-sm">Currency Converter</h2>
         </div>
-        <p class="text-sm text-zinc-500">Convert length, weight, temperature, volume, and speed.</p>
+        <p class="text-sm text-zinc-400 leading-relaxed">Costa Rican Colones to US Dollars — live rate.</p>
       </a>
 
-      <a href="/qr-generator/" class="group bg-white border border-zinc-200 rounded-2xl p-5 hover:border-purple-800 hover:shadow-md transition-all duration-200">
-        <div class="flex items-center gap-3 mb-2">
-          <div class="w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center text-purple-800 group-hover:bg-purple-800 group-hover:text-white transition-colors">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
+      <a href="/qr-generator/" class="tool-card group bg-white border border-zinc-200 rounded-2xl p-5 flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <div class="icon-box w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center text-purple-800 flex-shrink-0">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
           </div>
-          <h2 class="font-semibold text-zinc-900">QR Code Generator</h2>
+          <h2 class="font-semibold text-zinc-800 text-sm">QR Code Generator</h2>
         </div>
-        <p class="text-sm text-zinc-500">Generate QR codes for URLs, text, email, phone, and more.</p>
+        <p class="text-sm text-zinc-400 leading-relaxed">QR codes for URLs, text, email, phone, and WiFi.</p>
       </a>
 
-      <a href="/temp-mail/" class="group bg-white border border-zinc-200 rounded-2xl p-5 hover:border-purple-800 hover:shadow-md transition-all duration-200">
-        <div class="flex items-center gap-3 mb-2">
-          <div class="w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center text-purple-800 group-hover:bg-purple-800 group-hover:text-white transition-colors">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+      <a href="/temp-mail/" class="tool-card group bg-white border border-zinc-200 rounded-2xl p-5 flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <div class="icon-box w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center text-purple-800 flex-shrink-0">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
           </div>
-          <h2 class="font-semibold text-zinc-900">Temp Mail</h2>
+          <h2 class="font-semibold text-zinc-800 text-sm">Temp Mail</h2>
         </div>
-        <p class="text-sm text-zinc-500">Generate a temporary email address and receive messages.</p>
+        <p class="text-sm text-zinc-400 leading-relaxed">Disposable email address — receive messages instantly.</p>
       </a>
 
     </div>
   </main>
 
-  <footer class="bg-white border-t border-zinc-200 mt-8">
-    <div class="max-w-5xl mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-zinc-500">
-      <span><span class="font-semibold text-zinc-700">Swap<span class="text-purple-800">Ture</span></span> · Free web tools</span>
-      <span>© 2025 SwapTure</span>
+  <footer class="bg-white border-t border-zinc-200 mt-2">
+    <div class="max-w-5xl mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-zinc-400">
+      <span class="font-semibold text-zinc-700">Swap<span class="text-purple-900">Ture</span></span>
+      <span>&copy; 2025 SwapTure</span>
     </div>
   </footer>
 
