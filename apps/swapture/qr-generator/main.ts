@@ -141,3 +141,5 @@ generateBtn.addEventListener('click', () => {
 // Initialize
 updateTypeUI('url');
 sizeDisplay.textContent = `${sizeInput.value}px`;
+
+export {};

@@ -317,3 +317,5 @@ document.addEventListener("DOMContentLoaded", () => {
     if ((e as KeyboardEvent).key === "Enter") runManualLookup();
   });
 });
+
+export {};

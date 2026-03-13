@@ -214,3 +214,5 @@ backBtn.addEventListener('click', () => {
 });
 
 init();
+
+export {};

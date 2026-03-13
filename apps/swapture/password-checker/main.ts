@@ -218,3 +218,5 @@ copyBtn.addEventListener('click', async () => {
     // Clipboard API unavailable — silently ignore
   }
 });
+
+export {};

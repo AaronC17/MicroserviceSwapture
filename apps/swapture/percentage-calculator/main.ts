@@ -121,3 +121,5 @@ function calculateCard3(): void {
 c3Btn.addEventListener("click", calculateCard3);
 c3Original.addEventListener("input", calculateCard3);
 c3New.addEventListener("input", calculateCard3);
+
+export {};

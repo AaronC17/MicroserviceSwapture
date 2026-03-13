@@ -140,3 +140,5 @@ copyBtn.addEventListener("click", async () => {
     copyBtn.classList.replace("hover:bg-green-700", "hover:bg-indigo-700");
   }, 2000);
 });
+
+export {};
