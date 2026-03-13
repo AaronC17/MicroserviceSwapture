@@ -120,7 +120,7 @@ async function openMessage(id: number): Promise<void> {
     msgSubject.textContent = msg.subject || '(no subject)';
     msgDate.textContent    = new Date(msg.date).toLocaleString();
     if (msg.htmlBody) {
-      msgBody.innerHTML = `<iframe sandbox="allow-same-origin" class="w-full border-0 min-h-48" srcdoc="${escapeHtml(msg.htmlBody)}"></iframe>`;
+      msgBody.innerHTML = `<iframe sandbox="" class="w-full border-0 min-h-48" srcdoc="${escapeHtml(msg.htmlBody)}"></iframe>`;
     } else {
       msgBody.innerHTML = `<pre class="whitespace-pre-wrap text-sm text-zinc-700 font-sans">${escapeHtml(msg.textBody || msg.body || '')}</pre>`;
     }

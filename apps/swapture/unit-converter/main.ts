@@ -265,11 +265,11 @@ class UnitConverterApp {
   private updateTabHighlight(active: Category): void {
     this.tabBtns.forEach(btn => {
       const isActive = btn.dataset.category === active;
-      btn.classList.toggle('border-indigo-600', isActive);
-      btn.classList.toggle('text-indigo-700',   isActive);
+      btn.classList.toggle('border-purple-800', isActive);
+      btn.classList.toggle('text-purple-800',   isActive);
       btn.classList.toggle('bg-white',          isActive);
       btn.classList.toggle('border-transparent', !isActive);
-      btn.classList.toggle('text-slate-500',    !isActive);
+      btn.classList.toggle('text-zinc-500',    !isActive);
       btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
     });
   }
