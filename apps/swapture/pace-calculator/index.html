@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Running Pace Calculator - SwapTure</title>
+  <meta name="description" content="Free running pace calculator. Instantly calculate your pace per km, pace per mile, speed in km/h and mph, and finish time estimates for 5K, 10K, Half Marathon, and Marathon distances." />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://pace.swapture.com" />
+  <meta property="og:title" content="Running Pace Calculator - SwapTure" />
+  <meta property="og:description" content="Calculate your running pace per km, pace per mile, and race finish times for 5K, 10K, Half Marathon, and Marathon." />
+  <meta property="og:site_name" content="SwapTure" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Running Pace Calculator - SwapTure" />
+  <meta name="twitter:description" content="Calculate your running pace per km, pace per mile, and race finish times instantly." />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: { purple: { 950: '#2e1065', 900: '#4c1d95', 800: '#5b21b6', 700: '#6d28d9', 600: '#7c3aed' } } } }
+    }
+  </script>
+
+  <!-- JSON-LD: WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Running Pace Calculator",
+    "url": "https://pace.swapture.com",
+    "description": "Calculate running pace per km, pace per mile, speed in km/h and mph, and estimated finish times for common race distances.",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Any",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "SwapTure",
+      "url": "https://swapture.com"
+    }
+  }
+  </script>
+
+  <!-- JSON-LD: FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How do I calculate my running pace?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Running pace is calculated by dividing your total run time by the distance covered. For example, if you ran 5 km in 30 minutes, your pace is 30 ÷ 5 = 6 minutes per km. Enter your distance and time into the calculator above to get your pace instantly."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between pace and speed?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Pace expresses how long it takes to cover one unit of distance (e.g., 5:30 per km), while speed expresses how much distance is covered in one unit of time (e.g., 10.9 km/h). Runners typically use pace, while cyclists and vehicles typically use speed."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I convert pace per km to pace per mile?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "To convert pace per km to pace per mile, multiply your per-km pace (in seconds) by 1.60934. For example, a 5:00/km pace equals 5 × 60 × 1.60934 ≈ 483 seconds per mile, which is approximately 8:03 per mile. Our calculator does this conversion automatically."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body class="bg-white text-zinc-800 min-h-screen flex flex-col">
+
+  <!-- Header -->
+    <header class="bg-white border-b border-zinc-200 sticky top-0 z-50">
+    <nav class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="/" class="font-bold text-xl text-zinc-900 tracking-tight hover:text-purple-800 transition-colors">
+        Swap<span class="text-purple-800">Ture</span>
+      </a>
+      <a href="/" class="text-sm text-zinc-600 hover:text-purple-800 transition-colors font-medium">All Tools →</a>
+    </nav>
+  </header>
+
+  <!-- Top Ad Banner -->
+  <div class="bg-white border-b border-zinc-200">
+    <div class="max-w-4xl mx-auto px-4 py-2">
+      <div id="ad-top" class="w-full h-16 bg-zinc-100 rounded flex items-center justify-center text-zinc-400 text-xs tracking-widest uppercase">
+        Advertisement
+      </div>
+    </div>
+  </div>
+
+  <main class="flex-1 max-w-4xl mx-auto w-full px-4 py-8">
+
+    <!-- Page Title -->
+    <div class="mb-8 text-center">
+      <h1 class="text-3xl font-bold text-zinc-900 mb-2">Running Pace Calculator</h1>
+      <p class="text-zinc-500 text-base max-w-xl mx-auto">Enter your distance and finish time to calculate your pace, speed, and estimated race finish times.</p>
+    </div>
+
+    <!-- Calculator Card -->
+    <div class="bg-white rounded-2xl shadow-sm border border-zinc-200 p-6 mb-6">
+
+      <!-- Distance -->
+      <div class="mb-6">
+        <label class="block text-sm font-semibold text-zinc-700 mb-2">Distance</label>
+        <div class="flex items-center gap-3">
+          <input
+            id="distance"
+            type="number"
+            min="0"
+            step="any"
+            placeholder="e.g. 10"
+            class="flex-1 border border-zinc-300 rounded-lg px-4 py-2.5 text-zinc-800 text-base focus:outline-none focus:ring-2 focus:ring-purple-700 focus:border-transparent transition"
+          />
+          <div class="flex items-center gap-1 bg-zinc-100 rounded-lg p-1">
+            <label class="flex items-center gap-1.5 cursor-pointer px-3 py-1.5 rounded-md has-[:checked]:bg-white has-[:checked]:shadow-sm transition">
+              <input type="radio" name="unit" id="unit-km" value="km" checked class="sr-only" />
+              <span class="text-sm font-medium text-zinc-700 select-none">km</span>
+            </label>
+            <label class="flex items-center gap-1.5 cursor-pointer px-3 py-1.5 rounded-md has-[:checked]:bg-white has-[:checked]:shadow-sm transition">
+              <input type="radio" name="unit" id="unit-miles" value="miles" class="sr-only" />
+              <span class="text-sm font-medium text-zinc-700 select-none">miles</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Time -->
+      <div class="mb-6">
+        <label class="block text-sm font-semibold text-zinc-700 mb-2">Finish Time</label>
+        <div class="flex items-center gap-2">
+          <div class="flex-1">
+            <label for="hours" class="block text-xs text-zinc-500 mb-1 text-center">Hours</label>
+            <input
+              id="hours"
+              type="number"
+              min="0"
+              max="99"
+              placeholder="0"
+              class="w-full border border-zinc-300 rounded-lg px-3 py-2.5 text-zinc-800 text-base text-center focus:outline-none focus:ring-2 focus:ring-purple-700 focus:border-transparent transition"
+            />
+          </div>
+          <span class="text-2xl font-light text-zinc-400 mt-4">:</span>
+          <div class="flex-1">
+            <label for="minutes" class="block text-xs text-zinc-500 mb-1 text-center">Minutes</label>
+            <input
+              id="minutes"
+              type="number"
+              min="0"
+              max="59"
+              placeholder="30"
+              class="w-full border border-zinc-300 rounded-lg px-3 py-2.5 text-zinc-800 text-base text-center focus:outline-none focus:ring-2 focus:ring-purple-700 focus:border-transparent transition"
+            />
+          </div>
+          <span class="text-2xl font-light text-zinc-400 mt-4">:</span>
+          <div class="flex-1">
+            <label for="seconds" class="block text-xs text-zinc-500 mb-1 text-center">Seconds</label>
+            <input
+              id="seconds"
+              type="number"
+              min="0"
+              max="59"
+              placeholder="00"
+              class="w-full border border-zinc-300 rounded-lg px-3 py-2.5 text-zinc-800 text-base text-center focus:outline-none focus:ring-2 focus:ring-purple-700 focus:border-transparent transition"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Error message -->
+      <p id="error-msg" class="hidden text-red-600 text-sm mb-4 bg-red-50 border border-red-200 rounded-lg px-4 py-2"></p>
+
+      <!-- Calculate Button -->
+      <button
+        id="calculate-btn"
+        type="button"
+        class="w-full bg-purple-800 hover:bg-purple-900 hover:bg-purple-900 text-white font-semibold py-3 px-6 rounded-xl transition-colors text-base shadow-sm"
+      >
+        Calculate Pace
+      </button>
+    </div>
+
+    <!-- Results Section -->
+    <div id="results" class="hidden bg-white rounded-2xl shadow-sm border border-zinc-200 p-6 mb-6">
+      <h2 class="text-lg font-bold text-zinc-900 mb-5">Your Results</h2>
+
+      <!-- Primary stats -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+        <div class="bg-purple-50 rounded-xl p-4 text-center">
+          <p class="text-xs font-medium text-purple-800 uppercase tracking-wide mb-1">Pace / km</p>
+          <p id="result-pace-km" class="text-2xl font-bold text-purple-800">--:--</p>
+          <p class="text-xs text-blue-400 mt-0.5">min/km</p>
+        </div>
+        <div class="bg-purple-50 rounded-xl p-4 text-center">
+          <p class="text-xs font-medium text-purple-800 uppercase tracking-wide mb-1">Pace / mile</p>
+          <p id="result-pace-mile" class="text-2xl font-bold text-purple-800">--:--</p>
+          <p class="text-xs text-purple-400 mt-0.5">min/mi</p>
+        </div>
+        <div class="bg-emerald-50 rounded-xl p-4 text-center">
+          <p class="text-xs font-medium text-emerald-500 uppercase tracking-wide mb-1">Speed</p>
+          <p id="result-speed-kmh" class="text-2xl font-bold text-emerald-700">--</p>
+          <p class="text-xs text-emerald-400 mt-0.5">km/h</p>
+        </div>
+        <div class="bg-teal-50 rounded-xl p-4 text-center">
+          <p class="text-xs font-medium text-teal-500 uppercase tracking-wide mb-1">Speed</p>
+          <p id="result-speed-mph" class="text-2xl font-bold text-teal-700">--</p>
+          <p class="text-xs text-teal-400 mt-0.5">mph</p>
+        </div>
+      </div>
+
+      <!-- Inline Ad Banner -->
+      <div id="ad-inline" class="w-full h-16 bg-zinc-100 rounded-lg flex items-center justify-center text-zinc-400 text-xs tracking-widest uppercase mb-6">
+        Advertisement
+      </div>
+
+      <!-- Race finish times -->
+      <h3 class="text-sm font-bold text-zinc-700 uppercase tracking-wide mb-3">Projected Race Finish Times</h3>
+      <div id="finish-times" class="divide-y divide-zinc-100 rounded-xl border border-zinc-200 overflow-hidden">
+        <!-- populated by JS -->
+      </div>
+    </div>
+
+    <!-- SEO Content Section -->
+    <section class="bg-white rounded-2xl shadow-sm border border-zinc-200 p-6 mb-6 prose prose-slate max-w-none">
+      <h2 class="text-xl font-bold text-zinc-900 mb-3">What Is Running Pace?</h2>
+      <p class="text-zinc-600 text-sm leading-relaxed mb-4">
+        Running pace measures how long it takes to cover a unit of distance — typically expressed as minutes per kilometre (min/km) or minutes per mile (min/mi). It is the inverse of speed: a lower pace number means you are running faster. Knowing your pace is essential for pacing a race, planning training runs, and tracking fitness progress over time.
+      </p>
+      <h2 class="text-xl font-bold text-zinc-900 mb-3">How to Use This Calculator</h2>
+      <ol class="text-zinc-600 text-sm leading-relaxed list-decimal list-inside space-y-1 mb-4">
+        <li>Enter the <strong>distance</strong> you ran and choose <strong>km</strong> or <strong>miles</strong>.</li>
+        <li>Enter the <strong>time</strong> it took you to complete that distance (hours, minutes, seconds).</li>
+        <li>Click <strong>Calculate Pace</strong>.</li>
+        <li>View your pace, speed, and projected finish times for popular race distances.</li>
+      </ol>
+      <h2 class="text-xl font-bold text-zinc-900 mb-3">Common Race Pace Targets</h2>
+      <p class="text-zinc-600 text-sm leading-relaxed">
+        A beginner runner typically achieves a pace of 7–9 min/km. Recreational runners often target 5–7 min/km. Competitive club runners aim for 3:30–5:00 min/km, while elite marathon runners hold sub-3:00 min/km for 42.195 km.
+      </p>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="mb-6">
+      <h2 class="text-xl font-bold text-zinc-900 mb-4">Frequently Asked Questions</h2>
+      <div class="space-y-3">
+
+        <details class="bg-white rounded-xl border border-zinc-200 shadow-sm group" open>
+          <summary class="cursor-pointer list-none flex items-center justify-between px-5 py-4 font-semibold text-zinc-800 select-none">
+            How do I calculate my running pace?
+            <svg class="w-5 h-5 text-zinc-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+          <p class="px-5 pb-4 text-zinc-600 text-sm leading-relaxed">
+            Running pace is calculated by dividing your total run time by the distance covered. For example, if you ran 5 km in 30 minutes, your pace is 30 ÷ 5 = 6 minutes per km. Enter your distance and time above and the calculator handles it instantly.
+          </p>
+        </details>
+
+        <details class="bg-white rounded-xl border border-zinc-200 shadow-sm group">
+          <summary class="cursor-pointer list-none flex items-center justify-between px-5 py-4 font-semibold text-zinc-800 select-none">
+            What is the difference between pace and speed?
+            <svg class="w-5 h-5 text-zinc-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+          <p class="px-5 pb-4 text-zinc-600 text-sm leading-relaxed">
+            Pace expresses how long it takes to cover one unit of distance (e.g., 5:30 per km), while speed expresses how much distance is covered per unit of time (e.g., 10.9 km/h). Runners typically track pace; cyclists and vehicles use speed. Both metrics are shown in the results above.
+          </p>
+        </details>
+
+        <details class="bg-white rounded-xl border border-zinc-200 shadow-sm group">
+          <summary class="cursor-pointer list-none flex items-center justify-between px-5 py-4 font-semibold text-zinc-800 select-none">
+            How do I convert pace per km to pace per mile?
+            <svg class="w-5 h-5 text-zinc-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+          <p class="px-5 pb-4 text-zinc-600 text-sm leading-relaxed">
+            Multiply your per-km pace (in seconds) by 1.60934 to get per-mile pace. For example, 5:00/km = 300 × 1.60934 ≈ 483 seconds = 8:03/mile. Our calculator performs this conversion automatically so you always see both values.
+          </p>
+        </details>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer Ad Banner -->
+  <div class="bg-white border-t border-zinc-200">
+    <div class="max-w-4xl mx-auto px-4 py-3">
+      <div id="ad-footer" class="w-full h-16 bg-zinc-100 rounded flex items-center justify-center text-zinc-400 text-xs tracking-widest uppercase">
+        Advertisement
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+    <footer class="bg-white border-t border-zinc-200 mt-8">
+    <div class="max-w-5xl mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-zinc-500">
+      <span><span class="font-semibold text-zinc-700">Swap<span class="text-purple-800">Ture</span></span> · Free web tools</span>
+      <div class="flex items-center gap-4">
+        <a href="/privacy" class="hover:text-purple-800 transition-colors">Privacy</a>
+        <a href="/" class="hover:text-purple-800 transition-colors">All Tools</a>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="./main.ts"></script>
+  <script>
+    // Fallback for environments without module bundler (plain HTML serving)
+    const _yrEl = document.getElementById('footer-year'); if (_yrEl) _yrEl.textContent = String(new Date().getFullYear());
+  </script>
+</body>
+</html>

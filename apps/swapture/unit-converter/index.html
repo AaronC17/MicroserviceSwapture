@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Convertidor CRC ↔ USD – Colones a Dólares | SwapTure</title>
+  <meta name="description" content="Convierte colones costarricenses a dólares americanos con tipo de cambio en tiempo real. Gratis, rápido y sin registro." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: { purple: { 950: '#2e1065', 900: '#4c1d95', 800: '#5b21b6', 700: '#6d28d9', 600: '#7c3aed' } } } }
+    }
+  </script>
+  <style>
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp 0.38s ease forwards; }
+    .currency-input {
+      background: transparent;
+      border: none;
+      outline: none;
+      width: 100%;
+      font-size: 2.1rem;
+      font-weight: 700;
+      line-height: 1.15;
+      color: inherit;
+      min-width: 0;
+    }
+    .currency-input::placeholder { color: rgba(0,0,0,0.15); }
+    .currency-input.usd-side::placeholder { color: rgba(255,255,255,0.2); }
+    .rate-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+    .rate-dot.live { background: #4ade80; box-shadow: 0 0 5px rgba(74,222,128,0.5); }
+    .rate-dot.fallback { background: #facc15; }
+    .quick-btn {
+      background: white;
+      border: 1px solid #e4e4e7;
+      color: #52525b;
+      border-radius: 8px;
+      padding: 5px 13px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .quick-btn:hover { border-color: #4c1d95; color: #4c1d95; }
+    .quick-btn:active { transform: scale(0.96); }
+  </style>
+</head>
+<body class="bg-zinc-50 min-h-screen flex flex-col font-sans text-zinc-900">
+
+  <!-- Header -->
+  <header class="bg-white border-b border-zinc-200 sticky top-0 z-50">
+    <nav class="max-w-4xl mx-auto px-4 py-3.5 flex items-center justify-between">
+      <a href="/" class="font-extrabold text-xl tracking-tight text-zinc-900">Swap<span class="text-purple-900">Ture</span></a>
+      <a href="/" class="text-sm text-zinc-400 hover:text-zinc-700 transition-colors">← Todas las herramientas</a>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="bg-zinc-900 text-white">
+    <div class="max-w-4xl mx-auto px-4 py-11 sm:py-14 text-center">
+      <span class="text-zinc-400 text-xs font-semibold uppercase tracking-widest mb-3 block">Tipo de cambio en tiempo real</span>
+      <h1 class="text-3xl sm:text-4xl font-extrabold mb-2 tracking-tight">Colones a Dólares</h1>
+      <p class="text-zinc-400 text-sm max-w-sm mx-auto">Conversor CRC &harr; USD &middot; sin registro &middot; gratis</p>
+    </div>
+  </section>
+
+  <!-- Main -->
+  <main class="flex-1 max-w-4xl mx-auto w-full px-4 py-7 space-y-4">
+
+    <!-- Rate bar -->
+    <div id="rate-card" class="fade-up bg-white border border-zinc-200 rounded-xl px-5 py-3.5 flex items-center justify-between shadow-sm">
+      <div class="flex items-center gap-2.5">
+        <div id="rate-indicator" class="rate-dot fallback"></div>
+        <span id="rate-display" class="text-sm font-semibold text-zinc-700">1 USD = ₡—</span>
+      </div>
+      <span id="rate-status" class="text-xs text-zinc-400">Actualizando…</span>
+    </div>
+
+    <!-- Converter card -->
+    <div class="fade-up bg-white border border-zinc-200 rounded-2xl shadow-sm overflow-hidden">
+
+      <!-- CRC -->
+      <div class="px-6 py-7">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="text-lg" aria-hidden="true">🇨🇷</span>
+          <span class="text-xs font-semibold text-zinc-400 uppercase tracking-widest">Colones costarricenses</span>
+          <span class="ml-auto text-xs font-mono bg-zinc-100 text-zinc-500 rounded px-2 py-0.5">CRC</span>
+        </div>
+        <div class="flex items-baseline gap-2">
+          <span class="text-2xl font-bold text-zinc-300 select-none">₡</span>
+          <input id="crc-input" class="currency-input text-zinc-800" type="text" inputmode="decimal" placeholder="0" autocomplete="off" />
+        </div>
+        <p id="crc-label" class="mt-1.5 text-xs text-zinc-400 min-h-[1rem]"></p>
+      </div>
+
+      <!-- Divider + swap -->
+      <div class="relative flex items-center justify-center border-y border-zinc-100">
+        <div class="absolute inset-0 bg-zinc-50/70"></div>
+        <button id="swap-btn" title="Intercambiar"
+          class="relative z-10 my-2 w-9 h-9 rounded-full bg-zinc-800 text-white flex items-center justify-center shadow hover:bg-zinc-700 active:scale-95 transition-all focus:outline-none">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 16V4m0 0L3 8m4-4l4 4"/><path d="M17 8v12m0 0l4-4m-4 4l-4-4"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- USD -->
+      <div class="px-6 py-7 bg-zinc-900">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="text-lg" aria-hidden="true">🇺🇸</span>
+          <span class="text-xs font-semibold text-zinc-500 uppercase tracking-widest">Dólares americanos</span>
+          <span class="ml-auto text-xs font-mono bg-zinc-800 text-zinc-500 rounded px-2 py-0.5">USD</span>
+        </div>
+        <div class="flex items-baseline gap-2">
+          <span class="text-2xl font-bold text-zinc-600 select-none">$</span>
+          <input id="usd-input" class="currency-input usd-side text-white" type="text" inputmode="decimal" placeholder="0" autocomplete="off" />
+        </div>
+        <p id="usd-label" class="mt-1.5 text-xs text-zinc-600 min-h-[1rem]"></p>
+      </div>
+    </div>
+
+    <!-- Quick amounts -->
+    <div class="fade-up">
+      <p class="text-xs text-zinc-400 uppercase tracking-wider mb-2.5">Montos rápidos</p>
+      <div class="flex flex-wrap gap-2">
+        <button class="quick-btn" data-crc="1000">₡1.000</button>
+        <button class="quick-btn" data-crc="5000">₡5.000</button>
+        <button class="quick-btn" data-crc="10000">₡10.000</button>
+        <button class="quick-btn" data-crc="50000">₡50.000</button>
+        <button class="quick-btn" data-crc="100000">₡100.000</button>
+        <button class="quick-btn" data-crc="500000">₡500.000</button>
+        <button class="quick-btn" data-crc="1000000">₡1.000.000</button>
+      </div>
+    </div>
+
+    <!-- Reference table -->
+    <div class="fade-up bg-white border border-zinc-200 rounded-2xl shadow-sm overflow-hidden">
+      <div class="px-5 py-3.5 border-b border-zinc-100">
+        <h2 class="text-sm font-semibold text-zinc-700">Tabla de referencia</h2>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="bg-zinc-50">
+            <tr>
+              <th class="px-5 py-3 text-left text-xs font-semibold text-zinc-500 uppercase tracking-wide">Colones (CRC)</th>
+              <th class="px-5 py-3 text-left text-xs font-semibold text-zinc-500 uppercase tracking-wide">Dólares (USD)</th>
+            </tr>
+          </thead>
+          <tbody id="ref-table-body" class="divide-y divide-zinc-100"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- About -->
+    <div class="fade-up bg-white border border-zinc-200 rounded-2xl shadow-sm p-6 space-y-2.5">
+      <h2 class="font-semibold text-zinc-800 text-sm">¿Cómo funciona?</h2>
+      <p class="text-sm text-zinc-500 leading-relaxed">
+        El tipo de cambio se obtiene en tiempo real desde <strong class="text-zinc-700">Open Exchange Rates</strong>.
+        Si no hay conexión disponible, se muestra una tasa referencial reciente.
+      </p>
+      <p class="text-sm text-zinc-500 leading-relaxed">
+        Solo de referencia. Para transacciones financieras use el tipo de cambio oficial del <strong class="text-zinc-700">Banco Central de Costa Rica (BCCR)</strong>.
+      </p>
+    </div>
+
+    <!-- FAQ -->
+    <div class="fade-up bg-white border border-zinc-200 rounded-2xl shadow-sm p-6">
+      <h2 class="font-semibold text-zinc-800 text-sm mb-4">Preguntas frecuentes</h2>
+      <div class="space-y-2.5">
+
+        <details class="group border border-zinc-200 rounded-xl overflow-hidden">
+          <summary class="flex justify-between items-center px-5 py-3.5 cursor-pointer font-medium text-sm text-zinc-700 group-open:bg-zinc-50 list-none select-none transition-colors">
+            ¿Con qué frecuencia se actualiza la tasa?
+            <svg class="h-4 w-4 transition-transform group-open:rotate-180 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="px-5 py-3.5 text-sm text-zinc-500 leading-relaxed border-t border-zinc-100">
+            La tasa se actualiza diariamente en días hábiles bancarios, con datos provenientes del mercado de divisas interbancario.
+          </div>
+        </details>
+
+        <details class="group border border-zinc-200 rounded-xl overflow-hidden">
+          <summary class="flex justify-between items-center px-5 py-3.5 cursor-pointer font-medium text-sm text-zinc-700 group-open:bg-zinc-50 list-none select-none transition-colors">
+            ¿Puedo usar esta tasa para transacciones reales?
+            <svg class="h-4 w-4 transition-transform group-open:rotate-180 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="px-5 py-3.5 text-sm text-zinc-500 leading-relaxed border-t border-zinc-100">
+            Solo de referencia. Para cambios de divisa use la tasa oficial del BCCR o la que establezca su banco.
+          </div>
+        </details>
+
+        <details class="group border border-zinc-200 rounded-xl overflow-hidden">
+          <summary class="flex justify-between items-center px-5 py-3.5 cursor-pointer font-medium text-sm text-zinc-700 group-open:bg-zinc-50 list-none select-none transition-colors">
+            ¿Por qué difieran las tasas entre bancos?
+            <svg class="h-4 w-4 transition-transform group-open:rotate-180 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="px-5 py-3.5 text-sm text-zinc-500 leading-relaxed border-t border-zinc-100">
+            Cada entidad aplica un margen (spread) propio sobre la tasa de mercado. La diferencia entre compra y venta depende de cada institución.
+          </div>
+        </details>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-zinc-200 mt-4">
+    <div class="max-w-4xl mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-zinc-400">
+      <span class="font-semibold text-zinc-700">Swap<span class="text-purple-900">Ture</span></span>
+      <a href="/" class="hover:text-zinc-600 transition-colors">← Todas las herramientas</a>
+    </div>
+  </footer>
+
+  <script type="module" src="./main.ts"></script>
+
+  <script>
+  (function () {
+    // Open Exchange Rates — free, no key, supports CRC
+    const API_URL = 'https://open.er-api.com/v6/latest/USD';
+    const REF_AMOUNTS = [500, 1000, 5000, 10000, 25000, 50000, 100000, 500000, 1000000];
+
+    let usdToCrc = null; // null until loaded
+    let isLive   = false;
+
+    const crcInput      = document.getElementById('crc-input');
+    const usdInput      = document.getElementById('usd-input');
+    const crcLabel      = document.getElementById('crc-label');
+    const usdLabel      = document.getElementById('usd-label');
+    const rateDisplay   = document.getElementById('rate-display');
+    const rateStatus    = document.getElementById('rate-status');
+    const rateIndicator = document.getElementById('rate-indicator');
+    const swapBtn       = document.getElementById('swap-btn');
+    const refBody       = document.getElementById('ref-table-body');
+
+    function fmtCRC(n) {
+      if (!isFinite(n) || n === null) return '';
+      return n.toLocaleString('es-CR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+    function fmtUSD(n) {
+      if (!isFinite(n) || n === null) return '';
+      return n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+    function parseNum(str) {
+      if (!str) return NaN;
+      return parseFloat(String(str).replace(/[^0-9.]/g, ''));
+    }
+
+    function updateRateUI(date) {
+      if (!usdToCrc) return;
+      rateDisplay.textContent = '1 USD = ₡' + fmtCRC(usdToCrc);
+      if (isLive && date) {
+        rateIndicator.className = 'rate-dot live';
+        // Format date nicely
+        const d = new Date(date);
+        const formatted = isNaN(d) ? date : d.toLocaleDateString('es-CR', { day: '2-digit', month: 'short', year: 'numeric' });
+        rateStatus.textContent = 'Actualizado ' + formatted;
+        rateStatus.style.color = '';
+      } else if (isLive) {
+        rateIndicator.className = 'rate-dot live';
+        rateStatus.textContent = 'Tasa en vivo';
+        rateStatus.style.color = '';
+      } else {
+        rateIndicator.className = 'rate-dot fallback';
+        rateStatus.textContent = 'Tasa referencial (sin conexión)';
+      }
+    }
+
+    function buildRefTable() {
+      if (!usdToCrc) return;
+      refBody.innerHTML = '';
+      REF_AMOUNTS.forEach(function (crc, i) {
+        const usd = crc / usdToCrc;
+        const tr = document.createElement('tr');
+        tr.className = i % 2 === 0 ? 'bg-white' : 'bg-zinc-50';
+        tr.innerHTML =
+          '<td class="px-5 py-2.5 text-zinc-600">₡' + fmtCRC(crc) + '</td>' +
+          '<td class="px-5 py-2.5 text-zinc-800 font-semibold">$' + fmtUSD(usd) + '</td>';
+        refBody.appendChild(tr);
+      });
+    }
+
+    function runConversionFromCRC() {
+      if (!usdToCrc) return;
+      const raw = parseNum(crcInput.value);
+      if (!isNaN(raw) && crcInput.value.trim() !== '') {
+        const usd = raw / usdToCrc;
+        usdInput.value = fmtUSD(usd);
+        crcLabel.textContent = '₡' + fmtCRC(raw) + ' CRC';
+        usdLabel.textContent = '$' + fmtUSD(usd) + ' USD';
+      } else {
+        usdInput.value = '';
+        crcLabel.textContent = '';
+        usdLabel.textContent = '';
+      }
+    }
+
+    function runConversionFromUSD() {
+      if (!usdToCrc) return;
+      const raw = parseNum(usdInput.value);
+      if (!isNaN(raw) && usdInput.value.trim() !== '') {
+        const crc = raw * usdToCrc;
+        crcInput.value = fmtCRC(crc);
+        usdLabel.textContent = '$' + fmtUSD(raw) + ' USD';
+        crcLabel.textContent = '₡' + fmtCRC(crc) + ' CRC';
+      } else {
+        crcInput.value = '';
+        usdLabel.textContent = '';
+        crcLabel.textContent = '';
+      }
+    }
+
+    async function fetchRate() {
+      try {
+        const res = await fetch(API_URL);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        if (!data || !data.rates || !data.rates.CRC) throw new Error('No CRC in response');
+        usdToCrc = data.rates.CRC;
+        isLive   = true;
+        // Parse update date from time_last_update_utc
+        const dateStr = data.time_last_update_utc
+          ? data.time_last_update_utc.replace(/\s\+\d{4}$/, '')
+          : '';
+        updateRateUI(dateStr);
+        buildRefTable();
+        // Re-run conversion with live rate
+        const cVal = parseNum(crcInput.value);
+        if (!isNaN(cVal) && crcInput.value.trim() !== '') runConversionFromCRC();
+      } catch (e) {
+        isLive = false;
+        // If no rate loaded at all, add generic fallback so table shows something
+        updateRateUI(null);
+      }
+    }
+
+    crcInput.addEventListener('input', runConversionFromCRC);
+    usdInput.addEventListener('input', runConversionFromUSD);
+
+    swapBtn.addEventListener('click', function () {
+      // Move USD result to CRC field and recalculate
+      const usdVal = parseNum(usdInput.value);
+      if (!isNaN(usdVal) && usdInput.value.trim() !== '') {
+        usdInput.value = '';
+        crcInput.value = '';
+        // Put it in USD and convert to CRC
+        usdInput.value = fmtUSD(usdVal);
+        runConversionFromUSD();
+      } else {
+        const crcVal = parseNum(crcInput.value);
+        if (!isNaN(crcVal)) {
+          crcInput.value = '';
+          usdInput.value = fmtUSD(crcVal / (usdToCrc || 1));
+          runConversionFromUSD();
+        }
+      }
+    });
+
+    document.querySelectorAll('.quick-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        const crc = parseFloat(btn.dataset.crc);
+        crcInput.value = fmtCRC(crc);
+        runConversionFromCRC();
+      });
+    });
+
+    // Init: show loading state until API responds
+    rateDisplay.textContent = '1 USD = ₡—';
+    rateStatus.textContent  = 'Actualizando tasa…';
+    fetchRate();
+  })();
+  </script>
+
+</body>
+</html>

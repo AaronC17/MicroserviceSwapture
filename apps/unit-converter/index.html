@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit Converter - Length, Weight, Temperature &amp; More - SwapTure</title>
+  <meta name="description" content="Free online unit converter for length, weight, temperature, volume, and speed. Instantly convert meters, kilograms, Celsius, liters, and more with SwapTure." />
+  <link rel="canonical" href="https://convert.swapture.com" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Unit Converter - Length, Weight, Temperature &amp; More - SwapTure" />
+  <meta property="og:description" content="Convert units instantly: length, weight, temperature, volume, speed. Free and accurate." />
+  <meta property="og:url" content="https://convert.swapture.com" />
+  <meta property="og:type" content="website" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "SwapTure Unit Converter",
+        "url": "https://convert.swapture.com",
+        "description": "Free online unit converter supporting length, weight, temperature, volume, and speed conversions with real-time results.",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Any",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "featureList": [
+          "Length conversion (meters, feet, miles, inches and more)",
+          "Weight conversion (kilograms, pounds, ounces and more)",
+          "Temperature conversion (Celsius, Fahrenheit, Kelvin)",
+          "Volume conversion (liters, gallons, cups and more)",
+          "Speed conversion (km/h, mph, knots and more)"
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How do I convert Celsius to Fahrenheit?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "To convert Celsius to Fahrenheit, multiply the Celsius value by 9/5 and then add 32. For example, 100°C × 9/5 + 32 = 212°F. You can use the SwapTure Unit Converter's Temperature tab to do this instantly."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How many feet are in a meter?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "There are approximately 3.28084 feet in one meter. Conversely, one foot equals 0.3048 meters. Use the Length tab in the SwapTure Unit Converter to convert between meters, feet, inches, miles, and more."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How many kilograms are in a pound?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "One pound is equal to approximately 0.453592 kilograms. So to convert pounds to kilograms, multiply the number of pounds by 0.453592. Use the Weight tab in SwapTure for instant conversions between kg, lbs, grams, ounces, and more."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .tab-btn { transition: background-color 0.2s, color 0.2s, border-color 0.2s; }
+    .result-input { caret-color: transparent; }
+    #conversion-table td, #conversion-table th { white-space: nowrap; }
+  </style>
+</head>
+
+<body class="bg-slate-50 min-h-screen flex flex-col text-slate-800 font-sans">
+
+  <!-- ===== HEADER ===== -->
+  <header class="bg-indigo-700 text-white shadow-md">
+    <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="https://swapture.com" class="flex items-center gap-2 font-bold text-xl tracking-tight hover:text-indigo-200 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M7 16V4m0 0L3 8m4-4l4 4"/><path d="M17 8v12m0 0l4-4m-4 4l-4-4"/>
+        </svg>
+        SwapTure
+      </a>
+      <nav class="hidden sm:flex gap-6 text-sm font-medium">
+        <a href="https://swapture.com" class="hover:text-indigo-200 transition-colors">Home</a>
+        <a href="https://convert.swapture.com" class="text-indigo-200 border-b border-indigo-300">Unit Converter</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== HERO / TITLE ===== -->
+  <section class="bg-indigo-600 text-white py-10 px-4 text-center">
+    <h1 class="text-3xl sm:text-4xl font-extrabold mb-2">Unit Converter</h1>
+    <p class="text-indigo-200 text-base sm:text-lg max-w-xl mx-auto">
+      Instantly convert length, weight, temperature, volume, and speed units — free and accurate.
+    </p>
+  </section>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="flex-1 max-w-5xl mx-auto w-full px-4 py-8 space-y-8">
+
+    <!-- Ad placeholder top -->
+    <div class="w-full h-16 bg-slate-200 rounded-lg flex items-center justify-center text-slate-400 text-xs border border-slate-300">
+      Advertisement
+    </div>
+
+    <!-- ===== CONVERTER CARD ===== -->
+    <div class="bg-white rounded-2xl shadow-md border border-slate-200 overflow-hidden">
+
+      <!-- Category Tabs -->
+      <div class="flex overflow-x-auto border-b border-slate-200 bg-slate-50" role="tablist" aria-label="Unit categories">
+        <button class="tab-btn flex-1 min-w-[90px] py-3 px-4 text-sm font-semibold border-b-2 border-indigo-600 text-indigo-700 bg-white" data-category="length" role="tab" aria-selected="true">
+          📏 Length
+        </button>
+        <button class="tab-btn flex-1 min-w-[90px] py-3 px-4 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-indigo-600 hover:bg-indigo-50" data-category="weight" role="tab" aria-selected="false">
+          ⚖️ Weight
+        </button>
+        <button class="tab-btn flex-1 min-w-[90px] py-3 px-4 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-indigo-600 hover:bg-indigo-50" data-category="temperature" role="tab" aria-selected="false">
+          🌡️ Temp
+        </button>
+        <button class="tab-btn flex-1 min-w-[90px] py-3 px-4 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-indigo-600 hover:bg-indigo-50" data-category="volume" role="tab" aria-selected="false">
+          🧴 Volume
+        </button>
+        <button class="tab-btn flex-1 min-w-[90px] py-3 px-4 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-indigo-600 hover:bg-indigo-50" data-category="speed" role="tab" aria-selected="false">
+          🚀 Speed
+        </button>
+      </div>
+
+      <!-- Converter Body -->
+      <div class="p-6 sm:p-8">
+
+        <!-- Category label -->
+        <p class="text-xs font-semibold text-indigo-500 uppercase tracking-widest mb-5" id="category-label">Length Conversion</p>
+
+        <!-- Main converter row -->
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-end gap-4">
+
+          <!-- FROM -->
+          <div class="flex-1 space-y-2">
+            <label for="from-select" class="block text-xs font-semibold text-slate-500 uppercase tracking-wide">From</label>
+            <select id="from-select" class="w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-2.5 text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 transition">
+            </select>
+            <input
+              type="number"
+              id="from-input"
+              placeholder="Enter value"
+              class="w-full rounded-xl border border-slate-300 bg-white px-3 py-3 text-lg font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 transition"
+              inputmode="decimal"
+              aria-label="Value to convert"
+            />
+          </div>
+
+          <!-- SWAP BUTTON -->
+          <div class="flex justify-center sm:mb-1">
+            <button
+              id="swap-btn"
+              aria-label="Swap units"
+              class="w-12 h-12 rounded-full bg-indigo-600 text-white flex items-center justify-center shadow-md hover:bg-indigo-700 active:scale-95 transition-all focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 16V4m0 0L3 8m4-4l4 4"/><path d="M17 8v12m0 0l4-4m-4 4l-4-4"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- TO -->
+          <div class="flex-1 space-y-2">
+            <label for="to-select" class="block text-xs font-semibold text-slate-500 uppercase tracking-wide">To</label>
+            <select id="to-select" class="w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-2.5 text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 transition">
+            </select>
+            <div class="relative">
+              <input
+                type="text"
+                id="to-output"
+                readonly
+                class="result-input w-full rounded-xl border border-indigo-200 bg-indigo-50 px-3 py-3 text-lg font-semibold text-indigo-700 focus:outline-none cursor-default"
+                aria-label="Conversion result"
+                aria-live="polite"
+              />
+              <button id="copy-btn" title="Copy result" class="absolute right-3 top-1/2 -translate-y-1/2 text-indigo-400 hover:text-indigo-600 transition focus:outline-none" aria-label="Copy result to clipboard">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Formula hint -->
+        <p id="formula-hint" class="mt-4 text-xs text-slate-400 italic min-h-[1.25rem]"></p>
+
+        <!-- Conversion Table Toggle -->
+        <div class="mt-6 border-t border-slate-100 pt-4">
+          <button id="toggle-table-btn" class="text-sm text-indigo-600 hover:text-indigo-800 font-medium underline underline-offset-2 transition focus:outline-none">
+            Show conversion table for all units
+          </button>
+        </div>
+
+        <!-- Conversion Table (hidden by default) -->
+        <div id="table-section" class="hidden mt-4 overflow-x-auto rounded-xl border border-slate-200">
+          <table id="conversion-table" class="w-full text-sm border-collapse">
+            <thead class="bg-indigo-50 text-indigo-700">
+              <tr id="table-header-row"></tr>
+            </thead>
+            <tbody id="table-body" class="divide-y divide-slate-100"></tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Ad placeholder middle -->
+    <div class="w-full h-16 bg-slate-200 rounded-lg flex items-center justify-center text-slate-400 text-xs border border-slate-300">
+      Advertisement
+    </div>
+
+    <!-- ===== SEO CONTENT ===== -->
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8 space-y-4">
+      <h2 class="text-xl font-bold text-slate-800">About the SwapTure Unit Converter</h2>
+      <p class="text-slate-600 text-sm leading-relaxed">
+        The SwapTure Unit Converter is a fast, accurate, and free tool for converting between the most common measurement units used in everyday life, science, and engineering. Whether you need to convert <strong>kilometers to miles</strong>, <strong>kilograms to pounds</strong>, <strong>Celsius to Fahrenheit</strong>, or <strong>liters to gallons</strong>, SwapTure gives you instant results as you type.
+      </p>
+      <p class="text-slate-600 text-sm leading-relaxed">
+        Our converter supports five major categories: <strong>Length</strong> (meters, feet, inches, miles, nautical miles, and more), <strong>Weight</strong> (kilograms, pounds, ounces, stones, and more), <strong>Temperature</strong> (Celsius, Fahrenheit, Kelvin), <strong>Volume</strong> (liters, gallons, cups, fluid ounces, and more), and <strong>Speed</strong> (km/h, mph, knots, m/s, ft/s).
+      </p>
+      <p class="text-slate-600 text-sm leading-relaxed">
+        All conversions use precise internationally accepted conversion factors. The result updates in real time — no need to press a button. You can also swap the direction of conversion with a single click, and view a full conversion table for any unit category.
+      </p>
+    </section>
+
+    <!-- ===== FAQ ===== -->
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8">
+      <h2 class="text-xl font-bold text-slate-800 mb-6">Frequently Asked Questions</h2>
+      <div class="space-y-5">
+
+        <details class="group border border-slate-200 rounded-xl overflow-hidden">
+          <summary class="flex justify-between items-center px-5 py-4 cursor-pointer font-medium text-slate-700 bg-slate-50 group-open:bg-indigo-50 group-open:text-indigo-700 list-none select-none transition-colors">
+            How do I convert Celsius to Fahrenheit?
+            <svg class="h-4 w-4 transition-transform group-open:rotate-180 text-slate-400 group-open:text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="px-5 py-4 text-sm text-slate-600 leading-relaxed border-t border-slate-200">
+            To convert Celsius to Fahrenheit, multiply the Celsius value by 9/5 and add 32. The formula is: <strong>°F = (°C × 9/5) + 32</strong>. For example, 100°C equals 212°F. Use the Temperature tab above for instant conversions.
+          </div>
+        </details>
+
+        <details class="group border border-slate-200 rounded-xl overflow-hidden">
+          <summary class="flex justify-between items-center px-5 py-4 cursor-pointer font-medium text-slate-700 bg-slate-50 group-open:bg-indigo-50 group-open:text-indigo-700 list-none select-none transition-colors">
+            How many feet are in a meter?
+            <svg class="h-4 w-4 transition-transform group-open:rotate-180 text-slate-400 group-open:text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="px-5 py-4 text-sm text-slate-600 leading-relaxed border-t border-slate-200">
+            There are exactly <strong>3.28084 feet</strong> in one meter. Conversely, one foot equals 0.3048 meters exactly (by international definition). Use the Length tab above to convert between meters, feet, inches, miles, and more.
+          </div>
+        </details>
+
+        <details class="group border border-slate-200 rounded-xl overflow-hidden">
+          <summary class="flex justify-between items-center px-5 py-4 cursor-pointer font-medium text-slate-700 bg-slate-50 group-open:bg-indigo-50 group-open:text-indigo-700 list-none select-none transition-colors">
+            How many kilograms are in a pound?
+            <svg class="h-4 w-4 transition-transform group-open:rotate-180 text-slate-400 group-open:text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="px-5 py-4 text-sm text-slate-600 leading-relaxed border-t border-slate-200">
+            One pound (lb) equals <strong>0.453592 kilograms</strong>. Therefore, to convert pounds to kilograms, multiply by 0.453592. To convert kilograms to pounds, multiply by 2.20462. Use the Weight tab above for fast, accurate conversions.
+          </div>
+        </details>
+
+      </div>
+    </section>
+
+    <!-- Ad placeholder bottom -->
+    <div class="w-full h-16 bg-slate-200 rounded-lg flex items-center justify-center text-slate-400 text-xs border border-slate-300">
+      Advertisement
+    </div>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="bg-slate-800 text-slate-400 text-sm mt-8">
+    <div class="max-w-5xl mx-auto px-4 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p>&copy; <span id="footer-year"></span> SwapTure. All rights reserved.</p>
+      <nav class="flex gap-5">
+        <a href="https://swapture.com/privacy" class="hover:text-white transition-colors">Privacy Policy</a>
+        <a href="https://swapture.com/terms" class="hover:text-white transition-colors">Terms of Use</a>
+        <a href="https://swapture.com/contact" class="hover:text-white transition-colors">Contact</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- ===== APP SCRIPT ===== -->
+  <script type="module" src="src/main.ts"></script>
+
+  <!-- Inline fallback JS for environments that don't support TS modules directly -->
+  <script>
+  (function () {
+    // ---- UNIT DEFINITIONS ----
+    const CATEGORIES = {
+      length: {
+        label: 'Length Conversion',
+        units: [
+          { key: 'meters',        label: 'Meters (m)',           toBase: v => v,             fromBase: v => v },
+          { key: 'kilometers',    label: 'Kilometers (km)',       toBase: v => v * 1000,      fromBase: v => v / 1000 },
+          { key: 'centimeters',   label: 'Centimeters (cm)',      toBase: v => v / 100,       fromBase: v => v * 100 },
+          { key: 'millimeters',   label: 'Millimeters (mm)',      toBase: v => v / 1000,      fromBase: v => v * 1000 },
+          { key: 'miles',         label: 'Miles (mi)',            toBase: v => v * 1609.344,  fromBase: v => v / 1609.344 },
+          { key: 'yards',         label: 'Yards (yd)',            toBase: v => v * 0.9144,    fromBase: v => v / 0.9144 },
+          { key: 'feet',          label: 'Feet (ft)',             toBase: v => v * 0.3048,    fromBase: v => v / 0.3048 },
+          { key: 'inches',        label: 'Inches (in)',           toBase: v => v * 0.0254,    fromBase: v => v / 0.0254 },
+          { key: 'nautical_miles',label: 'Nautical Miles (nmi)', toBase: v => v * 1852,      fromBase: v => v / 1852 },
+        ]
+      },
+      weight: {
+        label: 'Weight Conversion',
+        units: [
+          { key: 'kilograms',   label: 'Kilograms (kg)',      toBase: v => v,               fromBase: v => v },
+          { key: 'grams',       label: 'Grams (g)',           toBase: v => v / 1000,        fromBase: v => v * 1000 },
+          { key: 'milligrams',  label: 'Milligrams (mg)',     toBase: v => v / 1e6,         fromBase: v => v * 1e6 },
+          { key: 'pounds',      label: 'Pounds (lb)',         toBase: v => v * 0.453592,    fromBase: v => v / 0.453592 },
+          { key: 'ounces',      label: 'Ounces (oz)',         toBase: v => v * 0.0283495,   fromBase: v => v / 0.0283495 },
+          { key: 'metric_tons', label: 'Metric Tons (t)',     toBase: v => v * 1000,        fromBase: v => v / 1000 },
+          { key: 'stones',      label: 'Stones (st)',         toBase: v => v * 6.35029,     fromBase: v => v / 6.35029 },
+        ]
+      },
+      temperature: {
+        label: 'Temperature Conversion',
+        units: [
+          { key: 'celsius',    label: 'Celsius (°C)',    toBase: v => v,             fromBase: v => v },
+          { key: 'fahrenheit', label: 'Fahrenheit (°F)', toBase: v => (v - 32) * 5 / 9, fromBase: v => v * 9 / 5 + 32 },
+          { key: 'kelvin',     label: 'Kelvin (K)',      toBase: v => v - 273.15,    fromBase: v => v + 273.15 },
+        ]
+      },
+      volume: {
+        label: 'Volume Conversion',
+        units: [
+          { key: 'liters',       label: 'Liters (L)',          toBase: v => v,              fromBase: v => v },
+          { key: 'milliliters',  label: 'Milliliters (mL)',    toBase: v => v / 1000,       fromBase: v => v * 1000 },
+          { key: 'cubic_meters', label: 'Cubic Meters (m³)',   toBase: v => v * 1000,       fromBase: v => v / 1000 },
+          { key: 'gallons_us',   label: 'Gallons US (gal)',    toBase: v => v * 3.78541,    fromBase: v => v / 3.78541 },
+          { key: 'quarts',       label: 'Quarts (qt)',         toBase: v => v * 0.946353,   fromBase: v => v / 0.946353 },
+          { key: 'pints',        label: 'Pints (pt)',          toBase: v => v * 0.473176,   fromBase: v => v / 0.473176 },
+          { key: 'cups',         label: 'Cups (c)',            toBase: v => v * 0.236588,   fromBase: v => v / 0.236588 },
+          { key: 'fluid_ounces', label: 'Fluid Ounces (fl oz)',toBase: v => v * 0.0295735,  fromBase: v => v / 0.0295735 },
+        ]
+      },
+      speed: {
+        label: 'Speed Conversion',
+        units: [
+          { key: 'ms',    label: 'Meters/sec (m/s)',  toBase: v => v,             fromBase: v => v },
+          { key: 'kmh',   label: 'Kilometers/hr (km/h)', toBase: v => v / 3.6,   fromBase: v => v * 3.6 },
+          { key: 'mph',   label: 'Miles/hr (mph)',    toBase: v => v * 0.44704,   fromBase: v => v / 0.44704 },
+          { key: 'knots', label: 'Knots (kn)',        toBase: v => v * 0.514444,  fromBase: v => v / 0.514444 },
+          { key: 'fts',   label: 'Feet/sec (ft/s)',   toBase: v => v * 0.3048,    fromBase: v => v / 0.3048 },
+        ]
+      }
+    };
+
+    const FORMULA_HINTS = {
+      length: {
+        meters_feet: '1 m = 3.28084 ft',
+        meters_inches: '1 m = 39.3701 in',
+        kilometers_miles: '1 km = 0.621371 mi',
+        miles_kilometers: '1 mi = 1.60934 km',
+      },
+      temperature: {
+        celsius_fahrenheit: '°F = (°C × 9/5) + 32',
+        fahrenheit_celsius: '°C = (°F − 32) × 5/9',
+        celsius_kelvin: 'K = °C + 273.15',
+        kelvin_celsius: '°C = K − 273.15',
+      }
+    };
+
+    // ---- STATE ----
+    let currentCategory = 'length';
+    let tableVisible = false;
+
+    // ---- HELPERS ----
+    function formatResult(value) {
+      if (!isFinite(value)) return '—';
+      const abs = Math.abs(value);
+      if (abs === 0) return '0';
+      if (abs >= 1e12 || (abs < 1e-6 && abs > 0)) return value.toExponential(6);
+      if (abs >= 1000) return parseFloat(value.toPrecision(10)).toString();
+      return parseFloat(value.toFixed(8)).toString();
+    }
+
+    function getFormulaHint(fromKey, toKey, category) {
+      if (category === 'temperature') {
+        const key = `${fromKey}_${toKey}`;
+        return FORMULA_HINTS.temperature[key] || '';
+      }
+      if (category === 'length') {
+        const key = `${fromKey}_${toKey}`;
+        return FORMULA_HINTS.length[key] || '';
+      }
+      return '';
+    }
+
+    function convert(value, fromUnit, toUnit) {
+      const base = fromUnit.toBase(value);
+      return toUnit.fromBase(base);
+    }
+
+    // ---- DOM REFS ----
+    const fromSelect    = document.getElementById('from-select');
+    const toSelect      = document.getElementById('to-select');
+    const fromInput     = document.getElementById('from-input');
+    const toOutput      = document.getElementById('to-output');
+    const swapBtn       = document.getElementById('swap-btn');
+    const copyBtn       = document.getElementById('copy-btn');
+    const categoryLabel = document.getElementById('category-label');
+    const formulaHint   = document.getElementById('formula-hint');
+    const toggleTableBtn = document.getElementById('toggle-table-btn');
+    const tableSection  = document.getElementById('table-section');
+    const tableHeaderRow = document.getElementById('table-header-row');
+    const tableBody     = document.getElementById('table-body');
+    const tabBtns       = document.querySelectorAll('.tab-btn');
+    const footerYear    = document.getElementById('footer-year');
+
+    if (footerYear) footerYear.textContent = new Date().getFullYear();
+
+    // ---- POPULATE DROPDOWNS ----
+    function populateDropdowns(category) {
+      const { units } = CATEGORIES[category];
+      [fromSelect, toSelect].forEach((sel, idx) => {
+        sel.innerHTML = '';
+        units.forEach((u, i) => {
+          const opt = document.createElement('option');
+          opt.value = u.key;
+          opt.textContent = u.label;
+          sel.appendChild(opt);
+        });
+        // Default: from=0, to=1 (different units)
+        sel.selectedIndex = idx === 0 ? 0 : Math.min(1, units.length - 1);
+      });
+    }
+
+    // ---- RUN CONVERSION ----
+    function runConversion() {
+      const { units } = CATEGORIES[currentCategory];
+      const fromUnit = units.find(u => u.key === fromSelect.value);
+      const toUnit   = units.find(u => u.key === toSelect.value);
+      const raw = parseFloat(fromInput.value);
+      if (!fromUnit || !toUnit) return;
+      if (isNaN(raw)) { toOutput.value = ''; formulaHint.textContent = ''; return; }
+      const result = convert(raw, fromUnit, toUnit);
+      toOutput.value = formatResult(result);
+      formulaHint.textContent = getFormulaHint(fromUnit.key, toUnit.key, currentCategory);
+      if (tableVisible) buildTable();
+    }
+
+    // ---- BUILD CONVERSION TABLE ----
+    function buildTable() {
+      const { units } = CATEGORIES[currentCategory];
+      const raw = parseFloat(fromInput.value);
+      const value = isNaN(raw) ? 1 : raw;
+      const fromUnit = units.find(u => u.key === fromSelect.value) || units[0];
+
+      // Header
+      tableHeaderRow.innerHTML = '';
+      const thFrom = document.createElement('th');
+      thFrom.textContent = fromUnit.label;
+      thFrom.className = 'px-4 py-2 text-left font-semibold text-xs';
+      tableHeaderRow.appendChild(thFrom);
+      const thTo = document.createElement('th');
+      thTo.textContent = 'Result';
+      thTo.className = 'px-4 py-2 text-left font-semibold text-xs';
+      tableHeaderRow.appendChild(thTo);
+
+      // Rows
+      tableBody.innerHTML = '';
+      units.forEach((u, i) => {
+        const result = convert(value, fromUnit, u);
+        const tr = document.createElement('tr');
+        tr.className = i % 2 === 0 ? 'bg-white' : 'bg-slate-50';
+        const td1 = document.createElement('td');
+        td1.textContent = `${value} ${fromUnit.label}`;
+        td1.className = 'px-4 py-2 text-slate-600';
+        const td2 = document.createElement('td');
+        td2.textContent = `${formatResult(result)} ${u.label}`;
+        td2.className = 'px-4 py-2 font-medium text-slate-800';
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+        tableBody.appendChild(tr);
+      });
+    }
+
+    // ---- SWITCH CATEGORY ----
+    function switchCategory(category) {
+      currentCategory = category;
+      categoryLabel.textContent = CATEGORIES[category].label;
+      populateDropdowns(category);
+      fromInput.value = '';
+      toOutput.value = '';
+      formulaHint.textContent = '';
+      if (tableVisible) buildTable();
+
+      // Update tabs
+      tabBtns.forEach(btn => {
+        const isActive = btn.dataset.category === category;
+        btn.classList.toggle('border-indigo-600', isActive);
+        btn.classList.toggle('text-indigo-700', isActive);
+        btn.classList.toggle('bg-white', isActive);
+        btn.classList.toggle('border-transparent', !isActive);
+        btn.classList.toggle('text-slate-500', !isActive);
+        btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+    }
+
+    // ---- EVENT LISTENERS ----
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => switchCategory(btn.dataset.category));
+    });
+
+    fromInput.addEventListener('input', runConversion);
+    fromSelect.addEventListener('change', runConversion);
+    toSelect.addEventListener('change', runConversion);
+
+    swapBtn.addEventListener('click', () => {
+      const tmp = fromSelect.value;
+      fromSelect.value = toSelect.value;
+      toSelect.value = tmp;
+      // Swap the input/output values too
+      const prevResult = toOutput.value;
+      fromInput.value = prevResult !== '' ? prevResult : fromInput.value;
+      runConversion();
+    });
+
+    copyBtn.addEventListener('click', () => {
+      if (!toOutput.value) return;
+      navigator.clipboard.writeText(toOutput.value).then(() => {
+        copyBtn.title = 'Copied!';
+        setTimeout(() => { copyBtn.title = 'Copy result'; }, 1500);
+      });
+    });
+
+    toggleTableBtn.addEventListener('click', () => {
+      tableVisible = !tableVisible;
+      if (tableVisible) {
+        tableSection.classList.remove('hidden');
+        toggleTableBtn.textContent = 'Hide conversion table';
+        buildTable();
+      } else {
+        tableSection.classList.add('hidden');
+        toggleTableBtn.textContent = 'Show conversion table for all units';
+      }
+    });
+
+    // ---- INIT ----
+    switchCategory('length');
+  })();
+  </script>
+
+</body>
+</html>

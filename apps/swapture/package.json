@@ -1,0 +1,17 @@
+{
+  "name": "@swapture/swapture",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "vite": "^6.3.5"
+  },
+  "dependencies": {
+    "@imgly/background-removal": "^1.7.0"
+  }
+}
